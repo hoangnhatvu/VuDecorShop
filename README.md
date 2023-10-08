@@ -1,1 +1,1 @@
-# VuDecorShop
+# VuDecorShop README
