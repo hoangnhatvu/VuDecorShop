@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 
-const categorySchema = new mongoose.Schema({
+export const categorySchema = new mongoose.Schema({
   category_name: {
     type: String,
     required: true,
@@ -15,17 +15,4 @@ const categorySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  
-  created_date: {
-    type: Date,
-    default: Date.now,
-  },
-
-  is_active: { 
-    type: Boolean, 
-    default: true },
 });
-
-const Category = mongoose.model('Category', categorySchema);
-
-module.exports = Category;
