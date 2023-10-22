@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CategoryModule } from './modules/category/category.module';
 import { UserModule } from './modules/user/user.module';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { ConfigModule } from '@nestjs/config';
     MongooseModule.forRoot('mongodb+srv://hoangnhatvu35202:Vu586039@cluster0.e6rlg4q.mongodb.net/vudecorshop'),
     CategoryModule,
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -2,15 +2,12 @@ import {
   Injectable,
   ConflictException,
   InternalServerErrorException,
-  HttpException,
-  HttpStatus,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { generateUpdateToken } from 'src/common/generate-update-token';
 import { plainToInstance } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
-import { ConfigService } from '@nestjs/config';
 import { CreateUserDto, UserDTO } from 'src/dtos/user.dto';
 import { User } from 'src/types/user';
 
@@ -18,7 +15,6 @@ import { User } from 'src/types/user';
 export class UserService {
   constructor(
     @InjectModel('User') private userModel: Model<User>,
-    private configService: ConfigService,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<CreateUserDto> {
@@ -37,7 +33,7 @@ export class UserService {
       });
     } catch (err) {
       if (err.code === 11000) {
-        throw new ConflictException('Email already exists');
+        throw new ConflictException('Email already exists !');
       } else {
         throw new InternalServerErrorException();
       }
