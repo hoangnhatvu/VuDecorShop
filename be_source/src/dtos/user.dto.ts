@@ -2,6 +2,10 @@ import { IsNotEmpty, Length, IsEmail } from 'class-validator';
 import { Transform, Expose, Exclude } from 'class-transformer';
 
 export class UserDTO {
+
+  @Expose()
+  id: string;
+
   @Expose()
   user_name: string;
 

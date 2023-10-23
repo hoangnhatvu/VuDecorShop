@@ -9,7 +9,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: 'User', schema: userSchema }, { name: 'TokenBlacklist', schema: tokenBlacklistSchema }]),
+    MongooseModule.forFeature([
+      { name: 'User', schema: userSchema },
+      { name: 'TokenBlacklist', schema: tokenBlacklistSchema },
+    ]),
     ConfigModule.forRoot(),
     JwtModule.register({
       global: true,

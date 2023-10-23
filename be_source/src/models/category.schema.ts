@@ -8,11 +8,32 @@ export const categorySchema = new mongoose.Schema({
 
   category_image: {
     type: String,
-    required: true,
+    default: "",
+  },
+
+  is_actived: {
+    type: Boolean,
+    default: true,
   },
 
   created_by: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true,
+  },
+
+  created_date: {
+    type: Date,
+    default: Date.now,
+  },
+
+  updated_by: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
+
+  updated_date: {
+    type: Date,
   },
 });
