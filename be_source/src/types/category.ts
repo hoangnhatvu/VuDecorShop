@@ -2,6 +2,7 @@ import { Document } from 'mongoose';
 import { User } from './user';
 
 export interface Category extends Document {
+  id: string;
   category_name: string;
   category_image: string;
   is_actived: boolean;
@@ -9,4 +10,5 @@ export interface Category extends Document {
   created_date: Date;
   updated_by: User;
   updated_date: Date;
+  updated_token: string;
 }

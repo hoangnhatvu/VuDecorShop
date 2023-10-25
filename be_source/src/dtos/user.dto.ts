@@ -39,6 +39,16 @@ export class UserDTO {
   @Expose()
   updated_token: string;
 }
+export class UserInfoDTO {
+  @Expose()
+  id: string;
+  
+  @Expose()
+  user_name: string;
+  
+  @Expose()
+  email: string;
+}
 export class CreateUserDto {
   @IsNotEmpty()
   user_name: string;

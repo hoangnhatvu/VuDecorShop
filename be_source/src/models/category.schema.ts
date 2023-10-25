@@ -30,10 +30,12 @@ export const categorySchema = new mongoose.Schema({
   updated_by: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
+    default: null,
   },
 
   updated_date: {
     type: Date,
   },
+
+  updated_token: String
 });

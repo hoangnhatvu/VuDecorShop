@@ -3,12 +3,21 @@ import {
   Controller,
   Post,
   UseGuards,
+  Req,
+  UseInterceptors,
+  UploadedFile,
+  BadRequestException,
+  HttpCode,
+  Query,
 } from '@nestjs/common';
-import { CategoryService } from './category.service';
+import { CategoryService, PaginatedCategory } from './category.service';
 import { UserRole } from 'src/enums/role.enum';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { Roles } from 'src/decorators/roles.decorator';
-import { CreateCategoryDTO } from 'src/dtos/category.dto';
+import { CreateCategoryDTO, FindAllCategoryDTO } from 'src/dtos/category.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { storageConfig } from 'src/helpers/config';
+import { extname } from 'path';
 
 @Controller('categories')
 export class CategoryController {
@@ -16,81 +25,53 @@ export class CategoryController {
   @Post('create')
   @UseGuards(AuthGuard)
   @Roles(UserRole.ADMIN)
-  create(@Body() category: CreateCategoryDTO) {
-    return this.categoryService.create(category);
+  @UseInterceptors(
+    FileInterceptor('category_image', {
+      storage: storageConfig('category_image'),
+      fileFilter: (req, file, cb) => {
+        const ext = extname(file.originalname);
+        const allowedExtArr = ['.jpg', '.png', '.jpeg'];
+        if (!allowedExtArr.includes(ext)) {
+          req.fileValidationError = `Wrong extension type. Accepted file ext are ${allowedExtArr.toString()}`;
+          cb(null, false);
+        } else {
+          const fileSize = parseInt(req.headers['content-length']);
+          if (fileSize > 1024 * 1024 * 5) {
+            req.fileValidationError =
+              'File size is too large. Accepted file size is less than 5 MB';
+            cb(null, false);
+          } else {
+            cb(null, true);
+          }
+        }
+      },
+    }),
+  )
+  create(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() categoryCreateDTO: CreateCategoryDTO,
+    @Req() req: any,
+  ) {
+    if (req.fileValidationError) {
+      throw new BadRequestException(req.fileValidationError);
+    }
+    return this.categoryService.create(
+      categoryCreateDTO,
+      req.user_data.id,
+      file.destination + '/' + file.filename,
+    );
   }
-  // @Put('/:id')
-  // @UseGuards(AuthGuard)
-  // @Roles(UserRole.ADMIN)
-  // @UseInterceptors(FileInterceptor('file'))
-  // async update(
-  //   @UploadedFile() file,
-  //   @Body() updateEstimationDto: UpdateEstimationDto,
-  // ) {
-  //   await this.estimationService.update(updateEstimationDto);
-  //   // Xóa luận lí file cũ và thêm file mới
-  //   const oldFile = await this.fileService.getByEstimationId(
-  //     updateEstimationDto.id,
-  //   );
-  //   if (oldFile && updateEstimationDto.isDelete === 'true') {
-  //     await this.fileService.deleteFile(oldFile.id, oldFile.updateToken);
-  //   }
-  //   if (file && updateEstimationDto.isDelete === 'true') {
-  //     const fileEstimation = await this.fileService.createFile({
-  //       fileName: file.originalname,
-  //       fileUUID: file.filename,
-  //       description: updateEstimationDto.fileDescription,
-  //       estimationId: updateEstimationDto.id,
-  //     });
-  //     updateEstimationDto['file'] = fileEstimation;
-  //   }
 
-  //   // Xử lí công nghệ
-  //   const technologies =
-  //     await this.technologyService.getTechnologyByEstimationId(
-  //       updateEstimationDto.id,
-  //     );
-  //   const oldTechnologiesDictionary: Record<string, TechnologyDto> = {};
-  //   if (technologies.length > 0) {
-  //     technologies.forEach((item) => {
-  //       oldTechnologiesDictionary[item.id] = item;
-  //     });
-  //   }
-
-  //   // Nếu không có trong danh sách công nghệ cũ thì tạo mới
-  //   for (const item of updateEstimationDto.technologies) {
-  //     if (!oldTechnologiesDictionary[item]) {
-  //       await this.technologyEstimationService.create({
-  //         technologyId: item,
-  //         estimationId: updateEstimationDto.id,
-  //       });
-  //     }
-  //   }
-  //   // Xóa các công nghệ cũ không có trong danh sách công nghệ mới
-  //   const oldTechnologyIds = technologies.map((tech) => tech.id);
-
-  //   const technologiesToDelete = oldTechnologyIds.filter(
-  //     (techId) => !updateEstimationDto.technologies.includes(techId),
-  //   );
-  //   for (const techIdToDelete of technologiesToDelete) {
-  //     const technologyEstimationId =
-  //       await this.technologyEstimationService.getIdByTechnolyIdAndEstimationId(
-  //         techIdToDelete,
-  //         updateEstimationDto.id,
-  //       );
-  //     await this.technologyEstimationService.delete(technologyEstimationId);
-  //   }
-  //   return {};
-  // }
-
-  // @UseGuards(AuthGuard)
-  // @Roles(UserRole.ADMIN)
-  // @Delete()
-  // delete(@Body() deleteEstimationDto: DeleteEstimationDto) {
-  //   const { id, updateToken } = deleteEstimationDto;
-  //   if (!id || !updateToken) {
-  //     throw new HttpException('Invalid request body', HttpStatus.BAD_REQUEST);
-  //   }
-  //   return this.estimationService.delete(id, updateToken);
-  // }
+  @UseGuards(AuthGuard)
+  @Roles(UserRole.ADMIN, UserRole.EMPLOYEE, UserRole.USER)
+  @HttpCode(200)
+  @Post()
+  async getAll(
+    @Query() query,
+  ) {
+    const page = query.page ? Number(query.page) : 1;
+    const limit = query.limit ? Number(query.limit) : 20;
+    
+    return this.categoryService.getAll(page, limit);
+  }
 }
