@@ -37,8 +37,11 @@ export class CreateCategoryDTO {
   category_name: string;  
 }
 
-export class FindAllCategoryDTO {  
+export class UpdateCategoryDTO {  
+  @IsNotEmpty()
   category_name: string;  
-  limit?: number;
-  page?: number;
+
+  updated_token: string;
+
+  is_actived: boolean;
 }

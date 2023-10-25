@@ -63,7 +63,7 @@ export class AuthService {
       const result = await this.userModel.updateOne(
         {
           id: userId,
-          updateToken: updatedToken,
+          updated_token: updatedToken,
         },
         {
           refreshToken: null,

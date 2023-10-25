@@ -6,10 +6,7 @@ export const categorySchema = new mongoose.Schema({
     required: true,
   },
 
-  category_image: {
-    type: String,
-    default: "",
-  },
+  category_image: String,
 
   is_actived: {
     type: Boolean,
@@ -35,6 +32,7 @@ export const categorySchema = new mongoose.Schema({
 
   updated_date: {
     type: Date,
+    default: null,
   },
 
   updated_token: String
