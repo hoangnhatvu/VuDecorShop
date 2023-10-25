@@ -63,9 +63,8 @@ const productSchema = new mongoose.Schema({
 
   updated_token: String,
   
-  is_deleted: {
-    type: Boolean,
-    default: false,
+  deleted_at: {
+    type: Date,
   },
 });
 

@@ -44,7 +44,6 @@ export class CategoryService {
 
       await category.save();
 
-      
       return plainToInstance(CategoryDTO, category, {
         excludeExtraneousValues: true,
       });
@@ -55,24 +54,22 @@ export class CategoryService {
     }
   }
 
-  async getAll(page?: number, limit?: number) {
-    if (!page || !limit) {
-      const categories = await this.categoryModel.find({
-        order: {
-          created_date: 'ASC',
-        },
-      });
+  async getAll(page?: number, limit?: number): Promise<PaginatedCategory> {
+    const categories = await this.categoryModel.find().populate('created_by').populate('updated_by');
 
-      return {
-        data: plainToInstance(CategoryDTO, categories, {
-          excludeExtraneousValues: true,
-          enableImplicitConversion: true,
-        }),
-        page: 1,
-        limit: categories.length,
-        totalCount: categories.length,
-        totalPage: 1,
-      };
-    }
+    const totalCount = categories.length;
+
+    const totalPage = Math.ceil(totalCount / limit);
+
+    return {
+      data: plainToInstance(CategoryDTO, categories, {
+        excludeExtraneousValues: true,
+        enableImplicitConversion: true,
+      }),
+      page,
+      limit,
+      totalCount,
+      totalPage,
+    };
   }
 }
