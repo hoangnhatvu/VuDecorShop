@@ -1,5 +1,4 @@
 import * as mongoose from 'mongoose';
-import * as bcrypt from 'bcrypt';
 import { UserRole } from 'src/enums/role.enum';
 
 export const userSchema = new mongoose.Schema({

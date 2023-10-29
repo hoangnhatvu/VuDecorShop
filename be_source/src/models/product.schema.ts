@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
+import { baseSchema } from './base.schema';
 
-const productSchema = new mongoose.Schema({
+export const productSchema = new mongoose.Schema({
   category_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Category',
@@ -19,7 +20,10 @@ const productSchema = new mongoose.Schema({
     required: true,
   },
 
-  discount_rate: Number,
+  discount_rate: {
+    type: Number,
+    default: 0,
+  },
 
   view_number: {
     type: Number,
@@ -38,36 +42,15 @@ const productSchema = new mongoose.Schema({
     required: true,
   },
 
-  is_active: {
+  is_actived: {
     type: Boolean,
     default: true,
   },
 
-  created_by: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
-  },
-
-  created_date: {
-    type: Date,
-    default: Date.now,
-  },
-
-  updated_by: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-  },
-
-  updated_date: Date,
-
-  updated_token: String,
-  
   deleted_at: {
     type: Date,
+    default: null,
   },
+
+  ...baseSchema.obj
 });
-
-const Product = mongoose.model('Product', productSchema);
-
-module.exports = Product;

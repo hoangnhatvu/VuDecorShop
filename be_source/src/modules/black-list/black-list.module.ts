@@ -14,4 +14,4 @@ import { tokenBlacklistSchema } from 'src/models/token_blacklist.shema';
     ]),
   ],
 })
-export class SchemaModule {}
+export class BlackListModule {}

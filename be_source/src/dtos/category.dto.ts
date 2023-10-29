@@ -1,4 +1,4 @@
-import { IsNotEmpty, Length, IsEmail } from 'class-validator';
+import { IsNotEmpty} from 'class-validator';
 import { Expose, Type } from 'class-transformer';
 import { UserInfoDTO } from './user.dto';
 export class CategoryDTO {
@@ -44,4 +44,12 @@ export class UpdateCategoryDTO {
   updated_token: string;
 
   is_actived: boolean;
+}
+
+export class CategoryInfoDTO {
+  @Expose()
+  id: string;
+
+  @Expose()
+  category_name: string;
 }
