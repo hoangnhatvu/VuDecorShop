@@ -75,10 +75,10 @@ export class CategoryController {
     );
   }
 
+  @Get()
   @UseGuards(AuthGuard)
   @Roles(UserRole.ADMIN, UserRole.EMPLOYEE, UserRole.USER)
   @HttpCode(200)
-  @Get()
   async getAll(
     @Query() query,
   ) {

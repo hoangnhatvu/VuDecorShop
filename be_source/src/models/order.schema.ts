@@ -1,16 +1,26 @@
 import * as mongoose from 'mongoose';
+import { OrderStatus } from 'src/enums/order.enum';
 
-const orderSchema = new mongoose.Schema({
+export const orderSchema = new mongoose.Schema({
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
   },
 
-  total: {
-    type: Number,
-    required: true,
-  },
+  products: [
+    {
+      product_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product',
+        required: true,
+      },
+      quantity: {
+        type: Number,
+        required: true,
+      },
+    },
+  ],
 
   customer_name: {
     type: String,
@@ -29,16 +39,8 @@ const orderSchema = new mongoose.Schema({
 
   status: {
     type: String,
-    enum: ['Chờ xác nhận', 'Đang lấy hàng', 'Đang vận chuyển', 'Chưa đánh giá', 'Đã hoàn thành'],
-    default: 'Chờ xác nhận',
+    enum: OrderStatus,
+    default: OrderStatus.PENDING,
   },
 
-  created_date: {
-    type: Date,
-    default: Date.now,
-  },
 });
-
-const Order = mongoose.model('Order', orderSchema);
-
-module.exports = Order;

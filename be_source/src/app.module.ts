@@ -6,7 +6,6 @@ import { CategoryModule } from './modules/category/category.module';
 import { UserModule } from './modules/user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
-import { tokenBlacklistSchema } from './models/token_blacklist.shema';
 import { ProductModule } from './modules/product/product.module';
 
 @Module({

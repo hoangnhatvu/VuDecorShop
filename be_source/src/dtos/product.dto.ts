@@ -1,7 +1,9 @@
 import { IsBoolean, IsNotEmpty, IsNumber } from 'class-validator';
-import { Expose, Type } from 'class-transformer';
+import { Expose, Transform, Type } from 'class-transformer';
 import { UserInfoDTO } from 'src/dtos/user.dto';
 import { CategoryInfoDTO } from './category.dto';
+import { ParseBoolPipe, ParseIntPipe } from '@nestjs/common';
+import { BooleanPipe } from 'src/pipes/boolean.pipe';
 
 export class ProductDTO {
   @Expose()
@@ -54,7 +56,6 @@ export class ProductDTO {
 }
 
 export class CreateProductDTO {
-
   @IsNotEmpty()
   category_id: string;
 
@@ -66,7 +67,6 @@ export class CreateProductDTO {
   @Type(() => Number)
   price: number;
 
-  @IsNotEmpty()
   @IsNumber()
   @Type(() => Number)
   discount_rate: number;
@@ -85,5 +85,33 @@ export class CreateProductDTO {
 }
 
 export class UpdateProductDTO {
-    
+  @IsNotEmpty()
+  category_id: string;
+
+  @IsNotEmpty()
+  product_name: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  @Type(() => Number)
+  price: number;
+
+  @IsNumber()
+  @Type(() => Number)
+  discount_rate: number;
+
+  description: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  @Type(() => Number)
+  stock: number;
+
+  @IsNotEmpty()
+  @IsBoolean()
+  @Transform(value => new BooleanPipe().transform(value.value))
+  is_actived: boolean;
+
+  @IsNotEmpty()
+  updated_token: string;
 }

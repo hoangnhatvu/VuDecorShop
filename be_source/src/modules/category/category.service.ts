@@ -95,7 +95,7 @@ export class CategoryService {
 
       const oldImage = category.category_image;
 
-      const updatedCategoryData = {
+      const updateCategoryData = {
         ...updateCategoryDTO,
         updated_token: generateUpdateToken(),
         updated_by: user,
@@ -103,13 +103,13 @@ export class CategoryService {
         updated_date: Date.now(),
       };
 
-      const updateResult = await category.updateOne(updatedCategoryData);
+      const updateResult = await category.updateOne(updateCategoryData);
 
       if (updateResult.modifiedCount > 0) {
         if (newImage) {
           deleteImage(oldImage);
         }
-        return { message: 'Category updated successfully' };
+        return { message: 'Update successfully' };
       } else {
         throw new HttpException('Update fail', HttpStatus.NOT_IMPLEMENTED);
       }
