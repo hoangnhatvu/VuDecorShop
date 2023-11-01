@@ -1,14 +1,8 @@
-import { Document } from 'mongoose';
-import { User } from './user';
+import { MetaData } from './meta-data';
 
-export interface Category extends Document {
+export interface Category extends MetaData {
   id: string;
   category_name: string;
   category_image: string;
-  is_actived: boolean;
-  created_by: User;
-  created_date: Date;
-  updated_by: User;
-  updated_date: Date;
-  updated_token: string;
+  is_actived: boolean;  
 }

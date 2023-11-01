@@ -1,5 +1,6 @@
 import * as mongoose from 'mongoose';
 import { OrderStatus } from 'src/enums/order.enum';
+import { baseSchema } from './base.schema';
 
 export const orderSchema = new mongoose.Schema({
   user_id: {
@@ -10,7 +11,7 @@ export const orderSchema = new mongoose.Schema({
 
   products: [
     {
-      product_id: {
+      product: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product',
         required: true,
@@ -18,8 +19,8 @@ export const orderSchema = new mongoose.Schema({
       quantity: {
         type: Number,
         required: true,
-      },
-    },
+      }
+    }
   ],
 
   customer_name: {
@@ -28,7 +29,7 @@ export const orderSchema = new mongoose.Schema({
   },
 
   phone_number: {
-    type: String,
+    type: Number,
     required: true,
   },
 
@@ -42,5 +43,7 @@ export const orderSchema = new mongoose.Schema({
     enum: OrderStatus,
     default: OrderStatus.PENDING,
   },
+
+  ...baseSchema.obj
 
 });

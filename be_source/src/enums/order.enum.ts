@@ -4,5 +4,6 @@ export enum OrderStatus {
     IN_TRANSIT = 'Đang vận chuyển',
     NOT_YET_RATE = 'Chưa đánh giá',
     COMPLETED = 'Hoàn thành',
+    CANCELED = 'Đã hủy',
   }
   

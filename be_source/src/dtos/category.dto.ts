@@ -1,7 +1,8 @@
-import { IsNotEmpty} from 'class-validator';
-import { Expose, Type } from 'class-transformer';
-import { UserInfoDTO } from './user.dto';
-export class CategoryDTO {
+import { IsBoolean, IsNotEmpty} from 'class-validator';
+import { Expose, Transform, Type } from 'class-transformer';
+import { BooleanPipe } from 'src/pipes/boolean.pipe';
+import { MetaDataDTO } from './meta-data.dto';
+export class CategoryDTO extends MetaDataDTO{
   @Expose()
   id: string;
 
@@ -13,23 +14,6 @@ export class CategoryDTO {
 
   @Expose()
   is_actived: boolean;
-
-  @Expose()
-  @Type(() => UserInfoDTO)
-  created_by: UserInfoDTO;
-
-  @Expose()
-  created_date: Date;
-
-  @Expose()
-  @Type(() => UserInfoDTO)
-  updated_by: UserInfoDTO;
-
-  @Expose()
-  updated_date: Date;
-
-  @Expose()
-  updated_token: string;
 }
 
 export class CreateCategoryDTO {  
@@ -41,8 +25,12 @@ export class UpdateCategoryDTO {
   @IsNotEmpty()
   category_name: string;  
 
+  @IsNotEmpty()
   updated_token: string;
 
+  @IsNotEmpty()
+  @IsBoolean()
+  @Transform(value => new BooleanPipe().transform(value.value))
   is_actived: boolean;
 }
 

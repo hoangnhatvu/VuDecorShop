@@ -1,14 +1,17 @@
-import { Document } from 'mongoose';
 import { User } from './user';
+import { Product } from './product';
+import { MetaData } from './meta-data';
 
-export interface Order extends Document {
-  id: string;
-  category_name: string;
-  category_image: string;
-  is_actived: boolean;
-  created_by: User;
-  created_date: Date;
-  updated_by: User;
-  updated_date: Date;
-  updated_token: string;
+export interface Order extends MetaData {
+  user_id: User;
+  products: [
+    {
+      product: Product;
+      quantity: number;
+    },
+  ];
+  customer_name: string;
+  phone_number: number;
+  address: string;
+  status: string;
 }
