@@ -10,7 +10,7 @@ export class ProductDTO extends MetaDataDTO {
 
   @Expose()
   @Type(() => CategoryInfoDTO)
-  category_id: CategoryInfoDTO;
+  category: CategoryInfoDTO;
 
   @Expose()
   product_name: string;
@@ -56,7 +56,7 @@ export class ProductInfoDTO {
 
 export class CreateProductDTO {
   @IsNotEmpty()
-  category_id: string;
+  category: string;
 
   @IsNotEmpty()
   product_name: string;
@@ -89,7 +89,7 @@ export class CreateProductDTO {
 
 export class UpdateProductDTO {
   @IsNotEmpty()
-  category_id: string;
+  category: string;
 
   @IsNotEmpty()
   product_name: string;

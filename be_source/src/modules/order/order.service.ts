@@ -41,7 +41,7 @@ export class OrderService {
       try {
         const order = new this.orderModel({
           ...createOrderDTO,
-          user_id: user,
+          user: user,
           products: createOrderDTO.products.map((item) => ({
             product: item.product,
             quantity: item.quantity,

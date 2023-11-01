@@ -37,7 +37,7 @@ export class ProductService {
     try {
       const user = await this.userModel.findOne({ _id: userid });
       const category = await this.categoryModel.findOne({
-        _id: createProductDTO.category_id,
+        _id: createProductDTO.category,
       });
 
       if (!user) {
@@ -50,7 +50,7 @@ export class ProductService {
 
       const product = new this.productModel({
         ...createProductDTO,
-        category_id: category,
+        category: category,
         updated_token: generateUpdateToken(),
         product_image: productImage,
         created_by: user,
@@ -82,7 +82,7 @@ export class ProductService {
     try {
       const user = await this.userModel.findOne({ _id: userid });
       const category = await this.categoryModel.findOne({
-        _id: updateProductDTO.category_id,
+        _id: updateProductDTO.category,
       });
       const product = await this.productModel.findOne({ _id: productId });
 
@@ -150,7 +150,7 @@ export class ProductService {
   async getAll(page?: number, limit?: number): Promise<PaginatedProduct> {
     const products = await this.productModel
       .find({ deleted_at: null })
-      .populate('category_id')
+      .populate('category')
       .populate('created_by')
       .populate('updated_by');
 

@@ -2,7 +2,7 @@ import * as mongoose from 'mongoose';
 import { baseSchema } from './base.schema';
 
 export const productSchema = new mongoose.Schema({
-  category_id: {
+  category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Category',
     required: true,

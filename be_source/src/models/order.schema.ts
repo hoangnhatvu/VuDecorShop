@@ -3,7 +3,7 @@ import { OrderStatus } from 'src/enums/order.enum';
 import { baseSchema } from './base.schema';
 
 export const orderSchema = new mongoose.Schema({
-  user_id: {
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,

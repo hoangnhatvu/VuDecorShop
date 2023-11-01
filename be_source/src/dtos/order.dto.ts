@@ -30,7 +30,7 @@ export class OrderDTO extends MetaDataDTO {
 
   @Expose()
   @Type(() => UserInfoDTO)
-  user_id: UserInfoDTO;
+  user: UserInfoDTO;
 
   @Expose()
   @Type(() => OrderItemDTO)

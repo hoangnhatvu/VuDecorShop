@@ -3,7 +3,7 @@ import { Product } from './product';
 import { MetaData } from './meta-data';
 
 export interface Order extends MetaData {
-  user_id: User;
+  user: User;
   products: [
     {
       product: Product;
