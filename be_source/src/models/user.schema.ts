@@ -1,13 +1,16 @@
 import * as mongoose from 'mongoose';
-import * as bcrypt from 'bcrypt';
+import { UserRole } from 'src/enums/role.enum';
 
-const userSchema = new mongoose.Schema({
+export const userSchema = new mongoose.Schema({
   user_name: {
     type: String,
     required: true,
   },
 
-  user_image: String,
+  user_image: {
+    type: String,
+    default: ""
+  },
 
   email: {
     type: String,
@@ -20,18 +23,25 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
 
-  phone_number: String,
+  phone_number: {
+    type: String,
+    default: ""
+  },
 
-  address: String,
+  address: {
+    type: String,
+    default: ""
+  },
 
   role: {
     type: String,
-    default: 'user',
+    enum: UserRole,
+    default: UserRole.USER,
   },
 
   is_active: {
     type: Boolean,
-    default: true,
+    default: false,
   },
 
   created_date: {
@@ -39,24 +49,13 @@ const userSchema = new mongoose.Schema({
     default: Date.now,
   },
 
-  updated_date: Date,
+  updated_date: {
+    type: Date,
+    default: ""
+  },
 
-  updated_token: String,
+  updated_token: {
+    type: String,
+    default: ""
+  },
 });
-
-userSchema.pre('save', async function(next:any){
-    try{
-        if(!this.isModified('password')){
-            return next();
-        }
-        const hashedPassword = await bcrypt.hash(this.password, 10);
-        this.password = hashedPassword;
-        return next();
-    }catch(error){
-        return next(error);
-    }
-})
-
-const User = mongoose.model('User', userSchema);
-
-module.exports = User;
