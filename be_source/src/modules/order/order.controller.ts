@@ -5,12 +5,14 @@ import {
   UseGuards,
   Req,
   BadRequestException,
+  Put,
+  Query,
 } from '@nestjs/common';
 import { UserRole } from 'src/enums/role.enum';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { OrderService } from './order.service';
-import { CreateOrderDTO } from 'src/dtos/order.dto';
+import { CreateOrderDTO, UpdateOrderDTO } from 'src/dtos/order.dto';
 
 @Controller('orders')
 export class OrderController {
@@ -22,31 +24,20 @@ export class OrderController {
     return this.orderService.create(createOrderDTO, req.user_data.id);
   }
 
-  // @Put('update')
-  // @UseGuards(AuthGuard)
-  // @Roles(UserRole.ADMIN, UserRole.EMPLOYEE)
-  // @UseInterceptors(
-  //   FileInterceptor('product_image', {
-  //     storage: storageConfig('product_image'),
-  //     fileFilter,
-  //   }),
-  // )
-  // update(
-  //   @Query() query: { id: string },
-  //   @UploadedFile() file: Express.Multer.File,
-  //   @Body() updateProductDTO: UpdateProductDTO,
-  //   @Req() req: any,
-  // ) {
-  //   if (req.fileValidationError) {
-  //     throw new BadRequestException(req.fileValidationError);
-  //   }
-  //   return this.productService.update(
-  //     query.id,
-  //     updateProductDTO,
-  //     req.user_data.id,
-  //     file ? file.destination + '/' + file.filename : null,
-  //   );
-  // }
+  @Put('update')
+  @UseGuards(AuthGuard)
+  @Roles(UserRole.ADMIN, UserRole.EMPLOYEE, UserRole.USER)
+  update(
+    @Query() query: { id: string },
+    @Body() updateOrdertDTO: UpdateOrderDTO,
+    @Req() req: any,
+  ) {
+    return this.orderService.update(
+      query.id,
+      updateOrdertDTO,
+      req.user_data.id,
+    );
+  }
 
   // @Get()
   // @UseGuards(AuthGuard)

@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
 import { OrderStatus } from 'src/enums/order.enum';
 import { baseSchema } from './base.schema';
+import { PaymentMethod, PaymentStatus } from 'src/enums/payment.enum';
 
 export const orderSchema = new mongoose.Schema({
   user: {
@@ -19,8 +20,8 @@ export const orderSchema = new mongoose.Schema({
       quantity: {
         type: Number,
         required: true,
-      }
-    }
+      },
+    },
   ],
 
   customer_name: {
@@ -29,7 +30,7 @@ export const orderSchema = new mongoose.Schema({
   },
 
   phone_number: {
-    type: Number,
+    type: String,
     required: true,
   },
 
@@ -44,6 +45,24 @@ export const orderSchema = new mongoose.Schema({
     default: OrderStatus.PENDING,
   },
 
-  ...baseSchema.obj
+  payment: {
+    amount: {
+      type: Number,
+      required: true,
+    },
 
+    method: {
+      type: String,
+      enum: PaymentMethod,
+      required: true,
+    },
+
+    status: {
+      type: String,
+      enum: PaymentStatus,
+      default: PaymentStatus.UNPAID,
+    },
+  },
+
+  ...baseSchema.obj,
 });

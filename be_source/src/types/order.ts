@@ -11,7 +11,12 @@ export interface Order extends MetaData {
     },
   ];
   customer_name: string;
-  phone_number: number;
+  phone_number: string;
   address: string;
   status: string;
+  payment: {
+    amount: number;
+    method: string;
+    status: string;
+  };
 }

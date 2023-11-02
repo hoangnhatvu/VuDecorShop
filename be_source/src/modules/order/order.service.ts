@@ -10,8 +10,9 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from 'src/types/user';
 import { Order } from 'src/types/order';
-import { CreateOrderDTO, OrderDTO } from 'src/dtos/order.dto';
+import { CreateOrderDTO, OrderDTO, UpdateOrderDTO } from 'src/dtos/order.dto';
 import { Product } from 'src/types/product';
+import { OrderStatus } from 'src/enums/order.enum';
 
 export interface PaginatedOrder {
   data: OrderDTO[];
@@ -72,79 +73,69 @@ export class OrderService {
     }
   }
 
-  //   async update(
-  //     productId: string,
-  //     updateProductDTO: UpdateProductDTO,
-  //     userid: string,
-  //     newImage: string,
-  //   ) {
-  //     try {
-  //       const user = await this.userModel.findOne({ _id: userid });
-  //       const category = await this.categoryModel.findOne({
-  //         _id: updateProductDTO.category_id,
-  //       });
-  //       const product = await this.productModel.findOne({ _id: productId });
+  async update(
+    orderId: string,
+    updateOrderDTO: UpdateOrderDTO,
+    userid: string,
+  ) {
+    try {
+      const user = await this.userModel.findOne({ _id: userid });
+      const order = await this.orderModel.findOne({
+        _id: orderId,
+      });
 
-  //       if (!user) {
-  //         throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-  //       }
+      if (!user) {
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      }
 
-  //       if (!category) {
-  //         throw new HttpException('Category not found', HttpStatus.NOT_FOUND);
-  //       }
+      if (!order) {
+        throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
+      }
 
-  //       if (!product) {
-  //         throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
-  //       }
+      if (order.updated_token !== updateOrderDTO.updated_token) {
+        throw new HttpException(
+          'Order is being updated by another user',
+          HttpStatus.CONFLICT,
+        );
+      }
 
-  //       if (product.updated_token !== updateProductDTO.updated_token) {
-  //         throw new HttpException(
-  //           'Product is being updated by another user',
-  //           HttpStatus.CONFLICT,
-  //         );
-  //       }
+      function getOrderStatusEnum(status) {
+        return Object.keys(OrderStatus).find(
+          (key) => OrderStatus[key] === status,
+        );
+      }
 
-  //       const oldImage = product.product_image;
+      const status = getOrderStatusEnum(updateOrderDTO.status);
 
-  //       console.log(updateProductDTO.is_actived);
+      if (!status) {
+        throw new HttpException('Status is not correct !', HttpStatus.CONFLICT);
+      }
 
-  //       const updateProductData = {
-  //         ...updateProductDTO,
-  //         updated_token: generateUpdateToken(),
-  //         updated_by: user,
-  //         product_image: newImage ? newImage : oldImage,
-  //         updated_date: Date.now(),
-  //       };
+      const updateOrdertData = {
+        ...updateOrderDTO,
+        updated_token: generateUpdateToken(),
+        updated_by: user,
+        updated_date: Date.now(),
+      };
 
-  //       if (product.deleted_at) {
-  //         throw new HttpException(
-  //           'Product have been deleted',
-  //           HttpStatus.CONFLICT,
-  //         );
-  //       } else {
-  //         const updateResult = await product.updateOne(updateProductData);
+      const updateResult = await order.updateOne(updateOrdertData);
 
-  //         if (updateResult.modifiedCount > 0) {
-  //           if (newImage) {
-  //             deleteImage(oldImage);
-  //           }
-  //           return { message: 'Update successfully' };
-  //         } else {
-  //           throw new HttpException('Update fail', HttpStatus.NOT_IMPLEMENTED);
-  //         }
-  //       }
-  //     } catch (err) {
-  //       deleteImage(newImage);
-  //       if (err instanceof HttpException) {
-  //         throw err;
-  //       } else {
-  //         throw new HttpException(
-  //           'Internal server error',
-  //           HttpStatus.INTERNAL_SERVER_ERROR,
-  //         );
-  //       }
-  //     }
-  //   }
+      if (updateResult.modifiedCount > 0) {
+        return { message: 'Update successfully' };
+      } else {
+        throw new HttpException('Update fail', HttpStatus.NOT_IMPLEMENTED);
+      }
+    } catch (err) {
+      if (err instanceof HttpException) {
+        throw err;
+      } else {
+        throw new HttpException(
+          'Internal server error',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
+    }
+  }
 
   //   async getAll(page?: number, limit?: number): Promise<PaginatedProduct> {
   //     const products = await this.productModel

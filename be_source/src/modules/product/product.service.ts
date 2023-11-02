@@ -107,8 +107,6 @@ export class ProductService {
 
       const oldImage = product.product_image;
 
-      console.log(updateProductDTO.is_actived);
-
       const updateProductData = {
         ...updateProductDTO,
         updated_token: generateUpdateToken(),
