@@ -10,30 +10,30 @@ const Welcome = () => {
   const navigation = useNavigation();
   return (
     <View>
-      <View style={styles().container}>
-        <Text style={styles(COLORS.black, SIZES.xSmall).welcomeTxt}>
+      <View style={styles.container}>
+        <Text style={styles.welcomeTxt(COLORS.black, SIZES.xSmall)}>
           {" "}
           Find The Most
         </Text>
 
-        <Text style={styles(COLORS.primary, 0).welcomeTxt}>
+        <Text style={styles.welcomeTxt(COLORS.primary, 0)}>
           {" "}
           Luxurious Furniture
         </Text>
       </View>
-      <View style={styles().searchContainer}>
+      <View style={styles.searchContainer}>
         <TouchableOpacity>
-          <Feather name='search' size={24} style={styles().searchIcon} />
+          <Feather name='search' size={24} style={styles.searchIcon} />
         </TouchableOpacity>
-        <View style={styles().searchWrapper}>
+        <View style={styles.searchWrapper}>
           <TextInput
-            style={styles().searchInput}
+            style={styles.searchInput}
             value=""
             onPressIn={() => navigation.navigate("Search")}
             placeholder='What are you looking for?'></TextInput>
         </View>
         <View>
-          <TouchableOpacity style={styles().searchBtn}>
+          <TouchableOpacity style={styles.searchBtn}>
             <Ionicons name='camera-outline' size={SIZES.xLarge} color={COLORS.offwhite} />
           </TouchableOpacity>
         </View>

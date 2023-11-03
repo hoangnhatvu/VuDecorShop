@@ -1,17 +1,17 @@
 import { StyleSheet } from "react-native";
 import { COLORS, SIZES } from "../../../constants";
 
-const styles = (color?: string, top?: number) => StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     width: "100%",
   },
-  welcomeTxt: {
+  welcomeTxt: (color, top) => ({
     fontFamily: "Poppins-Bold",
     fontSize: SIZES.xxLarge - 6,
     marginTop: top,
     color: color,
     marginHorizontal: 12,
-  },
+  }),
   searchContainer: {
     flexDirection: "row",
     justifyContent: "center",
@@ -19,6 +19,7 @@ const styles = (color?: string, top?: number) => StyleSheet.create({
     backgroundColor: COLORS.secondary,
     borderRadius: SIZES.medium,
     marginVertical: SIZES.medium,
+    marginHorizontal: SIZES.small,
     height: 50
   },
   searchIcon: {
@@ -42,7 +43,9 @@ const styles = (color?: string, top?: number) => StyleSheet.create({
     width: 50,
     height: "100%",
     borderRadius: SIZES.medium,
-
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: COLORS.primary,
   }
 });
 
