@@ -5,6 +5,9 @@ import styles from './home.style'
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import Fontisto from 'react-native-vector-icons/Fontisto'
 import { Welcome } from '../components';
+import Carousel from '../components/home/Carousel';
+import Headings from '../components/home/Headings';
+import ProductRow from '../components/products/ProductRow';
 
 const Home = () => {
   return (
@@ -25,6 +28,9 @@ const Home = () => {
         </View>
         <ScrollView>
           <Welcome/>
+          <Carousel/>
+          <Headings/>
+          <ProductRow/>
         </ScrollView>
       </SafeAreaView>
   )

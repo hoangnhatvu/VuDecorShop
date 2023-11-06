@@ -14,6 +14,10 @@
       "sha1": "86e07c3d974eb09099e6e5a9b3b8310303cf0feb"
     },
     {
+      "path": "assets/fonts/MaterialCommunityIcons.ttf",
+      "sha1": "4c2a838b00dbb5e8bb1b368fce0de534e8eb241c"
+    },
+    {
       "path": "assets/fonts/OFL.txt",
       "sha1": "8d6c34b70e3d638c82d7b5aba3f847f7d6d2c831"
     },
@@ -88,6 +92,10 @@
     {
       "path": "assets/fonts/Poppins-ThinItalic.ttf",
       "sha1": "fb8fccca21550e71135f92bbaf8a2e8a12c90465"
+    },
+    {
+      "path": "assets/fonts/SimpleLineIcons.ttf",
+      "sha1": "9ffb81a5a11112e292f2cc323e98486bad597599"
     }
   ]
 }

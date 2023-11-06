@@ -36,6 +36,8 @@
 		0A9DA3356BA44A29AF281A0C /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D84044F38FEF488FB16DA632 /* Ionicons.ttf */; };
 		275253DE8A2B4A248BA17E69 /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D350801A86D472B8DD8A1D0 /* Fontisto.ttf */; };
 		31AE1CE56A194AE0ADB14653 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 55064222EC384B85B09697EB /* Feather.ttf */; };
+		A693C59C399C4474934F435C /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 307AC3547ACB4A6ABC12A6AD /* SimpleLineIcons.ttf */; };
+		AB72466D6F624BB9987E0698 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4A2DBF20F78B4EC6921C6CCA /* MaterialCommunityIcons.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +90,8 @@
 		D84044F38FEF488FB16DA632 /* Ionicons.ttf */ = {isa = PBXFileReference; name = "Ionicons.ttf"; path = "../assets/fonts/Ionicons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		5D350801A86D472B8DD8A1D0 /* Fontisto.ttf */ = {isa = PBXFileReference; name = "Fontisto.ttf"; path = "../assets/fonts/Fontisto.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		55064222EC384B85B09697EB /* Feather.ttf */ = {isa = PBXFileReference; name = "Feather.ttf"; path = "../assets/fonts/Feather.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		307AC3547ACB4A6ABC12A6AD /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; name = "SimpleLineIcons.ttf"; path = "../assets/fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		4A2DBF20F78B4EC6921C6CCA /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; name = "MaterialCommunityIcons.ttf"; path = "../assets/fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -218,6 +222,8 @@
 				D84044F38FEF488FB16DA632 /* Ionicons.ttf */,
 				5D350801A86D472B8DD8A1D0 /* Fontisto.ttf */,
 				55064222EC384B85B09697EB /* Feather.ttf */,
+				307AC3547ACB4A6ABC12A6AD /* SimpleLineIcons.ttf */,
+				4A2DBF20F78B4EC6921C6CCA /* MaterialCommunityIcons.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -341,6 +347,8 @@
 				0A9DA3356BA44A29AF281A0C /* Ionicons.ttf in Resources */,
 				275253DE8A2B4A248BA17E69 /* Fontisto.ttf in Resources */,
 				31AE1CE56A194AE0ADB14653 /* Feather.ttf in Resources */,
+				A693C59C399C4474934F435C /* SimpleLineIcons.ttf in Resources */,
+				AB72466D6F624BB9987E0698 /* MaterialCommunityIcons.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
