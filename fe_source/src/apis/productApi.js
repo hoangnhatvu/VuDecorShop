@@ -12,11 +12,13 @@ const useFetch = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:3000/products/search?page=${page}&limit=${limit}`,
+        `https://93d7-2402-800-6388-1bde-b92d-d466-1228-440d.ngrok-free.app/products/search?page=1&limit=20`,
       );
-      setData(response.data);
+      setData(response.data.data);
+      console.log(data);
       setIsLoading(false);
     } catch (error) {
+      console.log(error)
       setError(error);
     } finally {
       setIsLoading(false);
