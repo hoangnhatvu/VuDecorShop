@@ -2,7 +2,7 @@ import {View, Text, FlatList, ActivityIndicator} from 'react-native';
 import React from 'react';
 import {COLORS, SIZES} from '../../../constants';
 import ProductCardView from './ProductCardView';
-import useFetch from '../../apis/productApi';
+import useFetch from '../../hook/fetchData';
 
 const ProductRow = () => {
   const {data, isLoading, error} = useFetch();

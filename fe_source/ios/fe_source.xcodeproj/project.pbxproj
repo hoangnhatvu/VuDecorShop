@@ -38,6 +38,7 @@
 		31AE1CE56A194AE0ADB14653 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 55064222EC384B85B09697EB /* Feather.ttf */; };
 		A693C59C399C4474934F435C /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 307AC3547ACB4A6ABC12A6AD /* SimpleLineIcons.ttf */; };
 		AB72466D6F624BB9987E0698 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4A2DBF20F78B4EC6921C6CCA /* MaterialCommunityIcons.ttf */; };
+		DBD5D5754E024B08884903D0 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B65D0BFFAE942E2ADC04D44 /* AntDesign.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,6 +93,7 @@
 		55064222EC384B85B09697EB /* Feather.ttf */ = {isa = PBXFileReference; name = "Feather.ttf"; path = "../assets/fonts/Feather.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		307AC3547ACB4A6ABC12A6AD /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; name = "SimpleLineIcons.ttf"; path = "../assets/fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		4A2DBF20F78B4EC6921C6CCA /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; name = "MaterialCommunityIcons.ttf"; path = "../assets/fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		4B65D0BFFAE942E2ADC04D44 /* AntDesign.ttf */ = {isa = PBXFileReference; name = "AntDesign.ttf"; path = "../assets/fonts/AntDesign.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -224,6 +226,7 @@
 				55064222EC384B85B09697EB /* Feather.ttf */,
 				307AC3547ACB4A6ABC12A6AD /* SimpleLineIcons.ttf */,
 				4A2DBF20F78B4EC6921C6CCA /* MaterialCommunityIcons.ttf */,
+				4B65D0BFFAE942E2ADC04D44 /* AntDesign.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -349,6 +352,7 @@
 				31AE1CE56A194AE0ADB14653 /* Feather.ttf in Resources */,
 				A693C59C399C4474934F435C /* SimpleLineIcons.ttf in Resources */,
 				AB72466D6F624BB9987E0698 /* MaterialCommunityIcons.ttf in Resources */,
+				DBD5D5754E024B08884903D0 /* AntDesign.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

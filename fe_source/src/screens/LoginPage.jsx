@@ -15,6 +15,8 @@ import * as Yup from 'yup';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './login.style';
 import {COLORS} from '../../constants';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const validationSchema = Yup.object().shape({
   password: Yup.string()
@@ -31,20 +33,60 @@ const LoginPage = ({navigation}) => {
   const [obsecureText, setObsecureText] = useState(false);
 
   const inValidForm = () => {
-    Alert.alert(
-      "Invald Form",
-      "Please provide all required fields",
-      [
+    Alert.alert('Invald Form', 'Please provide all required fields', [
+      {
+        text: 'Cancel',
+        onPress: () => {},
+      },
+      {
+        text: 'Continute',
+        onPress: () => {},
+      },
+      {defaultIndex: 1},
+    ]);
+  };
+
+  const login = async values => {
+    setLoader(true);
+    try {
+      const endpoint = '';
+      const data = values;
+      const response = await axios.post(endpoint, data);
+      if (response.status === 200) {
+        setLoader(false);
+        setResponseData(response.data)
+        await AsyncStorage.setItem(`user${responseData._id}`, JSON.stringify(responseData))
+        const newUser = await AsyncStorage.getItem(`user${responseData._id}`)
+        navigation.replace("Bottom Navigation")
+      } else {
+        Alert.alert('Lỗi đăng nhập', 'Please provide all required fields', [
+          {
+            text: 'Cancel',
+            onPress: () => {},
+          },
+          {
+            text: 'Continute',
+            onPress: () => {},
+          },
+          {defaultIndex: 1},
+        ]);
+      }
+    } catch (error) {
+      Alert.alert('Lỗi', `Lỗi ${error}`, [
         {
-          text: "Cancel", onPress: () => {}
+          text: 'Cancel',
+          onPress: () => {},
         },
         {
-          text: "Continute", onPress: () => {}
+          text: 'Continute',
+          onPress: () => {},
         },
-        {defaultIndex: 1}
-      ]
-    )
-  }
+        {defaultIndex: 1},
+      ]);
+    } finally {
+      setLoader(false)
+    }
+  };
 
   return (
     <ScrollView>
@@ -62,6 +104,7 @@ const LoginPage = ({navigation}) => {
             onSubmit={values => console.log(values)}>
             {({
               handleChange,
+              touched,
               handleBlur,
               handleSubmit,
               values,
@@ -143,11 +186,18 @@ const LoginPage = ({navigation}) => {
                   )}
                 </View>
                 <Button
+                  loader={loader}
                   title={'ĐĂNG NHẬP'}
                   onPress={isValid ? handleSubmit : inValidForm}
                   isValid={isValid}
                 />
-                <Text style={styles.registration} onPress={()=>{navigation.navigate('SignUp')}}>Đăng ký</Text>
+                <Text
+                  style={styles.registration}
+                  onPress={() => {
+                    navigation.navigate('SignUp');
+                  }}>
+                  Đăng ký
+                </Text>
               </View>
             )}
           </Formik>

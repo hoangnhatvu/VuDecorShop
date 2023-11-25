@@ -2,6 +2,10 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "assets/fonts/AntDesign.ttf",
+      "sha1": "4e77868439280fb434d4697c7b911271406c81f3"
+    },
+    {
       "path": "assets/fonts/Feather.ttf",
       "sha1": "e6604258b1ced5efd51360875d782fca65381d47"
     },

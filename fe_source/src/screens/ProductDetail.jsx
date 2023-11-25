@@ -6,7 +6,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import {COLORS, SIZES} from '../../constants';
 import styles from './productDetail.style';
-import { useRoute } from '@react-navigation/native';
+import {useRoute} from '@react-navigation/native';
+import CartManager from '../helpers/cartManager';
 
 const ProductDetail = ({navigation}) => {
   const route = useRoute();
@@ -19,6 +20,9 @@ const ProductDetail = ({navigation}) => {
     if (count > 1) {
       setCount(count - 1);
     }
+  };
+  const addCartHandle = async (product) => {
+    await CartManager.addToCart(product, count);
   };
   return (
     <View style={styles.container}>
@@ -64,9 +68,7 @@ const ProductDetail = ({navigation}) => {
         </View>
         <View style={styles.descriptionWrapper}>
           <Text style={styles.description}>Description</Text>
-          <Text style={styles.descText}>
-            {item.description}
-          </Text>
+          <Text style={styles.descText}>{item.description}</Text>
         </View>
         <View style={{marginBottom: SIZES.small}}>
           <View style={styles.location}>
@@ -84,8 +86,8 @@ const ProductDetail = ({navigation}) => {
           <TouchableOpacity onPress={() => {}} style={styles.cartBtn}>
             <Text style={styles.cartTitle}>Buy Now</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {}} style={styles.addCart}>
-            <Fontisto name='shopping-bag' size={22} color={COLORS.lightWhite}/>
+          <TouchableOpacity onPress={() => addCartHandle(item)} style={styles.addCart}>
+            <Fontisto name="shopping-bag" size={22} color={COLORS.lightWhite} />
           </TouchableOpacity>
         </View>
       </View>

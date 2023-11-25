@@ -34,11 +34,6 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name='Login'
-          component={LoginPage}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
           name='Favourites'
           component={Favourites}
           options={{ headerShown: false }}

@@ -4,4 +4,5 @@ import ProductRow from './products/ProductRow';
 import ProductList from './products/ProductList';
 import BackBtn from './BackBtn';
 import Button from './Button';
-export {Welcome, ProductCardView, ProductRow, ProductList, BackBtn, Button};
+import CartList from './carts/CartList';
+export {Welcome, ProductCardView, ProductRow, ProductList, BackBtn, Button, CartList};

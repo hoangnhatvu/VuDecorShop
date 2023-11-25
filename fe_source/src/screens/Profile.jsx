@@ -4,7 +4,6 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {COLORS} from '../../constants';
 import {useState, useEffect} from 'react';
 import styles from './profile.style';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
@@ -48,7 +47,7 @@ const Profile = ({navigation}) => {
         <StatusBar backgroundColor={COLORS.gray} />
         <View style={{width: '100%'}}>
           <Image
-            source={require('../../assets/images/profileCover.jpg')}
+            source={require('../../assets/images/coverProfile.jpg')}
             style={styles.cover}
           />
         </View>
