@@ -23,16 +23,6 @@ export const userSchema = new mongoose.Schema({
     required: true,
   },
 
-  phone_number: {
-    type: String,
-    default: ""
-  },
-
-  address: {
-    type: String,
-    default: ""
-  },
-
   role: {
     type: String,
     enum: UserRole,
@@ -43,6 +33,28 @@ export const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+
+  is_blocked: {
+    type: Boolean,
+    default: false,
+  },
+
+  ship_infos: [{
+    customer_name: {
+      type: String,
+      default: ""
+    },
+
+    phone_number: {
+      type: String,
+      default: ""
+    },
+
+    address: {
+      type: String,
+      default: ""
+    },
+  }],
 
   created_date: {
     type: Date,
@@ -59,3 +71,7 @@ export const userSchema = new mongoose.Schema({
     default: ""
   },
 });
+
+userSchema.path('ship_infos').validate(function(value) {
+  return value.length <= 3;
+}, 'Không được phép lưu quá 3 địa chỉ!');

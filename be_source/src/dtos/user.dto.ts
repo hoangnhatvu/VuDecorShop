@@ -1,6 +1,28 @@
-import { IsNotEmpty, Length, IsEmail } from 'class-validator';
-import { Transform, Expose, Exclude } from 'class-transformer';
+import { IsNotEmpty, Length, IsEmail, IsOptional, IsBoolean, IsArray } from 'class-validator';
+import { Transform, Expose, Exclude, Type } from 'class-transformer';
+import { BooleanPipe } from 'src/pipes/boolean.pipe';
 
+export class ShipInfoDTO {
+  @Expose()
+  customer_name: string;
+
+  @Expose()
+  phone_number: string;
+  
+  @Expose()
+  address: string;
+}
+
+export class UpdateShipInfoDTO {
+  @IsNotEmpty()
+  customer_name: string;
+
+  @IsNotEmpty()
+  phone_number: string;
+  
+  @IsNotEmpty()
+  address: string;
+}
 export class UserDTO {
 
   @Expose()
@@ -19,16 +41,17 @@ export class UserDTO {
   password: string;
   
   @Expose()
-  phone_number: string;
-  
-  @Expose()
-  address: string;
-
-  @Expose()
   role: string;
 
   @Expose()
+  @Type(() => ShipInfoDTO)
+  ship_infos: ShipInfoDTO[];
+
+  @Expose()
   is_active: boolean;
+
+  @Expose()
+  is_blocked: boolean;
 
   @Expose()
   created_date: Date;
@@ -49,6 +72,27 @@ export class UserInfoDTO {
   @Expose()
   email: string;
 }
+
+export class UpdateUserDTO {
+  @IsOptional()
+  user_name: string;
+  
+  @IsOptional()
+  role: string;
+
+  @IsOptional()
+  @IsArray()
+  @Type(() => UpdateShipInfoDTO)
+  ship_infos: UpdateShipInfoDTO[];
+
+  @IsOptional()
+  @IsBoolean()
+  @Transform((value) => new BooleanPipe().transform(value.value))
+  is_active: boolean;
+
+  @IsNotEmpty()
+  updated_token: string;
+}
 export class CreateUserDto {
   @IsNotEmpty()
   user_name: string;
@@ -61,4 +105,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   @Length(6)
   password: string;
+  
+  @IsNotEmpty()
+  role: string;
 }

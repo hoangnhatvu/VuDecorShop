@@ -27,7 +27,7 @@ export class ProductService {
     @InjectModel('Category') private categoryModel: Model<Category>,
     @InjectModel('Product') private productModel: Model<Product>,
     @InjectModel('User') private userModel: Model<User>,
-  ) {}
+  ) { }
 
   async create(
     createProductDTO: CreateProductDTO,
@@ -145,12 +145,18 @@ export class ProductService {
     }
   }
 
-  async getAll(page?: number, limit?: number): Promise<PaginatedProduct> {
+  async getAll(page: number, limit: number, role: boolean): Promise<PaginatedProduct> {
+    const query = {
+      deleted_at: null,
+      ...(role ? { is_actived: true } : {}),
+    };
     const products = await this.productModel
-      .find({ deleted_at: null })
+      .find(query)
       .populate('category')
       .populate('created_by')
-      .populate('updated_by');
+      .populate('updated_by')
+      .skip((page - 1) * limit)
+      .limit(limit);
 
     const totalCount = products.length;
 

@@ -74,6 +74,15 @@ export class ProductController {
     );
   }
 
+  @Get('search')
+  @HttpCode(200)
+  async findProducts(@Query() query) {
+    const page = query.page ? Number(query.page) : 1;
+    const limit = query.limit ? Number(query.limit) : 20;
+
+    return this.productService.getAll(page, limit, true);
+  }
+
   @Get()
   @UseGuards(AuthGuard)
   @Roles(UserRole.ADMIN, UserRole.EMPLOYEE, UserRole.USER)
@@ -82,10 +91,9 @@ export class ProductController {
     const page = query.page ? Number(query.page) : 1;
     const limit = query.limit ? Number(query.limit) : 20;
 
-    return this.productService.getAll(page, limit);
+    return this.productService.getAll(page, limit, false);
   }
 
-  
   @Put('delete')
   @UseGuards(AuthGuard)
   @Roles(UserRole.ADMIN, UserRole.EMPLOYEE)

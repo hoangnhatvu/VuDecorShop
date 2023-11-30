@@ -5,6 +5,7 @@ import { config } from 'dotenv';
 import { join } from 'path';
 
 const envFilePath = join(__dirname, '..', '.env');
+export const otpCache: Record<string, { otp: string; expirationTime: number }> = {};
 
 config({ path: envFilePath });
 

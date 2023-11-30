@@ -1,14 +1,22 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  Injectable, HttpException, HttpStatus, ConflictException,
+  InternalServerErrorException,
+} from '@nestjs/common';
+
 import { LoginDTO } from 'src/dtos/auth.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { plainToInstance } from 'class-transformer';
-import { UserDTO } from 'src/dtos/user.dto';
+import { CreateUserDto, UserDTO } from 'src/dtos/user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from 'src/types/user';
 import { TokenBlacklist } from 'src/types/token-blacklist';
+import { generateUpdateToken } from 'src/common/generate-update-token';
+import { hashPassword } from 'src/common/hashPassword';
+import * as nodemailer from 'nodemailer';
+import { otpCache } from 'src/main';
 
 type PayloadType = {
   id: string;
@@ -19,12 +27,69 @@ type PayloadType = {
 
 @Injectable()
 export class AuthService {
+  private readonly transporter;
   constructor(
     @InjectModel('User') private userModel: Model<User>,
     @InjectModel('TokenBlacklist') private tokenBlacklistModel: Model<TokenBlacklist>,
     private jwtService: JwtService,
     private configService: ConfigService,
-  ) {}
+  ) {
+    this.transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'hoangnhatvu35080@gmail.com',
+        pass: 'Vu586039',
+      },
+    });
+  }
+
+  async sendOtpEmail(email: string) {
+    if (otpCache[email]) {
+      const { expirationTime } = otpCache[email];
+      const currentTime = Date.now();
+      if (currentTime <= expirationTime) {
+        return { success: false, message: 'Mã otp hiện tại chưa hết hạn' };
+      }
+    }
+
+    try {
+      const expirationTime = Date.now() + 60 * 1000;
+      const otp = this.generateOtp();
+      otpCache[email] = { otp, expirationTime };
+
+      const mailOptions = {
+        from: 'hoangnhatvu35080@gmail.com',
+        to: email,
+        subject: 'OTP Verification',
+        text: `Cảm ơn bạn đã đăng ký! Mã OTP của bạn là: ${otp}. Vui lòng đừng chia sẻ với bất kỳ ai!`,
+      };
+      await this.transporter.sendMail(mailOptions);
+      return { success: true, message: 'Email xác nhận đã được gửi đến bạn !' };
+
+    } catch (error) {
+      return { success: true, message: error };
+    }
+  }
+
+  private generateOtp(): string {
+    return Math.floor(1000 + Math.random() * 9000).toString();
+  }
+
+  async verifyOtp(email: string, otp: string) {
+    if (otpCache[email]) {
+      const { otp: cachedOtp, expirationTime } = otpCache[email];
+      const currentTime = Date.now();
+
+      if (otp === cachedOtp && currentTime <= expirationTime) {
+        return { success: true, message: 'Xác minh thành công' };
+      } else {
+        return { success: false, message: 'OTP không hợp lệ' };
+      }
+    } else {
+      return { success: false, message: 'Không tìm thấy OTP' };
+    }
+  }
+
   async login(loginDTO: LoginDTO) {
     const user = await this.userModel.findOne({
       email: loginDTO.email,
@@ -58,6 +123,29 @@ export class AuthService {
     };
   }
 
+  async register(createUserDto: CreateUserDto): Promise<CreateUserDto> {
+    try {
+      const hashPass = await hashPassword(createUserDto.password);
+      const user = new this.userModel({
+        ...createUserDto,
+        updated_token: generateUpdateToken(),
+        password: hashPass,
+      });
+
+      await user.save();
+
+      return plainToInstance(UserDTO, user, {
+        excludeExtraneousValues: true,
+      });
+    } catch (err) {
+      if (err.code === 11000) {
+        throw new ConflictException('Email đã tồn tại !');
+      } else {
+        throw new InternalServerErrorException();
+      }
+    }
+  }
+
   async logout(userId: string, updatedToken: string, token: string) {
     try {
       const result = await this.userModel.updateOne(
@@ -73,7 +161,7 @@ export class AuthService {
         throw new HttpException('User not found', HttpStatus.NOT_FOUND);
       }
 
-      const tokenBlacklist = new this.tokenBlacklistModel({        
+      const tokenBlacklist = new this.tokenBlacklistModel({
         token: token,
       });
       await tokenBlacklist.save();
