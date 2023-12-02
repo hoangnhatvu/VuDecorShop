@@ -22,7 +22,6 @@ const Profile = ({navigation}) => {
         {
           text: "Continute", onPress: () => {}
         },
-        {defaultIndex: 1}
       ]
     )
   }
@@ -53,7 +52,7 @@ const Profile = ({navigation}) => {
         </View>
         <View style={styles.profileContainer}>
           <Image
-            source={require('../../assets/images/avatar.png')}
+            source={require('../../assets/images/userDefault.png')}
             style={styles.profile}
           />
           <Text style={styles.name}>
@@ -62,7 +61,7 @@ const Profile = ({navigation}) => {
           {userLogin === false ? (
             <TouchableOpacity onPress={() => navigation.navigate('Login')}>
               <View style={styles.loginBtn}>
-                <Text style={styles.menuText}>LOGIN</Text>
+                <Text style={styles.menuText}>ĐĂNG NHẬP</Text>
               </View>
             </TouchableOpacity>
           ) : (

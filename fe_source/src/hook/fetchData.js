@@ -15,9 +15,11 @@ const useFetch = () => {
       const response = await axios.get(
         `${API_URL}products/search?page=1&limit=20`,
       );
+      console.log(`${API_URL}products/search?page=1&limit=20`)
       setData(response.data.data);
       setIsLoading(false);
     } catch (error) {
+      console.log(error)
       setError(error);
     } finally {
       setIsLoading(false);
@@ -29,7 +31,7 @@ const useFetch = () => {
 
   const refetch = () => {
     setIsLoading(true);
-    fetcData();
+    fetchData();
   };
   return {data, isLoading, error, refetch};
 };

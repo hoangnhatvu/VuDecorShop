@@ -5,4 +5,15 @@ import ProductList from './products/ProductList';
 import BackBtn from './BackBtn';
 import Button from './Button';
 import CartList from './carts/CartList';
-export {Welcome, ProductCardView, ProductRow, ProductList, BackBtn, Button, CartList};
+import VerifyModal from './users/VerifyModal';
+
+export {
+  Welcome,
+  ProductCardView,
+  ProductRow,
+  ProductList,
+  BackBtn,
+  Button,
+  CartList,
+  VerifyModal,
+};

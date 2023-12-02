@@ -1,14 +1,64 @@
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {View, Text, TouchableOpacity, Image, Alert} from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './cartItem.style';
 import {API_URL} from '@env';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import {useSelector, useDispatch} from 'react-redux';
+import CartManager from '../../helpers/cartManager';
 
 import {COLORS} from '../../../constants';
+import {
+  addOrderItem,
+  removeOrderItem,
+  updateOrderItem,
+} from '../../redux/slices/listOrderItem.slice';
 const CartItem = ({item}) => {
+  const dispatch = useDispatch();
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
+  const isCheckAll = useSelector(state => state.isCheckAll.value);
+
+  useEffect(() => {
+    setToggleCheckBox(isCheckAll ? true : false);
+  }, [isCheckAll]);
+
+  useEffect(() => {
+    dispatch(toggleCheckBox ? addOrderItem(item) : removeOrderItem(item));
+  }, [toggleCheckBox]);
+
+  useEffect(() => {
+    dispatch(updateOrderItem(item));
+  }, [item]);
+
+  const handleAddCartItem = async () => {
+    await CartManager.addToCart(item, 1);
+  };
+  const handleRemoveCartItem = async () => {
+    if (item.quantity === 1) {
+      handleRemoveFromCart();
+    } else {
+      await CartManager.removeCartItem(item);
+    }
+  };
+  const handleRemoveFromCart = async () => {
+    Alert.alert(
+      'Xóa sản phẩm khỏi giỏ hàng',
+      'Bạn có chắc muốn xóa sản phẩm khỏi giỏ hàng ?',
+      [
+        {
+          text: 'Hủy',
+          onPress: () => {},
+        },
+        {
+          text: 'Tiếp tục',
+          onPress: async () => {
+            await CartManager.removeFromCart(item);
+          },
+        },
+      ],
+    );
+  };
   return (
     <View>
       <TouchableOpacity style={styles.container}>
@@ -30,20 +80,25 @@ const CartItem = ({item}) => {
           />
         </View>
         <View style={styles.textContainer}>
-          <Text numberOfLines={1} ellipsizeMode="tail" style={styles.productTitle}>{item?.productName}</Text>
+          <Text
+            numberOfLines={1}
+            ellipsizeMode="tail"
+            style={styles.productTitle}>
+            {item?.productName}
+          </Text>
           <Text style={styles.category}>{item?.categoryName}</Text>
           <Text style={styles.category}>{item?.price}</Text>
         </View>
         <View style={styles.actionContainer}>
-          <TouchableOpacity >
-            <Ionicons name="trash-outline" size={24} color={COLORS.req} />
+          <TouchableOpacity onPress={() => handleRemoveFromCart()}>
+            <Ionicons name="trash-outline" size={24} color={COLORS.red} />
           </TouchableOpacity>
           <View style={styles.quantityAction}>
-            <TouchableOpacity onPress={() => increment()}>
+            <TouchableOpacity onPress={() => handleAddCartItem()}>
               <SimpleLineIcons name="plus" size={20} />
             </TouchableOpacity>
             <Text style={styles.quantityText}>{item?.quantity}</Text>
-            <TouchableOpacity onPress={() => decrement()}>
+            <TouchableOpacity onPress={() => handleRemoveCartItem()}>
               <SimpleLineIcons name="minus" size={20} />
             </TouchableOpacity>
           </View>

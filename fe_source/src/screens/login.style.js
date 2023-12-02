@@ -13,7 +13,8 @@ const styles = StyleSheet.create({
     fontSize: SIZES.xLarge,
     color: COLORS.primary,
     alignItems: 'center',
-    marginBottom: SIZES.xxLarge,
+    textAlign: "center",
+    marginBottom: SIZES.xLarge,
   },
   wrapper: {
     marginBottom: 20,

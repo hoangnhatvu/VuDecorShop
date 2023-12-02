@@ -29,9 +29,6 @@ class CartManager {
       }
 
       await AsyncStorage.setItem('cart', JSON.stringify(updatedCart));
-
-      const cartItemshrhr = await AsyncStorage.getItem('cart');
-      console.log(JSON.parse(cartItemshrhr));
     } catch (error) {
       console.error('Lỗi khi thêm sản phẩm vào giỏ hàng:', error);
     }
@@ -52,19 +49,38 @@ class CartManager {
     }
   }
 
-  static async removeFromCart(productId) {
+  static async removeFromCart(product) {
     try {
       const cartItems = await AsyncStorage.getItem('cart');
 
       if (cartItems) {
         let updatedCart = JSON.parse(cartItems);
-        updatedCart = updatedCart.filter(item => item.id !== productId);
+        updatedCart = updatedCart.filter(item => item.id !== product.id);
 
         await AsyncStorage.setItem('cart', JSON.stringify(updatedCart));
         console.log('Sản phẩm đã được xóa khỏi giỏ hàng');
       }
     } catch (error) {
       console.error('Lỗi khi xóa sản phẩm khỏi giỏ hàng:', error);
+    }
+  }
+
+  static async removeCartItem(product) {
+    try {
+      const cartItems = await AsyncStorage.getItem('cart');
+      let updatedCart = [];
+      if (cartItems) {
+        updatedCart = JSON.parse(cartItems);
+      }
+      const existingItemIndex = updatedCart.findIndex(
+        item => item.id === product.id,
+      );
+      if (existingItemIndex !== -1) {
+        updatedCart[existingItemIndex].quantity -= 1;
+      }
+      await AsyncStorage.setItem('cart', JSON.stringify(updatedCart));
+    } catch (error) {
+      console.log(error);
     }
   }
 

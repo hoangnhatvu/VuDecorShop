@@ -13,7 +13,7 @@ const CartList = () => {
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [data]);
 
   return (
     <View>

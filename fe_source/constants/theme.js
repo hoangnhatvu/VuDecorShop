@@ -13,7 +13,7 @@ const COLORS = {
   offwhite: "#F3F4F8",
   white: "#FFFFFF",
   black: "#000000",
-  req: "#e81e4d",
+  red: "#e81e4d",
   green: "#00C153",
   lightWhite: "#FAFAFC"
 };

@@ -48,8 +48,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   textCheckout: {
-    fontFamily: 'Poppins-Bold',
-    fontSize: SIZES.xLarge,
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: SIZES.large,
     color: COLORS.offwhite,
   },
 });

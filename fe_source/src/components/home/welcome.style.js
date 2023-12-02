@@ -7,10 +7,10 @@ const styles = StyleSheet.create({
   },
   welcomeTxt: (color, top) => ({
     fontFamily: "Poppins-Bold",
-    fontSize: SIZES.xxLarge - 6,
+    fontSize: SIZES.xxLarge - 10,
     marginTop: top,
     color: color,
-    marginHorizontal: 12,
+    marginHorizontal: SIZES.small,
   }),
   searchContainer: {
     flexDirection: "row",

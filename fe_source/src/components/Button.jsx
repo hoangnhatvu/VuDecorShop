@@ -8,13 +8,13 @@ import {
 import React from 'react';
 import {COLORS} from '../../constants';
 
-const Button = ({tittle, onPress, isValid, loader}) => {
+const Button = ({title, onPress, isValid, loader, width}) => {
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={styles.btnStyle(isValid === false ? COLORS.gray : COLORS.primary)}>
+      style={styles.btnStyle(isValid === false ? COLORS.gray : COLORS.primary, width)}>
       {loader === false ? (
-        <Text style={styles.btnTxt}>{tittle}</Text>
+        <Text style={styles.btnTxt}>{title}</Text>
       ) : (
         <ActivityIndicator />
       )}
@@ -30,9 +30,9 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: 18,
   },
-  btnStyle: backgroundColor => ({
+  btnStyle: (backgroundColor, width) => ({
     height: 50,
-    width: '100%',
+    width: width ? width : '100%',
     marginVertical: 20,
     backgroundColor: backgroundColor,
     justifyContent: 'center',
