@@ -36,7 +36,7 @@ export class UserController {
 
   @Put('update')
   @UseGuards(AuthGuard)
-  @Roles(UserRole.ADMIN, UserRole.EMPLOYEE, UserRole.USER)
+  @Roles(UserRole.ADMIN, UserRole.EMPLOYEE)
   @UseInterceptors(
     FileInterceptor('user_image', {
       storage: storageConfig('user_image'),

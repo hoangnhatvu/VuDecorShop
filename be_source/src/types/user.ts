@@ -13,6 +13,7 @@ export interface User extends Document {
   role: string;
   is_active: boolean;
   is_blocked: boolean;
+  refresh_token: string;
   created_date: Date;
   updated_date: Date;
   updated_token: string;

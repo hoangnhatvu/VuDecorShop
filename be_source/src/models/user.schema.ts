@@ -56,6 +56,11 @@ export const userSchema = new mongoose.Schema({
     },
   }],
 
+  refresh_token: {
+    type: String,
+    default: null,
+  },
+
   created_date: {
     type: Date,
     default: Date.now,

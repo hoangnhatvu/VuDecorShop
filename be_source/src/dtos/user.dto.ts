@@ -1,4 +1,4 @@
-import { IsNotEmpty, Length, IsEmail, IsOptional, IsBoolean, IsArray } from 'class-validator';
+import { IsNotEmpty, Length, IsEmail, IsOptional, IsBoolean, IsArray, Matches } from 'class-validator';
 import { Transform, Expose, Exclude, Type } from 'class-transformer';
 import { BooleanPipe } from 'src/pipes/boolean.pipe';
 
@@ -103,7 +103,10 @@ export class CreateUserDto {
   email: string;
 
   @IsNotEmpty()
-  @Length(6)
+  @Length(8)
+  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/, {
+    message: 'Mật khẩu phải chứa ít nhất một ký tự in hoa, một ký tự thường, một chữ số và một ký tự đặc biệt!',
+  })
   password: string;
   
   @IsNotEmpty()
