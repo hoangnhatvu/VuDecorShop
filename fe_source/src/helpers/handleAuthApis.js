@@ -17,11 +17,12 @@ const register = async data => {
   }
 };
 
-const sendOtp = async email => {
+const sendOtp = async (email, type) => {
   try {
     const endpoint = `${API_URL}auth/otp`;
     const body = {
       email: email,
+      type: type,
     };
     const response = await axios.post(endpoint, body);
     return response;
@@ -30,12 +31,13 @@ const sendOtp = async email => {
   }
 };
 
-const verifyOtp = async (email, otp) => {
+const verifyOtp = async (email, otp, type) => {
   try {
     const endpoint = `${API_URL}auth/verify`;
     const body = {
       email: email,
       otp: otp,
+      type: type,
     };
     const response = await axios.post(endpoint, body);
     return response;
@@ -44,4 +46,19 @@ const verifyOtp = async (email, otp) => {
   }
 };
 
-export {register, sendOtp, verifyOtp};
+const forgotPassword = async (data, updated_token) => {
+  try {
+    const endpoint = `${API_URL}auth/forgotPassword`;
+    const body = {
+      email: data.email,
+      password: data.password,
+      updated_token: updated_token,
+    };
+    const response = await axios.post(endpoint, body);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export {register, sendOtp, verifyOtp, forgotPassword};

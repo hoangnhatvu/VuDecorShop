@@ -4,17 +4,21 @@ import styles from './verifyModal.style';
 import Modal from 'react-native-modal';
 import Button from '../Button';
 import {sendOtp, verifyOtp} from '../../helpers/handleAuthApis';
-import {useNavigation} from '@react-navigation/native';
-import { useToastMessage } from '../../hook/showToast';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {useToastMessage} from '../../hook/showToast';
+import {useDispatch} from 'react-redux';
+import {setUserInfo} from '../../redux/slices/userInfo.slice';
 
-const VerifyModal = ({isVisible, email}) => {
+const VerifyModal = ({isVisible, email, type, hideModal}) => {
   const [otpInputs, setOtpInputs] = useState(['', '', '', '']);
   const [timer, setTimer] = useState(60);
   const [loader, setLoader] = useState(false);
   const [error, setError] = useState('');
+  const dispatch = useDispatch();
   const navigation = useNavigation();
-  const { showToast } = useToastMessage();
-
+  const route = useRoute();
+  const currentRouteName = route.name;
+  const {showToast} = useToastMessage();
 
   let inputRefs = {};
 
@@ -31,10 +35,10 @@ const VerifyModal = ({isVisible, email}) => {
 
   const handleResendOtp = async () => {
     try {
-      await sendOtp(email);
+      await sendOtp(email, type);
       setTimer(60);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       if (error.response) {
         showToast(error.response.data.message, 'danger');
       } else {
@@ -48,11 +52,20 @@ const VerifyModal = ({isVisible, email}) => {
     if (enteredOtp.length === 4) {
       try {
         setLoader(true);
-        await verifyOtp(email, enteredOtp);
-        showToast("Xác minh thành công, vui lòng đăng nhập !", "success")
-        navigation.navigate('Login');
+        const response = await verifyOtp(email, enteredOtp, type);
+        if (currentRouteName === 'SignUp') {
+          showToast('Xác minh thành công, vui lòng đăng nhập !', 'success');
+          navigation.navigate('Login');
+        } else {
+          dispatch(setUserInfo(response.data.user));
+          showToast(
+            'Xác minh thành công, vui lòng nhập mật khẩu mới !',
+            'success',
+          );
+          hideModal();
+        }
       } catch (error) {
-        console.log(error)
+        console.log(error);
         if (error.response) {
           setError(error.response.data.message);
         } else {

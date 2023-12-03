@@ -4,6 +4,7 @@ import BottomTabNavigation from './src/navigation/BottomTabNavigation';
 import {
   Cart,
   Favourites,
+  ForgotPassword,
   LoginPage,
   NewProducts,
   Orders,
@@ -60,6 +61,11 @@ export default function App() {
             <Stack.Screen
               name="SignUp"
               component={SignUp}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="ForgotPassword"
+              component={ForgotPassword}
               options={{headerShown: false}}
             />
           </Stack.Navigator>

@@ -9,82 +9,64 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {BackBtn, Button} from '../components';
+import {BackBtn, Button, VerifyModal} from '../components';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './login.style';
 import {COLORS} from '../../constants';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {register, sendOtp} from '../helpers/handleAuthApis';
+import {useToastMessage} from '../hook/showToast';
 
 const validationSchema = Yup.object().shape({
-  password: Yup.string()
-    .min(8, 'Mật khẩu phải có tối thiểu 8 ký tự')
-    .required('Đây là trường bắt buộc'),
   email: Yup.string()
     .email('Email không đúng định dạng')
     .required('Đây là trường bắt buộc'),
+  password: Yup.string()
+    .min(8, 'Mật khẩu phải có tối thiểu 8 ký tự')
+    .required('Đây là trường bắt buộc'),
 });
-
 const LoginPage = ({navigation}) => {
   const [loader, setLoader] = useState(false);
-  const [responseData, setResponseData] = useState(null);
-  const [obsecureText, setObsecureText] = useState(false);
+  const [data, setData] = useState(null);
+  const [obsecureTextPassword, setObsecureTextPassword] = useState(true);
+  const [obsecureTextConfirm, setObsecureTextConfirm] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
+  const {showToast} = useToastMessage();
 
   const inValidForm = () => {
-    Alert.alert('Invald Form', 'Please provide all required fields', [
-      {
-        text: 'Cancel',
-        onPress: () => {},
-      },
-      {
-        text: 'Continute',
-        onPress: () => {},
-      },
-      {defaultIndex: 1},
-    ]);
+    Alert.alert(
+      'Thông tin nhập chưa đúng',
+      'Vui lòng nhập thông tin thỏa mãn yêu cầu',
+      [
+        {
+          text: 'Hủy',
+          onPress: () => {},
+        },
+        {
+          text: 'Tiếp tục',
+          onPress: () => {},
+        },
+      ],
+    );
   };
 
-  const login = async values => {
-    setLoader(true);
+  const signup = async data => {
     try {
-      const endpoint = '';
-      const data = values;
-      const response = await axios.post(endpoint, data);
-      if (response.status === 200) {
-        setLoader(false);
-        setResponseData(response.data)
-        await AsyncStorage.setItem(`user${responseData._id}`, JSON.stringify(responseData))
-        const newUser = await AsyncStorage.getItem(`user${responseData._id}`)
-        navigation.replace("Bottom Navigation")
-      } else {
-        Alert.alert('Lỗi đăng nhập', 'Please provide all required fields', [
-          {
-            text: 'Cancel',
-            onPress: () => {},
-          },
-          {
-            text: 'Continute',
-            onPress: () => {},
-          },
-          {defaultIndex: 1},
-        ]);
-      }
+      setLoader(true);
+      await register(data);
+      setData(data);
+      await sendOtp(data.email);
+      setModalVisible(true);
+      showToast('Vui lòng xác minh email của bạn!', 'warning');
     } catch (error) {
-      Alert.alert('Lỗi', `Lỗi ${error}`, [
-        {
-          text: 'Cancel',
-          onPress: () => {},
-        },
-        {
-          text: 'Continute',
-          onPress: () => {},
-        },
-        {defaultIndex: 1},
-      ]);
+      if (error.response) {
+        showToast(error.response.data.message, 'danger');
+      } else {
+        showToast('Lỗi mạng !', 'danger');
+      }
     } finally {
-      setLoader(false)
+      setLoader(false);
     }
   };
 
@@ -97,15 +79,15 @@ const LoginPage = ({navigation}) => {
             source={require('../../assets/images/bk.png')}
             style={styles.cover}
           />
-          <Text style={styles.title}>Unlimited Luxurious Furniture</Text>
+          <Text style={styles.title}>Đăng Nhập</Text>
           <Formik
             initialValues={{email: '', password: ''}}
             validationSchema={validationSchema}
-            onSubmit={values => console.log(values)}>
+            onSubmit={values => signup(values)}>
             {({
               handleChange,
-              touched,
               handleBlur,
+              touched,
               handleSubmit,
               values,
               errors,
@@ -145,7 +127,7 @@ const LoginPage = ({navigation}) => {
                   )}
                 </View>
                 <View style={styles.wrapper}>
-                  <Text style={styles.label}>Password</Text>
+                  <Text style={styles.label}>Mật khẩu</Text>
                   <View
                     style={styles.inputWrapper(
                       touched.password ? COLORS.secondary : COLORS.offwhite,
@@ -157,8 +139,8 @@ const LoginPage = ({navigation}) => {
                       style={styles.iconStyle}
                     />
                     <TextInput
-                      secureTextEntry={obsecureText}
-                      placeholder="Nhập mật khảu"
+                      secureTextEntry={obsecureTextPassword}
+                      placeholder="Nhập mật khẩu"
                       onFocus={() => {
                         setFieldTouched('password');
                       }}
@@ -173,10 +155,14 @@ const LoginPage = ({navigation}) => {
                     />
                     <TouchableOpacity
                       onPress={() => {
-                        setObsecureText(!obsecureText);
+                        setObsecureTextPassword(!obsecureTextPassword);
                       }}>
                       <MaterialCommunityIcons
-                        name={obsecureText ? 'eye-outline' : 'eye-off-outline'}
+                        name={
+                          obsecureTextPassword
+                            ? 'eye-outline'
+                            : 'eye-off-outline'
+                        }
                         size={18}
                       />
                     </TouchableOpacity>
@@ -186,11 +172,19 @@ const LoginPage = ({navigation}) => {
                   )}
                 </View>
                 <Button
-                  loader={loader}
                   title={'ĐĂNG NHẬP'}
                   onPress={isValid ? handleSubmit : inValidForm}
                   isValid={isValid}
+                  loader={loader}
                 />
+                <Text
+                  style={styles.registration}
+                  onPress={() => {
+                    navigation.navigate('ForgotPassword');
+                  }}>
+                  Quên mật khẩu
+                </Text>
+
                 <Text
                   style={styles.registration}
                   onPress={() => {

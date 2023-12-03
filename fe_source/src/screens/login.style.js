@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     fontSize: SIZES.xSmall,
   },
   registration: {
-    marginTop: 20,
+    marginTop: SIZES.medium,
     textAlign: "center"
   }
 });

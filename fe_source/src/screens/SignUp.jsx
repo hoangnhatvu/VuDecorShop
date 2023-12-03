@@ -39,16 +39,15 @@ const SignUp = ({navigation}) => {
   const {showToast} = useToastMessage();
 
   const inValidForm = () => {
-    Alert.alert('Invald Form', 'Please provide all required fields', [
+    Alert.alert('Thông tin nhập chưa đúng', 'Vui lòng nhập thông tin thỏa mãn yêu cầu', [
       {
-        text: 'Cancel',
+        text: 'Hủy',
         onPress: () => {},
       },
       {
-        text: 'Continute',
+        text: 'Tiếp tục',
         onPress: () => {},
       },
-      {defaultIndex: 1},
     ]);
   };
 
@@ -57,7 +56,7 @@ const SignUp = ({navigation}) => {
       setLoader(true);
       await register(data);
       setData(data);
-      await sendOtp(data.email);
+      await sendOtp(data.email, 'verify');
       setModalVisible(true);
       showToast('Vui lòng xác minh email của bạn!', 'warning');
     } catch (error) {
@@ -258,7 +257,7 @@ const SignUp = ({navigation}) => {
             )}
           </Formik>
         </View>
-        {data && <VerifyModal isVisible={modalVisible} email={data.email} />}
+        {data && <VerifyModal isVisible={modalVisible} email={data.email} type='verify'/>}
       </SafeAreaView>
     </ScrollView>
   );
