@@ -1,5 +1,4 @@
 import axios from 'axios';
-import {useState} from 'react';
 import {API_URL} from '@env';
 
 const register = async data => {
@@ -7,6 +6,20 @@ const register = async data => {
     const endpoint = `${API_URL}auth/register`;
     const body = {
       user_name: data.name,
+      email: data.email,
+      password: data.password,
+    };
+    const response = await axios.post(endpoint, body);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const login = async data => {
+  try {
+    const endpoint = `${API_URL}auth/login`;
+    const body = {
       email: data.email,
       password: data.password,
     };
@@ -61,4 +74,4 @@ const forgotPassword = async (data, updated_token) => {
   }
 };
 
-export {register, sendOtp, verifyOtp, forgotPassword};
+export {register, sendOtp, verifyOtp, forgotPassword, login};

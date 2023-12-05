@@ -10,7 +10,7 @@ const COLORS = {
   gray: "#83829A",
   gray2: "#C1C0C8",
 
-  offwhite: "#F3F4F8",
+  offwhite: "#FAFAFC",
   white: "#FFFFFF",
   black: "#000000",
   red: "#e81e4d",

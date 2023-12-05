@@ -1,4 +1,11 @@
-import {TouchableOpacity, Text, View, StatusBar, Image, Alert} from 'react-native';
+import {
+  TouchableOpacity,
+  Text,
+  View,
+  StatusBar,
+  Image,
+  Alert,
+} from 'react-native';
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {COLORS} from '../../constants';
@@ -7,39 +14,42 @@ import styles from './profile.style';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import {getUserData} from '../helpers/userDataManager';
 
 const Profile = ({navigation}) => {
   const [userData, setUserData] = useState(null);
   const [userLogin, setUserLogin] = useState(false);
   const logout = () => {
-    Alert.alert(
-      "Logout",
-      "Are you sure you want to logout",
-      [
-        {
-          text: "Cancel", onPress: () => {}
-        },
-        {
-          text: "Continute", onPress: () => {}
-        },
-      ]
-    )
-  }
+    Alert.alert('Logout', 'Are you sure you want to logout', [
+      {
+        text: 'Cancel',
+        onPress: () => {},
+      },
+      {
+        text: 'Continute',
+        onPress: () => {},
+      },
+    ]);
+  };
+  useEffect(() => {
+    const user = getUserData();
+    if (user) {
+      setUserLogin(true);
+    }
+  }, []);
   const clearCache = () => {
-    Alert.alert(
-      "Logout",
-      "Are you sure you want to logout",
-      [
-        {
-          text: "Cancel", onPress: () => {}
-        },
-        {
-          text: "Continute", onPress: () => {}
-        },
-        {defaultIndex: 1}
-      ]
-    )
-  }
+    Alert.alert('Logout', 'Are you sure you want to logout', [
+      {
+        text: 'Cancel',
+        onPress: () => {},
+      },
+      {
+        text: 'Continute',
+        onPress: () => {},
+      },
+      {defaultIndex: 1},
+    ]);
+  };
   return (
     <View style={styles.container}>
       <View style={styles.container}>
@@ -74,14 +84,15 @@ const Profile = ({navigation}) => {
             <View></View>
           ) : (
             <View style={styles.menuWrapper}>
-              <TouchableOpacity onPress={() => navigation.navigate('Favourites')}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Favourites')}>
                 <View style={styles.menuItem(0.2)}>
                   <MaterialCommunityIcons
                     name="heart-outline"
                     color={COLORS.primary}
                     size={24}
                   />
-                  <Text style={styles.menuText}>Favorites</Text>
+                  <Text style={styles.menuText}>Yêu thích</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.navigate('Orders')}>
@@ -91,7 +102,7 @@ const Profile = ({navigation}) => {
                     color={COLORS.primary}
                     size={24}
                   />
-                  <Text style={styles.menuText}>Orders</Text>
+                  <Text style={styles.menuText}>Đơn hàng</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
@@ -101,7 +112,7 @@ const Profile = ({navigation}) => {
                     color={COLORS.primary}
                     size={24}
                   />
-                  <Text style={styles.menuText}>Cart</Text>
+                  <Text style={styles.menuText}>Giỏ hàng</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => {}}>
@@ -126,12 +137,8 @@ const Profile = ({navigation}) => {
               </TouchableOpacity>
               <TouchableOpacity onPress={() => logout()}>
                 <View style={styles.menuItem(0.2)}>
-                  <AntDesign
-                    name="logout"
-                    color={COLORS.primary}
-                    size={24}
-                  />
-                  <Text style={styles.menuText}>Logout</Text>
+                  <AntDesign name="logout" color={COLORS.primary} size={24} />
+                  <Text style={styles.menuText}>Đăng xuất</Text>
                 </View>
               </TouchableOpacity>
             </View>

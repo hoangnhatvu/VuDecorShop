@@ -57,11 +57,18 @@ const VerifyModal = ({isVisible, email, type, hideModal}) => {
           showToast('Xác minh thành công, vui lòng đăng nhập !', 'success');
           navigation.navigate('Login');
         } else {
-          dispatch(setUserInfo(response.data.user));
-          showToast(
-            'Xác minh thành công, vui lòng nhập mật khẩu mới !',
-            'success',
-          );
+          if(currentRouteName === 'Login') {
+            showToast(
+              'Xác minh thành công, vui lòng đăng nhập !',
+              'success',
+            );
+          } else {
+            dispatch(setUserInfo(response.data.user));
+            showToast(
+              'Xác minh thành công, vui lòng nhập mật khẩu mới !',
+              'success',
+            );
+          }          
           hideModal();
         }
       } catch (error) {
