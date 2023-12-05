@@ -6,6 +6,7 @@ import BackBtn from './BackBtn';
 import Button from './Button';
 import CartList from './carts/CartList';
 import VerifyModal from './users/VerifyModal';
+import OptionsList from './products/OptionsList';
 
 export {
   Welcome,
@@ -16,4 +17,5 @@ export {
   Button,
   CartList,
   VerifyModal,
+  OptionsList,
 };

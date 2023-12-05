@@ -8,12 +8,15 @@ import {CartList} from '../components';
 import CheckBox from '@react-native-community/checkbox';
 import {useDispatch, useSelector} from 'react-redux';
 import {setIsCheckAll} from '../redux/slices/isCheckAll.slice';
+import { setCartNumber } from '../redux/slices/cartNumber.slice';
+import CartManager from '../helpers/cartManager';
 
 const Cart = ({navigation}) => {
   const dispatch = useDispatch();
   const isCheckAll = useSelector(state => state.isCheckAll.value);
   const listOrderItem = useSelector(state => state.listOrderItem.value);
   const [total, setTotal] = useState(0);
+
   useEffect(() => {
     if (listOrderItem) {
       setTotal(

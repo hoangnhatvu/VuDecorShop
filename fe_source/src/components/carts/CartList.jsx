@@ -13,13 +13,13 @@ const CartList = () => {
 
   useEffect(() => {
     loadData();
-  }, [data]);
+  }, []);
 
   return (
     <View>
       <FlatList
         data={data}
-        renderItem={({item}) => <CartItem item={item} />}
+        renderItem={({item}) => <CartItem item={item} loadData={loadData}/>}
         ItemSeparatorComponent={() => <View style={styles.separator}/>}
       />      
     </View>

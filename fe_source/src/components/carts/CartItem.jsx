@@ -14,7 +14,7 @@ import {
   removeOrderItem,
   updateOrderItem,
 } from '../../redux/slices/listOrderItem.slice';
-const CartItem = ({item}) => {
+const CartItem = ({item, loadData}) => {
   const dispatch = useDispatch();
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const isCheckAll = useSelector(state => state.isCheckAll.value);
@@ -32,13 +32,15 @@ const CartItem = ({item}) => {
   }, [item]);
 
   const handleAddCartItem = async () => {
-    await CartManager.addToCart(item, 1);
+    await CartManager.addToCart(item, 1, item.option);
+    loadData();
   };
   const handleRemoveCartItem = async () => {
     if (item.quantity === 1) {
       handleRemoveFromCart();
     } else {
       await CartManager.removeCartItem(item);
+      loadData();
     }
   };
   const handleRemoveFromCart = async () => {
@@ -54,6 +56,7 @@ const CartItem = ({item}) => {
           text: 'Tiếp tục',
           onPress: async () => {
             await CartManager.removeFromCart(item);
+            loadData();
           },
         },
       ],

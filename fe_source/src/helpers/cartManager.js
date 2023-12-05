@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class CartManager {
-  static async addToCart(product, quantity) {
+  static async addToCart(product, quantity, option) {
     try {
       const cartItems = await AsyncStorage.getItem('cart');
 
@@ -10,27 +10,37 @@ class CartManager {
       if (cartItems) {
         updatedCart = JSON.parse(cartItems);
       }
+      console.log(product.product_id)
 
       const existingItemIndex = updatedCart.findIndex(
-        item => item.id === product.id,
+        item => item.id === (product.product_id === undefined ? product.id + option.id : product.id),
       );
 
+      console.log(product.id + option.id);
+
       if (existingItemIndex !== -1) {
+        console.log('đúng rồi nè hggodbvsdgogh');
         updatedCart[existingItemIndex].quantity += quantity;
       } else {
         updatedCart.push({
-          id: product.id,
+          id: product.id + option.id,
+          product_id: product.id,
+          option: option,
           productName: product.product_name,
-          price: product.price,
+          price: option.price,
+          size: option.size,
+          color: option.size,
           categoryName: product.category.category_name,
-          image: product.product_image,
+          image: option.option_image
+            ? option.option_image
+            : product.product_image,
           quantity,
         });
       }
 
       await AsyncStorage.setItem('cart', JSON.stringify(updatedCart));
     } catch (error) {
-      console.error('Lỗi khi thêm sản phẩm vào giỏ hàng:', error);
+      throw error;
     }
   }
 
@@ -83,7 +93,7 @@ class CartManager {
       console.log(error);
     }
   }
-
+  
   static async clearCart() {
     try {
       await AsyncStorage.removeItem('cart');
