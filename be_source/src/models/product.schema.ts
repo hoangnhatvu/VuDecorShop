@@ -1,5 +1,5 @@
-import * as mongoose from 'mongoose';
-import { baseSchema } from './base.schema';
+import * as mongoose from 'mongoose'
+import { baseSchema } from './base.schema'
 
 export const productSchema = new mongoose.Schema({
   category: {
@@ -15,16 +15,6 @@ export const productSchema = new mongoose.Schema({
 
   product_image: String,
 
-  price: {
-    type: Number,
-    required: true,
-  },
-
-  discount_rate: {
-    type: Number,
-    default: 0,
-  },
-
   view_number: {
     type: Number,
     default: 0,
@@ -35,12 +25,18 @@ export const productSchema = new mongoose.Schema({
     default: 0,
   },
 
-  description: String,
-
-  stock: {
-    type: Number,
+  description: {
+    type: String,
     required: true,
   },
+
+  options: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Option',
+      required: true,
+    },
+  ],
 
   is_actived: {
     type: Boolean,
@@ -52,5 +48,5 @@ export const productSchema = new mongoose.Schema({
     default: null,
   },
 
-  ...baseSchema.obj
-});
+  ...baseSchema.obj,
+})

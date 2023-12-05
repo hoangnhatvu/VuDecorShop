@@ -15,7 +15,7 @@ import {
 import { UserRole } from 'src/enums/role.enum';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { Roles } from 'src/decorators/roles.decorator';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { storageConfig } from 'src/common/config';
 import { fileFilter } from 'src/common/fileFilter';
 import { ProductService } from './product.service';
