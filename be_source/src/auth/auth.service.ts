@@ -139,14 +139,16 @@ export class AuthService {
     })
     if (!user) {
       throw new HttpException('Email hoặc mật khẩu không đúng !', HttpStatus.UNAUTHORIZED)
-    } else if (user.is_blocked) {
-      throw new HttpException('Tài khoản hiện tại đang bị vô hiệu hóa !', HttpStatus.FORBIDDEN)
-    } else if (!user.is_active) {
-      throw new HttpException('Tài khoản chưa được kích hoạt !', HttpStatus.NOT_ACCEPTABLE)
     }
     const isMatch = await bcrypt.compare(loginDTO.password, user.password)
     if (!isMatch) {
       throw new HttpException('Email hoặc mật khẩu không đúng !', HttpStatus.UNAUTHORIZED)
+    }
+
+    if (user.is_blocked) {
+      throw new HttpException('Tài khoản hiện tại đang bị vô hiệu hóa !', HttpStatus.FORBIDDEN)
+    } else if (!user.is_active) {
+      throw new HttpException('Tài khoản chưa được kích hoạt !', HttpStatus.NOT_ACCEPTABLE)
     }
 
     const payload = {
