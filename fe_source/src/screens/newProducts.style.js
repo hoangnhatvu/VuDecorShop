@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     zIndex: 999,
   },
   heading: {
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: 'OpenSans-SemiBold',
     fontSize: SIZES.medium,
     color: COLORS.lightWhite,
     marginLeft: 5,

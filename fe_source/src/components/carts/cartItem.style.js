@@ -34,12 +34,12 @@ const styles = StyleSheet.create({
   },
   productTitle: {
     fontSize: SIZES.medium,
-    fontFamily: 'Poppins-Bold',
+    fontFamily: 'OpenSans-Bold',
     color: COLORS.primary,
   },
   option: {
     fontSize: SIZES.small + 2,
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'OpenSans-Regular',
     color: COLORS.gray,
     marginTop: 3,
   },
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   },
   quantityText: {
     color: COLORS.gray,
-    fontFamily: 'Poppins-Medium',
+    fontFamily: 'OpenSans-Medium',
     marginHorizontal: SIZES.xSmall,
   },
 });

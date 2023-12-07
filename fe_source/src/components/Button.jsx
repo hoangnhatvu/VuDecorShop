@@ -26,7 +26,7 @@ export default Button;
 
 const styles = StyleSheet.create({
   btnTxt: {
-    fontFamily: 'Poppins-Bold',
+    fontFamily: 'OpenSans-Bold',
     color: COLORS.white,
     fontSize: 18,
   },

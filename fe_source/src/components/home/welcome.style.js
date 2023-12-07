@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   welcomeTxt: (color, top) => ({
-    fontFamily: "Poppins-Bold",
+    fontFamily: "OpenSans-Bold",
     fontSize: SIZES.xxLarge - 10,
     marginTop: top,
     color: color,
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.small
   },
   searchInput: {
-    fontFamily: "Poppins-Regular",
+    fontFamily: "OpenSans-Regular",
     width: "100%",
     height: "100%",
     paddingHorizontal: SIZES.small

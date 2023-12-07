@@ -6,16 +6,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: SIZES.small,
   },
-  wrapper: {
-    flexDirection: 'row',
-    marginVertical: SIZES.large,
-  },
-  heading: {
-    fontFamily: 'Poppins-Bold',
-    fontSize: SIZES.large,
-    marginLeft: SIZES.small,
-    color: COLORS.primary,
-  },
   checkoutContainer: {
     position: 'absolute',
     width: '100%',
@@ -35,7 +25,7 @@ const styles = StyleSheet.create({
     marginTop: SIZES.small,
   },
   totalText: {
-    fontFamily: 'Poppins-Bold',
+    fontFamily: 'OpenSans-Bold',
     fontSize: SIZES.medium,
     paddingHorizontal: SIZES.xSmall,
   },
@@ -48,7 +38,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   textCheckout: {
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: 'OpenSans-SemiBold',
     fontSize: SIZES.large,
     color: COLORS.offwhite,
   },

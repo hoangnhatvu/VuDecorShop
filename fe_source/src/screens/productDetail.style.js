@@ -32,13 +32,13 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
   title: {
-    fontFamily: 'Poppins-Bold',
+    fontFamily: 'OpenSans-Bold',
     fontSize: SIZES.xLarge,
   },
   
   price: {
     paddingHorizontal: 10,
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: 'OpenSans-SemiBold',
     fontSize: SIZES.large,
   },
   priceWrapperRow: {
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   },
   ratingText: {
     color: COLORS.gray,
-    fontFamily: 'Poppins-Medium',
+    fontFamily: 'OpenSans-Medium',
     paddingHorizontal: SIZES.xSmall,
   },
   descriptionWrapper: {
@@ -71,11 +71,11 @@ const styles = StyleSheet.create({
     paddingBottom: SIZES.large,
   },
   description: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: 'OpenSans-Medium',
     fontSize: SIZES.large - 2,
   },
   descText: {
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'OpenSans-Regular',
     fontSize: SIZES.small,
     textAlign: 'justify',
   },
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   },
   cartTitle: {
     marginLeft: SIZES.small,
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: 'OpenSans-SemiBold',
     fontSize: SIZES.medium,
     color: COLORS.lightWhite,
   },

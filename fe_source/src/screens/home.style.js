@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native"
 import { COLORS, SIZES } from "../../constants"
 const styles = StyleSheet.create({
   textStyle: {
-    fontFamily: "Poppins-Bold",
+    fontFamily: "OpenSans-Bold",
     fontSize: 40
   },
   appBarWrapper: {
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   location: {
-    fontFamily: "Poppins-SemiBold",
+    fontFamily: "OpenSans-SemiBold",
     fontSize: SIZES.medium,
     color: COLORS.gray
   },
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     zIndex: 999,
   },
   cartNumber: {
-    fontFamily: "Poppins-Regular",
+    fontFamily: "OpenSans-Regular",
     fontWeight: "600",
     fontSize: 10,
     color: COLORS.lightWhite

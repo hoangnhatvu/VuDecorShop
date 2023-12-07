@@ -8,6 +8,8 @@ import CartList from './carts/CartList';
 import VerifyModal from './users/VerifyModal';
 import OptionsList from './products/OptionsList';
 import OrderList from './payments/OrderList';
+import Heading from './Heading';
+import AddressList from './addresses/AddressList';
 export {
   Welcome,
   ProductCardView,
@@ -19,4 +21,6 @@ export {
   VerifyModal,
   OptionsList,
   OrderList,
+  Heading,
+  AddressList
 };

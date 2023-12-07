@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
 
   textOption: {
     color: COLORS.black,
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'OpenSans-Regular',
   },
 });
 

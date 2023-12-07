@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between"
   },
   headerTitle: {
-    fontFamily: "Poppins-SemiBold",
+    fontFamily: "OpenSans-SemiBold",
     fontSize: SIZES.xLarge - 2,
   }
 })

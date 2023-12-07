@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     paddingBottom: SIZES.medium,
-    fontFamily: "Poppins-Bold",
+    fontFamily: "OpenSans-Bold",
     fontSize: SIZES.medium,
     textAlign: "center"
   },
@@ -37,12 +37,12 @@ const styles = StyleSheet.create({
   },
   timer: {
     marginTop: SIZES.medium,
-    fontFamily: "Poppins-SemiBold",
+    fontFamily: "OpenSans-SemiBold",
     fontSize: 30,
   }, 
   errorMessage: {
     color: COLORS.red,
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'OpenSans-Regular',
     marginTop: 5,
     fontSize: SIZES.xSmall,
   },

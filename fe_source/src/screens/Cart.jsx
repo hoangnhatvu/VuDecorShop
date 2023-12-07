@@ -1,10 +1,8 @@
 import {View, Text, TouchableOpacity} from 'react-native';
 import React, {useState, useEffect} from 'react';
-import IonIcon from 'react-native-vector-icons/Ionicons';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import styles from './cart.style';
-import {COLORS} from '../../constants';
-import {CartList} from '../components';
+import {CartList, Heading} from '../components';
 import CheckBox from '@react-native-community/checkbox';
 import {useDispatch, useSelector} from 'react-redux';
 import {setIsCheckAll} from '../redux/slices/isCheckAll.slice';
@@ -28,6 +26,10 @@ const Cart = ({navigation}) => {
     }
   }, [listOrderItem]);
 
+  handleBack = () => {
+    dispatch(setIsCheckAll(false));
+  }
+
   handleBuy = () => {
     if (total === 0) {
       showToast('Vui lòng chọn sản phẩm !', 'warning');
@@ -37,20 +39,7 @@ const Cart = ({navigation}) => {
   };
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.wrapper}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-            dispatch(setIsCheckAll(false));
-          }}>
-          <IonIcon
-            name="chevron-back-circle"
-            size={30}
-            color={COLORS.primary}
-          />
-        </TouchableOpacity>
-        <Text style={styles.heading}>Giỏ hàng</Text>
-      </View>
+      <Heading navigation={navigation} handleBack={handleBack} text="Giỏ hàng"/>
       <CartList />
       <View style={styles.checkoutContainer}>
         <View style={styles.total}>

@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     marginBottom: SIZES.xxLarge,
   },
   title: {
-    fontFamily: 'Poppins-Bold',
+    fontFamily: 'OpenSans-Bold',
     fontSize: SIZES.xLarge,
     color: COLORS.primary,
     alignItems: 'center',
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   label: {
-    fontFamily: 'Poppins-Bold',
+    fontFamily: 'OpenSans-Bold',
     fontSize: SIZES.xSmall,
     marginBottom: 5,
     marginEnd: 5,
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   },
   errorMessage: {
     color: COLORS.red,
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'OpenSans-Regular',
     marginTop: 5,
     marginLeft: 5,
     fontSize: SIZES.xSmall,

@@ -3,19 +3,20 @@ import {COLORS, SIZES, SHADOWS} from '../../../constants';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: SIZES.small,
     flexDirection: 'row',
-    padding: SIZES.medium,
+    paddingVertical: SIZES.xSmall,
     borderRadius: SIZES.small,
     backgroundColor: '#fff',
     ...SHADOWS.medium,
     shadowColor: COLORS.lightWhite,
   },
+  radioButton: {
+    paddingHorizontal: SIZES.small,
+  },
   image: {
-    width: 70,
+    width: 75,
     backgroundColor: COLORS.secondary,
     borderRadius: SIZES.medium,
     justifyContent: 'center',
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
   },
   productImg: {
     width: '100%',
-    height: 65,
+    height: 75,
     borderRadius: SIZES.small,
     resizeMode: 'cover',
   },
@@ -36,11 +37,15 @@ const styles = StyleSheet.create({
     fontFamily: 'OpenSans-Bold',
     color: COLORS.primary,
   },
-  supplier: {
+  option: {
     fontSize: SIZES.small + 2,
     fontFamily: 'OpenSans-Regular',
     color: COLORS.gray,
     marginTop: 3,
+  },
+  actionContainer: {
+    paddingRight: SIZES.small,
+    alignItems: 'flex-end',
   },
 });
 

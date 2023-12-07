@@ -25,17 +25,17 @@ const styles = StyleSheet.create({
     padding: SIZES.small,
   },
   title: {
-    fontFamily: 'Poppins-Bold',
+    fontFamily: 'OpenSans-Bold',
     fontSize: SIZES.large,
     marginBottom: 1,
   },
   supplier: {
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'OpenSans-Regular',
     fontSize: SIZES.small,
     color: COLORS.gray,
   },
   price: {
-    fontFamily: 'Poppins-Bold',
+    fontFamily: 'OpenSans-Bold',
     fontSize: SIZES.medium,
   },
   addBtn: {

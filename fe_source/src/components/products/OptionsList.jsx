@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
   textStyle: {
     paddingRight: SIZES.small,
     width: 50,
-    fontFamily: 'Poppins-Medium',
+    fontFamily: 'OpenSans-Medium',
   },
 });
 

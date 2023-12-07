@@ -6,12 +6,14 @@ import {
   Image,
   Alert,
   ActivityIndicator,
+  ScrollView,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {COLORS} from '../../constants';
 import styles from './profile.style';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {clearUserData, getUserData} from '../helpers/userDataManager';
 import {logout} from '../helpers/handleAuthApis';
@@ -116,16 +118,25 @@ const Profile = ({navigation}) => {
           {isLogin === false ? (
             <View></View>
           ) : (
-            <View style={styles.menuWrapper}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('Favourites')}>
+            <ScrollView style={styles.menuWrapper}>
+              <TouchableOpacity onPress={() => {}}>
                 <View style={styles.menuItem(0.2)}>
-                  <MaterialCommunityIcons
-                    name="heart-outline"
+                  <Ionicons
+                    name="person-outline"
                     color={COLORS.primary}
                     size={24}
                   />
-                  <Text style={styles.menuText}>Yêu thích</Text>
+                  <Text style={styles.menuText}>Hồ sơ cá nhân</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => {}}>
+                <View style={styles.menuItem(0.2)}>
+                  <MaterialCommunityIcons
+                    name="book-open-outline"
+                    color={COLORS.primary}
+                    size={24}
+                  />
+                  <Text style={styles.menuText}>Sổ địa chỉ</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.navigate('Orders')}>
@@ -148,24 +159,15 @@ const Profile = ({navigation}) => {
                   <Text style={styles.menuText}>Giỏ hàng</Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => {}}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Favourites')}>
                 <View style={styles.menuItem(0.2)}>
                   <MaterialCommunityIcons
-                    name="cached"
+                    name="heart-outline"
                     color={COLORS.primary}
                     size={24}
                   />
-                  <Text style={styles.menuText}>Clear cache</Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => {}}>
-                <View style={styles.menuItem(0.2)}>
-                  <AntDesign
-                    name="deleteuser"
-                    color={COLORS.primary}
-                    size={24}
-                  />
-                  <Text style={styles.menuText}>Delete account</Text>
+                  <Text style={styles.menuText}>Yêu thích</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => logoutAlert()}>
@@ -174,7 +176,7 @@ const Profile = ({navigation}) => {
                   <Text style={styles.menuText}>Đăng xuất</Text>
                 </View>
               </TouchableOpacity>
-            </View>
+            </ScrollView>
           )}
         </View>
       </View>

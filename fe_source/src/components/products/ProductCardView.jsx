@@ -1,5 +1,5 @@
 import {View, Text, TouchableOpacity, Image} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './productCardView.style';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {COLORS} from '../../../constants';
@@ -8,6 +8,8 @@ import {API_URL} from '@env';
 
 const ProductCardView = ({item}) => {
   const navigation = useNavigation();
+  const [urlImage, setUrlImage] = useState(API_URL + item.product_image);
+
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate('ProductDetail', {item})}>
@@ -15,7 +17,7 @@ const ProductCardView = ({item}) => {
         <View style={styles.imageContainer}>
           <Image
             source={{
-              uri: API_URL + item.product_image,
+              uri: urlImage,
             }}
             style={styles.image}
           />
