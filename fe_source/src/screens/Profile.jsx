@@ -5,38 +5,52 @@ import {
   StatusBar,
   Image,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
-import React from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import React, {useState, useEffect} from 'react';
 import {COLORS} from '../../constants';
-import {useState, useEffect} from 'react';
 import styles from './profile.style';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import {getUserData} from '../helpers/userDataManager';
+import {clearUserData, getUserData} from '../helpers/userDataManager';
+import {logout} from '../helpers/handleAuthApis';
+import {useToastMessage} from '../hook/showToast';
+import {useDispatch, useSelector} from 'react-redux';
+import {setIsLogin} from '../redux/slices/isLogin.slice';
+import {API_URL} from '@env';
 
 const Profile = ({navigation}) => {
   const [userData, setUserData] = useState(null);
-  const [userLogin, setUserLogin] = useState(false);
-  const logout = () => {
-    Alert.alert('Logout', 'Are you sure you want to logout', [
+  const isLogin = useSelector(state => state.isLogin.value);
+  const {showToast} = useToastMessage();
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const logoutAlert = () => {
+    Alert.alert('Đăng xuất tài khoản', 'Bạn có chắc muốn đăng xuất không ?', [
       {
-        text: 'Cancel',
+        text: 'Hủy',
         onPress: () => {},
       },
       {
-        text: 'Continute',
-        onPress: () => {},
+        text: 'Tiếp tục',
+        onPress: () => handleLogout(),
       },
     ]);
   };
+
+  const getDataUser = async () => {
+    const data = await getUserData();
+    setUserData(data);
+  };
+
   useEffect(() => {
-    const user = getUserData();
-    if (user) {
-      setUserLogin(true);
+    if (isLogin) {
+      getDataUser();
     }
-  }, []);
+  }, [isLogin]);
+
   const clearCache = () => {
     Alert.alert('Logout', 'Are you sure you want to logout', [
       {
@@ -50,6 +64,19 @@ const Profile = ({navigation}) => {
       {defaultIndex: 1},
     ]);
   };
+  handleLogout = async () => {
+    setIsLoading(true);
+    try {
+      await logout();
+      showToast('Đăng xuất thành công!', 'success');
+      clearUserData();
+      dispatch(setIsLogin(false));
+    } catch (error) {
+      showToast(`${error}`, 'danger');
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.container}>
@@ -62,13 +89,17 @@ const Profile = ({navigation}) => {
         </View>
         <View style={styles.profileContainer}>
           <Image
-            source={require('../../assets/images/userDefault.png')}
+            source={
+              userData?.user_image
+                ? {uri: API_URL + userData?.user_image}
+                : require('../../assets/images/userDefault.png')
+            }
             style={styles.profile}
           />
           <Text style={styles.name}>
-            {userLogin === true ? 'Vũ' : 'Vui lòng đăng nhập'}
+            {isLogin === true ? userData?.user_name : 'Vui lòng đăng nhập'}
           </Text>
-          {userLogin === false ? (
+          {isLogin === false ? (
             <TouchableOpacity onPress={() => navigation.navigate('Login')}>
               <View style={styles.loginBtn}>
                 <Text style={styles.menuText}>ĐĂNG NHẬP</Text>
@@ -76,11 +107,11 @@ const Profile = ({navigation}) => {
             </TouchableOpacity>
           ) : (
             <View style={styles.loginBtn}>
-              <Text style={styles.menuText}>vu@gmaul.com</Text>
+              <Text style={styles.menuText}>{userData?.email}</Text>
             </View>
           )}
 
-          {userLogin === false ? (
+          {isLogin === false ? (
             <View></View>
           ) : (
             <View style={styles.menuWrapper}>
@@ -135,7 +166,7 @@ const Profile = ({navigation}) => {
                   <Text style={styles.menuText}>Delete account</Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => logout()}>
+              <TouchableOpacity onPress={() => logoutAlert()}>
                 <View style={styles.menuItem(0.2)}>
                   <AntDesign name="logout" color={COLORS.primary} size={24} />
                   <Text style={styles.menuText}>Đăng xuất</Text>
@@ -145,6 +176,11 @@ const Profile = ({navigation}) => {
           )}
         </View>
       </View>
+      {isLoading && (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size={80} color={COLORS.primary} />
+        </View>
+      )}
     </View>
   );
 };

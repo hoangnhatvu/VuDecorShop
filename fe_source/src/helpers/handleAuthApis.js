@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {API_URL} from '@env';
+import requestApi from './apiConfig';
 
 const register = async data => {
   try {
@@ -74,4 +75,20 @@ const forgotPassword = async (data, updated_token) => {
   }
 };
 
-export {register, sendOtp, verifyOtp, forgotPassword, login};
+const logout = async () => {
+  const request = {
+    endpoint: 'auth/logout',
+    method: 'POST',
+    params: undefined,
+    body: {},
+    responseType: undefined,
+  };
+  try {
+    const response = await requestApi(request);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export {register, sendOtp, verifyOtp, forgotPassword, login, logout};

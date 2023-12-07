@@ -3,19 +3,19 @@ import React, {useState, useEffect} from 'react';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import styles from './cart.style';
-import {COLORS, SIZES} from '../../constants';
+import {COLORS} from '../../constants';
 import {CartList} from '../components';
 import CheckBox from '@react-native-community/checkbox';
 import {useDispatch, useSelector} from 'react-redux';
 import {setIsCheckAll} from '../redux/slices/isCheckAll.slice';
-import { setCartNumber } from '../redux/slices/cartNumber.slice';
-import CartManager from '../helpers/cartManager';
+import {useToastMessage} from '../hook/showToast';
 
 const Cart = ({navigation}) => {
   const dispatch = useDispatch();
   const isCheckAll = useSelector(state => state.isCheckAll.value);
   const listOrderItem = useSelector(state => state.listOrderItem.value);
   const [total, setTotal] = useState(0);
+  const {showToast} = useToastMessage();
 
   useEffect(() => {
     if (listOrderItem) {
@@ -27,6 +27,14 @@ const Cart = ({navigation}) => {
       );
     }
   }, [listOrderItem]);
+
+  handleBuy = () => {
+    if (total === 0) {
+      showToast('Vui lòng chọn sản phẩm !', 'warning');
+    } else {
+      navigation.navigate('Payment', {total});
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
@@ -59,7 +67,7 @@ const Cart = ({navigation}) => {
             <Text style={styles.totalText}>đ {total}</Text>
           </View>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleBuy}>
           <View style={styles.buttonCheckout}>
             <Text style={styles.textCheckout}>Mua Hàng</Text>
           </View>

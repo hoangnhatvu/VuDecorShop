@@ -8,6 +8,7 @@ import {
   LoginPage,
   NewProducts,
   Orders,
+  Payment,
   ProductDetail,
   SignUp,
 } from './src/screens';
@@ -66,6 +67,11 @@ export default function App() {
             <Stack.Screen
               name="ForgotPassword"
               component={ForgotPassword}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Payment"
+              component={Payment}
               options={{headerShown: false}}
             />
           </Stack.Navigator>

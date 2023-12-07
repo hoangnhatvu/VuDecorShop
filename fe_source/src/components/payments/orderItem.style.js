@@ -6,16 +6,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
-    paddingVertical: SIZES.xSmall,
+    paddingVertical: 5,
     borderRadius: SIZES.small,
     backgroundColor: '#fff',
     ...SHADOWS.medium,
     shadowColor: COLORS.lightWhite,
   },
-  checkBox: {
-    paddingHorizontal: SIZES.small,
-  },
   image: {
+    marginLeft: SIZES.small,
     width: 75,
     backgroundColor: COLORS.secondary,
     borderRadius: SIZES.medium,
@@ -41,17 +39,11 @@ const styles = StyleSheet.create({
     fontSize: SIZES.small + 2,
     fontFamily: 'Poppins-Regular',
     color: COLORS.gray,
-    marginTop: 3,
+    marginTop: 1,
   },
   actionContainer: {
     paddingRight: SIZES.small,
     alignItems: 'flex-end',
-  },
-  quantityAction: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingTop: SIZES.medium,
-
   },
   quantityText: {
     color: COLORS.gray,

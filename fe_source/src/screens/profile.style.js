@@ -23,8 +23,7 @@ const styles = StyleSheet.create({
     marginTop: -90,
   },
   name: {
-    fontFamily: 'Poppins-Bold',
-    color: COLORS.primary,
+        color: COLORS.primary,
     marginVertical: 5,
   },
   loginBtn: {
@@ -55,6 +54,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     borderColor: COLORS.gray,
   }),
+  loadingContainer: {
+    flex: 1,
+    width: 200,
+    height: 200,
+    backgroundColor: COLORS.black,
+    opacity: 0.3,
+    position: "absolute",
+    alignSelf: "center",
+    justifyContent: "center",
+    borderRadius: SIZES.xLarge,
+    top: SIZES.height /2 - 100,
+  }
 });
 
 export default styles;

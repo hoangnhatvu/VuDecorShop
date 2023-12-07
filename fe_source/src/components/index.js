@@ -7,7 +7,7 @@ import Button from './Button';
 import CartList from './carts/CartList';
 import VerifyModal from './users/VerifyModal';
 import OptionsList from './products/OptionsList';
-
+import OrderList from './payments/OrderList';
 export {
   Welcome,
   ProductCardView,
@@ -18,4 +18,5 @@ export {
   CartList,
   VerifyModal,
   OptionsList,
+  OrderList,
 };

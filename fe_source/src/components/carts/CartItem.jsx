@@ -62,6 +62,10 @@ const CartItem = ({item, loadData}) => {
       ],
     );
   };
+  const {color, size} = item?.option || {};
+
+  const optionText =
+    color && size ? `${color}, ${size}` : color ? color : size && size;
   return (
     <View>
       <TouchableOpacity style={styles.container}>
@@ -89,8 +93,8 @@ const CartItem = ({item, loadData}) => {
             style={styles.productTitle}>
             {item?.productName}
           </Text>
-          <Text style={styles.category}>{item?.categoryName}</Text>
-          <Text style={styles.category}>{item?.price}</Text>
+          {optionText && <Text style={styles.option}>{optionText}</Text>}
+          <Text style={styles.option}>{item?.price}</Text>
         </View>
         <View style={styles.actionContainer}>
           <TouchableOpacity onPress={() => handleRemoveFromCart()}>

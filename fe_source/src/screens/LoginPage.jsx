@@ -18,6 +18,9 @@ import {COLORS} from '../../constants';
 import {login, sendOtp} from '../helpers/handleAuthApis';
 import {useToastMessage} from '../hook/showToast';
 import {saveUserData} from '../helpers/userDataManager';
+import {saveToken} from '../helpers/tokenManager';
+import { useDispatch } from 'react-redux';
+import { setIsLogin } from '../redux/slices/isLogin.slice';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -33,6 +36,7 @@ const LoginPage = ({navigation}) => {
   const [obsecureTextPassword, setObsecureTextPassword] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
   const {showToast} = useToastMessage();
+  const dispatch = useDispatch();
 
   const inValidForm = () => {
     Alert.alert(
@@ -74,8 +78,10 @@ const LoginPage = ({navigation}) => {
     try {
       setLoader(true);
       const response = await login(data);
-      saveUserData(response.data);
+      saveUserData(response.data.user);
+      saveToken(response.data.token);
       showToast('Đăng nhập thành công !', 'success');
+      dispatch(setIsLogin(true))
       navigation.goBack();
     } catch (error) {
       if (error.response) {

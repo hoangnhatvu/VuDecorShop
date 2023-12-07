@@ -9,6 +9,7 @@ import Orders from './Orders';
 import Favourites from './Favourites';
 import SignUp from './SignUp';
 import ForgotPassword from './ForgotPassword';
+import Payment from './Payment';
 
 export {
   Home,
@@ -22,4 +23,5 @@ export {
   Favourites,
   SignUp,
   ForgotPassword,
+  Payment,
 };
