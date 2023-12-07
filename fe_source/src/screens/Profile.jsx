@@ -42,13 +42,15 @@ const Profile = ({navigation}) => {
 
   const getDataUser = async () => {
     const data = await getUserData();
-    setUserData(data);
+    if (isLogin && data) {
+      setUserData(data);
+    } else if (data) {
+      dispatch(setIsLogin(true));
+    }
   };
 
   useEffect(() => {
-    if (isLogin) {
-      getDataUser();
-    }
+    getDataUser();
   }, [isLogin]);
 
   const clearCache = () => {
