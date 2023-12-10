@@ -1,42 +1,62 @@
-import {View, Text, TouchableOpacity, Image} from 'react-native';
-import CheckBox from '@react-native-community/checkbox';
-import React, {useEffect, useState} from 'react';
-import styles from './addressItem.style';
-import {API_URL} from '@env';
+import {View, Text, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useSelector, useDispatch} from 'react-redux';
+import styles from './addressItem.style';
 import {RadioButton} from 'react-native-paper';
 
 import {COLORS} from '../../../constants';
 
-const AdressItem = ({item, loadData}) => {
-  const dispatch = useDispatch();
-  const [isChecked, setIsChecked] = useState(false);
+const AddressItem = ({item, selected, onSelect, mode}) => {
+  const handleCheck = () => {
+    onSelect(item);
+  };
 
   return (
     <View>
-      <TouchableOpacity style={styles.container}>
-        <View style={styles.radioButton}>
-          <RadioButton />
-        </View>
+      <TouchableOpacity style={styles.container} onPress={handleCheck}>
+        {mode === 'select' && (
+          <View style={styles.radioButton}>
+            <RadioButton.Android
+              status={selected ? 'checked' : 'unchecked'}
+              onPress={handleCheck}
+            />
+          </View>
+        )}
 
         <View style={styles.textContainer}>
           <Text
             numberOfLines={1}
             ellipsizeMode="tail"
-            style={styles.productTitle}>
-            fdsfds
+            style={styles.customerName}>
+            {item.customer_name}
           </Text>
-          <Text style={styles.option}>sdfsd</Text>
+          <Text style={styles.phoneNumber}>{item.phone_number}</Text>
+          <Text style={styles.address}>{item.address}</Text>
+          {item.is_default && (
+            <View style={styles.defaultContainer}>
+              <Text style={styles.defaultText}>Mặc định</Text>
+            </View>
+          )}
         </View>
         <View style={styles.actionContainer}>
           <TouchableOpacity onPress={() => {}}>
-            <Ionicons name="trash-outline" size={24} color={COLORS.red} />
+            {mode === 'payment' ? (
+              <Ionicons
+                name="arrow-forward-circle-outline"
+                size={24}
+                color={COLORS.primary}
+              />
+            ) : (
+              <Ionicons
+                name="create-outline"
+                size={24}
+                color={COLORS.primary}
+              />
+            )}
           </TouchableOpacity>
         </View>
       </TouchableOpacity>
     </View>
   );
 };
-
-export default AdressItem;
+export default AddressItem;

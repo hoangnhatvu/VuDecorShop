@@ -10,6 +10,8 @@ import Favourites from './Favourites';
 import SignUp from './SignUp';
 import ForgotPassword from './ForgotPassword';
 import Payment from './Payment';
+import Address from './Address';
+import EditAddress from './EditAddress';
 
 export {
   Home,
@@ -24,4 +26,6 @@ export {
   SignUp,
   ForgotPassword,
   Payment,
+  Address,
+  EditAddress,
 };

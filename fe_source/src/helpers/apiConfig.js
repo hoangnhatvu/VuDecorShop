@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {clearUserData} from './userDataManager';
+import {clearUserData, getUserData} from './userDataManager';
 import {clearToken, getToken, saveToken} from './tokenManager';
 import {API_URL} from '@env';
 
@@ -25,21 +25,22 @@ export default async function requestApi({
 
   const instance = axios.create({headers});
   const token = await getToken();
+  const user = await getUserData();
   try {
-    const userResponse = await axios.get(`${API_URL}auth/getUser`, {
-      headers: {
-        'Authorization': `Bearer ${token.accessToken}`,
-      },
+    const userResponse = await axios.post(`${API_URL}auth/getUserStatus`, {
+      'id': `${user.id}`,
     });
-
+    
     if (userResponse.data.is_blocked) {
       console.log('Tài khoản của bạn đã bị chặn !');
       clearUserData();
+      clearToken();
     } else if (userResponse.data.is_active === false) {
       console.log('Tài khoản của bạn chưa được kích hoạt !');
       clearUserData();
+      clearToken();
     } else {
-      instance.interceptors.request.use(
+      instance.interceptors.request.use(        
         config => {
           if (token && !config.headers?.Authorization) {
             config.headers['Authorization'] = `Bearer ${token.accessToken}`;
@@ -52,7 +53,7 @@ export default async function requestApi({
       );
 
       instance.interceptors.response.use(
-        response => {
+        response => {          
           return response;
         },
         async error => {
@@ -87,7 +88,8 @@ export default async function requestApi({
                 clearUserData();
                 clearToken();
               }
-            } catch (err) {                
+            } catch (err) {             
+              console.log("hehe")
               if (err.response && err.response.status === 400) {
                 clearToken();
                 clearUserData();

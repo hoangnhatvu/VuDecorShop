@@ -44,13 +44,21 @@ const styles = StyleSheet.create({
     height: 50,
     margin: SIZES.medium,
     borderRadius: 20,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   textCheckout: {
     fontFamily: 'OpenSans-SemiBold',
     fontSize: SIZES.large,
     color: COLORS.offwhite,
+  },
+  addAddressText: {
+    flexDirection: 'row',
+  },
+  subText: {
+    fontFamily: 'OpenSans-Medium',
+    fontSize: SIZES.medium,
+    marginBottom: SIZES.small,
   },
 });
 

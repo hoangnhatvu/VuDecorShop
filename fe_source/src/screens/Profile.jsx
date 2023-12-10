@@ -21,6 +21,7 @@ import {useToastMessage} from '../hook/showToast';
 import {useDispatch, useSelector} from 'react-redux';
 import {setIsLogin} from '../redux/slices/isLogin.slice';
 import {API_URL} from '@env';
+import { clearToken } from '../helpers/tokenManager';
 
 const Profile = ({navigation}) => {
   const [userData, setUserData] = useState(null);
@@ -48,12 +49,18 @@ const Profile = ({navigation}) => {
       setUserData(data);
     } else if (data) {
       dispatch(setIsLogin(true));
+    } else {
+      dispatch(setIsLogin(false))
     }
   };
 
   useEffect(() => {
     getDataUser();
   }, [isLogin]);
+
+  useEffect(() => {
+    getDataUser();
+  }, []);
 
   const clearCache = () => {
     Alert.alert('Logout', 'Are you sure you want to logout', [
@@ -74,9 +81,10 @@ const Profile = ({navigation}) => {
       await logout();
       showToast('Đăng xuất thành công!', 'success');
       clearUserData();
+      clearToken();
       dispatch(setIsLogin(false));
     } catch (error) {
-      showToast(`${error}`, 'danger');
+      showToast(`${error.response.data.message}`, 'danger');
     } finally {
       setIsLoading(false);
     }
@@ -129,7 +137,7 @@ const Profile = ({navigation}) => {
                   <Text style={styles.menuText}>Hồ sơ cá nhân</Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => {}}>
+              <TouchableOpacity onPress={() => navigation.navigate('Address')}>
                 <View style={styles.menuItem(0.2)}>
                   <MaterialCommunityIcons
                     name="book-open-outline"

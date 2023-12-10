@@ -2,6 +2,7 @@ import {View, Text, Image} from 'react-native';
 import React from 'react';
 import styles from './orderItem.style';
 import {API_URL} from '@env';
+import { formatCurrency } from '../../helpers/formatCurrency';
 
 const OrderItem = ({item}) => {
   const {color, size} = item?.option || {};
@@ -29,7 +30,7 @@ const OrderItem = ({item}) => {
         </Text>
         {optionText && <Text style={styles.option}>{optionText}</Text>}
         <Text style={styles.option}>
-          {item?.price}  x  {item.quantity}
+          {formatCurrency(item?.price)}  x  {item.quantity}
         </Text>
       </View>
     </View>

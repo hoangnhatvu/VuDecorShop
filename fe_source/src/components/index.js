@@ -10,6 +10,8 @@ import OptionsList from './products/OptionsList';
 import OrderList from './payments/OrderList';
 import Heading from './Heading';
 import AddressList from './addresses/AddressList';
+import DropdownComponent from './DropDown';
+import Loading from './Loading';
 export {
   Welcome,
   ProductCardView,
@@ -22,5 +24,7 @@ export {
   OptionsList,
   OrderList,
   Heading,
-  AddressList
+  AddressList,
+  DropdownComponent,
+  Loading,
 };

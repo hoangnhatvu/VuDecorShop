@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     alignContent: 'center',
   },
   separator: {
-    height: SIZES.medium,
+    height: SIZES.small,
   },
 });
 

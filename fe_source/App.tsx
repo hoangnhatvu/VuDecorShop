@@ -2,7 +2,9 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import BottomTabNavigation from './src/navigation/BottomTabNavigation';
 import {
+  Address,
   Cart,
+  EditAddress,
   Favourites,
   ForgotPassword,
   LoginPage,
@@ -72,6 +74,16 @@ export default function App() {
             <Stack.Screen
               name="Payment"
               component={Payment}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Address"
+              component={Address}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="EditAddress"
+              component={EditAddress}
               options={{headerShown: false}}
             />
           </Stack.Navigator>
