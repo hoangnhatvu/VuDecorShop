@@ -1,16 +1,15 @@
-import { Category } from './category';
-import { MetaData } from './meta-data';
+import { Category } from './category'
+import { MetaData } from './meta-data'
+import { Option } from './option'
 
 export interface Product extends MetaData {
-  category: Category;
-  product_name: string;
-  product_image: string;
-  price: number;
-  discount_rate: number;
-  view_number: number;
-  order_number: number;
-  description: string;
-  stock: number;
-  is_actived: boolean;
-  deleted_at: Date;
+  category: Category
+  product_name: string
+  product_image: string
+  view_number: number
+  order_number: number
+  description: string
+  options: Option[]
+  is_actived: boolean
+  deleted_at: Date
 }

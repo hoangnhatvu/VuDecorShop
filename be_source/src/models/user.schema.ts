@@ -23,25 +23,70 @@ export const userSchema = new mongoose.Schema({
     required: true,
   },
 
-  phone_number: {
-    type: String,
-    default: ""
-  },
-
-  address: {
-    type: String,
-    default: ""
-  },
-
   role: {
     type: String,
     enum: UserRole,
     default: UserRole.USER,
   },
 
+  birth_date: {
+    type: Date,
+    default: null,
+    get: function (val: Date) {
+      return val ? val.toISOString().split('T')[0] : null;
+    },
+  },
+
   is_active: {
     type: Boolean,
     default: false,
+  },
+
+  is_blocked: {
+    type: Boolean,
+    default: false,
+  },
+
+  ship_infos: [{
+    customer_name: {
+      type: String,
+      default: ""
+    },
+
+    phone_number: {
+      type: String,
+      default: ""
+    },
+
+    province: {
+      type: String,
+      default: ""
+    },
+
+    district: {
+      type: String,
+      default: ""
+    },
+
+    ward: {
+      type: String,
+      default: ""
+    },
+
+    address: {
+      type: String,
+      default: ""
+    },
+
+    is_default: {
+      type: Boolean,
+      default: false
+    }
+  }],
+
+  refresh_token: {
+    type: String,
+    default: null,
   },
 
   created_date: {
@@ -59,3 +104,7 @@ export const userSchema = new mongoose.Schema({
     default: ""
   },
 });
+
+userSchema.path('ship_infos').validate(function(value) {
+  return value.length <= 10;
+}, 'Không được phép lưu quá 10 địa chỉ!');
