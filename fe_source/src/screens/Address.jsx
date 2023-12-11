@@ -50,7 +50,7 @@ const Address = ({navigation}) => {
       ) : (
         <ScrollView>
           <AddressList data={listAddress} />
-          {listAddress && listAddress.length < 10 && (
+          {listAddress && listAddress.length < 100 && (
             <Button
               title="Thêm địa chỉ"
               loader={false}

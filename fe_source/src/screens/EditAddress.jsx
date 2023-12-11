@@ -62,8 +62,8 @@ const EditAddress = ({navigation}) => {
       const responseResults = await getProvinces();
       if (responseResults?.data) {
         const provinceData = responseResults.data.map(item => ({
-          label: item.name,
-          value: item.code,
+          label: item.ProvinceName,
+          value: item.ProvinceID,
         }));
         setDataProvince(provinceData);
       }

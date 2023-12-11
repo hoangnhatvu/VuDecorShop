@@ -1,10 +1,16 @@
 import axios from 'axios';
 
+const token = '101e2d64-95a3-11ee-b1d4-92b443b7a897';
+
 const getProvinces = async () => {
   try {
-    const endpoint = `https://provinces.open-api.vn/api/p`;
-    const response = await axios.get(endpoint);
-    return response;
+    const endpoint = `https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province`;
+    const response = await axios.get(endpoint, {
+      headers: {
+        Token: token,
+      },
+    });
+    return response?.data;
   } catch (error) {
     throw error;
   }
@@ -35,6 +41,5 @@ const getWardsByDistrict = async districtCode => {
     throw error;
   }
 };
-
 
 export {getProvinces, getDistrictsByProvince, getWardsByDistrict};
