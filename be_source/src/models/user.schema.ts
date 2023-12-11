@@ -29,6 +29,14 @@ export const userSchema = new mongoose.Schema({
     default: UserRole.USER,
   },
 
+  birth_date: {
+    type: Date,
+    default: null,
+    get: function (val: Date) {
+      return val ? val.toISOString().split('T')[0] : null;
+    },
+  },
+
   is_active: {
     type: Boolean,
     default: false,
@@ -50,10 +58,30 @@ export const userSchema = new mongoose.Schema({
       default: ""
     },
 
+    province: {
+      type: String,
+      default: ""
+    },
+
+    district: {
+      type: String,
+      default: ""
+    },
+
+    ward: {
+      type: String,
+      default: ""
+    },
+
     address: {
       type: String,
       default: ""
     },
+
+    is_default: {
+      type: Boolean,
+      default: false
+    }
   }],
 
   refresh_token: {
@@ -78,5 +106,5 @@ export const userSchema = new mongoose.Schema({
 });
 
 userSchema.path('ship_infos').validate(function(value) {
-  return value.length <= 3;
-}, 'Không được phép lưu quá 3 địa chỉ!');
+  return value.length <= 10;
+}, 'Không được phép lưu quá 10 địa chỉ!');

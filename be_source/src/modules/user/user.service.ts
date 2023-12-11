@@ -7,6 +7,7 @@ import { CreateUserDto, UpdateUserDTO, UserDTO } from 'src/dtos/user.dto'
 import { User } from 'src/types/user'
 import { hashPassword } from 'src/common/hashPassword'
 import { deleteImage } from 'src/common/deleteImage'
+import { UserRole } from 'src/enums/role.enum'
 
 @Injectable()
 export class UserService {
@@ -35,7 +36,7 @@ export class UserService {
     }
   }
 
-  async update(userid: string, updateUserDTO: UpdateUserDTO, newImage: string) {
+  async update(userid: string, updateUserDTO: UpdateUserDTO, newImage: string, role: string) {
     try {
       const user = await this.userModel.findOne({ _id: userid })
 
@@ -45,6 +46,20 @@ export class UserService {
 
       if (user.updated_token !== updateUserDTO.updated_token) {
         throw new HttpException('User đang được cập nhật bởi ai đó!', HttpStatus.CONFLICT)
+      }
+
+      if (updateUserDTO?.role || (updateUserDTO?.is_blocked && role === UserRole.USER)) {
+        throw new HttpException('Bạn không có quyền chỉnh sửa!', HttpStatus.FORBIDDEN)
+      }
+
+      if (updateUserDTO?.ship_infos) {
+        if(updateUserDTO?.ship_infos.length > 10){
+          throw new HttpException('Chỉ được lưu tối đa 10 địa chỉ !', HttpStatus.NOT_ACCEPTABLE)
+        }
+        const numIsDefault = updateUserDTO?.ship_infos.filter((info) => info.is_default === true).length
+        if (numIsDefault > 1) {
+          throw new HttpException('Chỉ được phép có một địa chỉ mặc định !', HttpStatus.NOT_ACCEPTABLE)
+        }
       }
 
       const oldImage = user.user_image

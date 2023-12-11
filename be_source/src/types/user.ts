@@ -5,14 +5,16 @@ export interface User extends Document {
   user_image: string
   email: string
   readonly password: string
+  role: string
+  birth_date: Date
   ship_infos: [
     {
       customer_name: string
       phone_number: string
       address: string
+      is_default: boolean
     },
   ]
-  role: string
   is_active: boolean
   is_blocked: boolean
   refresh_token: string

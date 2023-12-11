@@ -27,16 +27,16 @@ export class UserController {
     return this.userService.create(userCreate)
   }
 
-  @Get('get')
+  @Post('getUser')
   @UseGuards(AuthGuard)
   @Roles(UserRole.ADMIN, UserRole.EMPLOYEE, UserRole.USER)
-  getUser(@Query() query: { id: string }, @Req() req: any) {
-    return this.userService.getUser(query.id ? query.id : req.user_data.id)
+  getUser(@Body() body: { id: string }, @Req() req: any) {
+    return this.userService.getUser(body.id ? body.id : req.user_data.id)
   }
 
   @Put('update')
   @UseGuards(AuthGuard)
-  @Roles(UserRole.ADMIN, UserRole.EMPLOYEE)
+  @Roles(UserRole.ADMIN, UserRole.EMPLOYEE, UserRole.USER)
   @UseInterceptors(
     FileInterceptor('user_image', {
       storage: storageConfig('user_image'),
@@ -56,6 +56,7 @@ export class UserController {
       query.id ? query.id : req.user_data.id,
       updateUserDTO,
       file ? file.destination + '/' + file.filename : null,
+      req.user_data.role
     )
   }
 }

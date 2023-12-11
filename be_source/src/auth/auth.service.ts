@@ -222,19 +222,36 @@ export class AuthService {
     }
   }
 
-  async logout(userId: string, updatedToken: string, token: string) {
+  async getStatusUser(userId: string) {
+    try {
+      const user = await this.userModel.findOne({ _id: userId })
+
+      if (!user) {
+        throw new HttpException('Không tìm thấy user', HttpStatus.NOT_FOUND)
+      } else {
+        return { is_active: user.is_active, is_block: user.is_blocked }
+      }
+    } catch (err) {
+      if (err instanceof HttpException) {
+        throw err
+      } else {
+        throw new HttpException('Lỗi Internet', HttpStatus.INTERNAL_SERVER_ERROR)
+      }
+    }
+  }
+
+  async logout(userId: string, token: string) {
     try {
       const result = await this.userModel.updateOne(
         {
-          id: userId,
-          updated_token: updatedToken,
+          _id: userId,
         },
         {
-          refreshToken: null,
+          refresh_token: null,
         },
       )
       if (result.modifiedCount === 0) {
-        throw new HttpException('User not found', HttpStatus.NOT_FOUND)
+        throw new HttpException('Không tìm thấy user !', HttpStatus.NOT_FOUND)
       }
 
       const tokenBlacklist = new this.tokenBlacklistModel({
@@ -242,9 +259,13 @@ export class AuthService {
       })
       await tokenBlacklist.save()
 
-      return { message: 'logout successful' }
+      return { message: 'Đăng xuất thành công !' }
     } catch (error) {
-      throw new HttpException('User is not valid', HttpStatus.BAD_REQUEST)
+      if (error instanceof HttpException) {
+        throw error
+      } else {
+        throw new HttpException('Lỗi Internet', HttpStatus.INTERNAL_SERVER_ERROR)
+      }
     }
   }
 
@@ -255,9 +276,9 @@ export class AuthService {
       })
 
       const user = await this.userModel.findOne({
-        id: verify.id,
-        updateToken: verify.updatedToken,
-        refreshToken: refreshToken,
+        _id: verify.id,
+        updated_token: verify.updatedToken,
+        refresh_token: refreshToken,
       })
       if (user) {
         return this.generateToken({
@@ -267,10 +288,10 @@ export class AuthService {
           email: user.email,
         })
       } else {
-        throw new HttpException('Refresh token is not valid', HttpStatus.BAD_REQUEST)
+        throw new HttpException('Refresh token không hợp lệ !', HttpStatus.BAD_REQUEST)
       }
     } catch (err) {
-      throw new HttpException('Refresh token is not valid', HttpStatus.BAD_REQUEST)
+      throw new HttpException('Refresh token không hợp lệ !', HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -283,11 +304,11 @@ export class AuthService {
 
     await this.userModel.updateOne(
       {
-        id: payload.id,
-        updateToken: payload.updatedToken,
+        _id: payload.id,
+        updated_token: payload.updatedToken,
       },
       {
-        refreshToken: refreshToken,
+        refresh_token: refreshToken,
       },
     )
 
