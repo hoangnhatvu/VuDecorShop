@@ -15,7 +15,7 @@ const Search = () => {
     } catch (error) {}
   };
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{backgroundColor: COLORS.offwhite, flex: 1}}>
       <View style={styles.searchContainer}>
         <TouchableOpacity>
           <Ionicons

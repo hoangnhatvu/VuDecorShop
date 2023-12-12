@@ -1,7 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { COLORS } from '../../constants';
-import { ViewStyle } from 'react-native';
 import { Home, Profile, Search } from '../screens';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 

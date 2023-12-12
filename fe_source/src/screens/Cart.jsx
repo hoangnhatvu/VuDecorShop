@@ -7,6 +7,7 @@ import CheckBox from '@react-native-community/checkbox';
 import {useDispatch, useSelector} from 'react-redux';
 import {setIsCheckAll} from '../redux/slices/isCheckAll.slice';
 import {useToastMessage} from '../hook/showToast';
+import { formatCurrency } from '../helpers/formatCurrency';
 
 const Cart = ({navigation}) => {
   const dispatch = useDispatch();
@@ -28,7 +29,11 @@ const Cart = ({navigation}) => {
 
   handleBack = () => {
     dispatch(setIsCheckAll(false));
-  }
+  };
+
+  useEffect(() => {
+    dispatch(setIsCheckAll(false));
+  }, []);
 
   handleBuy = () => {
     if (total === 0) {
@@ -39,7 +44,11 @@ const Cart = ({navigation}) => {
   };
   return (
     <SafeAreaView style={styles.container}>
-      <Heading navigation={navigation} handleBack={handleBack} text="Giỏ hàng"/>
+      <Heading
+        navigation={navigation}
+        handleBack={handleBack}
+        text="Giỏ hàng"
+      />
       <CartList />
       <View style={styles.checkoutContainer}>
         <View style={styles.total}>
@@ -53,7 +62,7 @@ const Cart = ({navigation}) => {
           </View>
           <View style={styles.checkBoxWrapper}>
             <Text style={styles.totalText}>Tổng tiền:</Text>
-            <Text style={styles.totalText}>đ {total}</Text>
+            <Text style={styles.totalText}>đ {formatCurrency(total)}</Text>
           </View>
         </View>
         <TouchableOpacity onPress={handleBuy}>

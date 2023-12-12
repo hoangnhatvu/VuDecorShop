@@ -12,6 +12,7 @@ import Heading from './Heading';
 import AddressList from './addresses/AddressList';
 import DropdownComponent from './DropDown';
 import Loading from './Loading';
+import OrderHistoryList from './orders/OrderHistoryList';
 export {
   Welcome,
   ProductCardView,
@@ -27,4 +28,5 @@ export {
   AddressList,
   DropdownComponent,
   Loading,
+  OrderHistoryList,
 };

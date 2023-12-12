@@ -12,6 +12,7 @@ import ForgotPassword from './ForgotPassword';
 import Payment from './Payment';
 import Address from './Address';
 import EditAddress from './EditAddress';
+import OrderSuccess from './OrderSuccess';
 
 export {
   Home,
@@ -28,4 +29,5 @@ export {
   Payment,
   Address,
   EditAddress,
+  OrderSuccess,
 };

@@ -16,8 +16,6 @@ class CartManager {
         item => item.id === (product.product_id === undefined ? product.id + option.id : product.id),
       );
 
-      console.log(product.id + option.id);
-
       if (existingItemIndex !== -1) {
         console.log('đúng rồi nè hggodbvsdgogh');
         updatedCart[existingItemIndex].quantity += quantity;

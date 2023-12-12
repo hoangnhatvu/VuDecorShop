@@ -9,6 +9,7 @@ import {
   ForgotPassword,
   LoginPage,
   NewProducts,
+  OrderSuccess,
   Orders,
   Payment,
   ProductDetail,
@@ -84,6 +85,11 @@ export default function App() {
             <Stack.Screen
               name="EditAddress"
               component={EditAddress}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="OrderSuccess"
+              component={OrderSuccess}
               options={{headerShown: false}}
             />
           </Stack.Navigator>

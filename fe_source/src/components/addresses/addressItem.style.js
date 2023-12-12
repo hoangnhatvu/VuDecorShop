@@ -9,6 +9,8 @@ const styles = StyleSheet.create({
     paddingVertical: SIZES.xSmall,
     borderRadius: SIZES.small,
     backgroundColor: '#fff',
+    elevation: 2,
+    margin: 2,
   },
   radioButton: {
     paddingLeft: SIZES.small,

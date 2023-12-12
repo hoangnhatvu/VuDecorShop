@@ -5,6 +5,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: SIZES.small,
+    backgroundColor: COLORS.offwhite,
   },
   checkoutContainer: {
     position: 'absolute',
@@ -13,6 +14,7 @@ const styles = StyleSheet.create({
     bottom: 20,
     borderRadius: 10,
     marginHorizontal: SIZES.small,
+    elevation: 2,
   },
   total: {
     flexDirection: 'row',
@@ -34,8 +36,8 @@ const styles = StyleSheet.create({
     height: 50,
     margin: SIZES.medium,
     borderRadius: 20,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   textCheckout: {
     fontFamily: 'OpenSans-SemiBold',

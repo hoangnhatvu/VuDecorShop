@@ -3,19 +3,21 @@ import {COLORS, SIZES, SHADOWS} from '../../../constants';
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-    paddingVertical: SIZES.xSmall,
     borderRadius: SIZES.small,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
     elevation: 2,
     margin: 2,
   },
-  checkBox: {
-    paddingHorizontal: SIZES.small,
+  productContainer: {
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingVertical: SIZES.small,
+    borderBottomWidth: 0.5,
+    borderBottomColor: COLORS.gray2,
   },
   image: {
+    marginLeft: SIZES.small,
     width: 75,
     backgroundColor: COLORS.secondary,
     borderRadius: SIZES.medium,
@@ -41,21 +43,33 @@ const styles = StyleSheet.create({
     fontSize: SIZES.small + 2,
     fontFamily: 'OpenSans-Regular',
     color: COLORS.gray,
-    marginTop: 3,
+    marginTop: 1,
   },
   actionContainer: {
     paddingRight: SIZES.small,
     alignItems: 'flex-end',
   },
-  quantityAction: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingTop: SIZES.medium,
-  },
   quantityText: {
     color: COLORS.gray,
     fontFamily: 'OpenSans-Medium',
     marginHorizontal: SIZES.xSmall,
+  },
+  moreText: {
+    alignItems: 'center',
+    padding: SIZES.small,
+    borderBottomWidth: 0.5,
+    borderBottomColor: COLORS.gray2,
+  },
+
+  totalWrapper: {
+    padding: SIZES.small,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderBottomWidth: 0.5,
+    borderBottomColor: COLORS.gray2,
+  },
+  totalText: {
+    flexDirection: 'row',
   },
 });
 

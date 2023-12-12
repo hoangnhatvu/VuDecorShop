@@ -8,6 +8,9 @@ const listOrderItemSlice = createSlice({
   name: 'listOrderItem',
   initialState,
   reducers: {
+    setListOrderItem: (state) => {
+      state.value = [];
+    },
     addOrderItem: (state, action) => {
       state.value.push(action.payload);
     },
@@ -25,7 +28,7 @@ const listOrderItemSlice = createSlice({
   },
 });
 
-export const {addOrderItem, removeOrderItem, updateOrderItem} =
+export const {setListOrderItem, addOrderItem, removeOrderItem, updateOrderItem} =
   listOrderItemSlice.actions;
 
 export default listOrderItemSlice.reducer;

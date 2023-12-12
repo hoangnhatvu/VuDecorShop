@@ -9,8 +9,8 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     borderRadius: SIZES.small,
     backgroundColor: '#fff',
-    ...SHADOWS.medium,
-    shadowColor: COLORS.lightWhite,
+    elevation: 2,
+    margin: 2,
   },
   image: {
     marginLeft: SIZES.small,
