@@ -1,7 +1,7 @@
-import * as mongoose from 'mongoose';
-import { OrderStatus } from 'src/enums/order.enum';
-import { baseSchema } from './base.schema';
-import { PaymentMethod, PaymentStatus } from 'src/enums/payment.enum';
+import * as mongoose from 'mongoose'
+import { OrderStatus } from 'src/enums/order.enum'
+import { baseSchema } from './base.schema'
+import { PaymentMethod, PaymentStatus } from 'src/enums/payment.enum'
 
 export const orderSchema = new mongoose.Schema({
   user: {
@@ -17,6 +17,11 @@ export const orderSchema = new mongoose.Schema({
         ref: 'Product',
         required: true,
       },
+      option: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Option',
+        required: true,
+      },
       quantity: {
         type: Number,
         required: true,
@@ -30,6 +35,16 @@ export const orderSchema = new mongoose.Schema({
   },
 
   phone_number: {
+    type: String,
+    required: true,
+  },
+
+  district: {
+    type: Number,
+    required: true,
+  },
+
+  ward: {
     type: String,
     required: true,
   },
@@ -65,4 +80,4 @@ export const orderSchema = new mongoose.Schema({
   },
 
   ...baseSchema.obj,
-});
+})

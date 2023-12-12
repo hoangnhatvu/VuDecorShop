@@ -44,7 +44,7 @@ export class OptionController {
 
   @Put('update')
   @UseGuards(AuthGuard)
-  @Roles(UserRole.ADMIN, UserRole.EMPLOYEE)
+  @Roles(UserRole.ADMIN, UserRole.EMPLOYEE, UserRole.USER)
   @UseInterceptors(
     FileInterceptor('option_image', {
       storage: storageConfig('option_image'),

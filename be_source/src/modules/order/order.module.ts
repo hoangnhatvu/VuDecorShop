@@ -8,12 +8,14 @@ import { orderSchema } from 'src/models/order.schema';
 import { OrderService } from './order.service';
 import { OrderController } from './order.controller';
 import { productSchema } from 'src/models/product.schema';
+import { optionSchema } from 'src/models/option.schema';
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: 'Order', schema: orderSchema },
       { name: 'User', schema: userSchema },
-      { name: 'Product', schema: productSchema }
+      { name: 'Product', schema: productSchema },
+      { name: 'Option', schema: optionSchema }
     ]),
     ConfigModule,
     BlackListModule,

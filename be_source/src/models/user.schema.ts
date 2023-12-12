@@ -59,12 +59,12 @@ export const userSchema = new mongoose.Schema({
     },
 
     province: {
-      type: String,
+      type: Number,
       default: ""
     },
 
     district: {
-      type: String,
+      type: Number,
       default: ""
     },
 

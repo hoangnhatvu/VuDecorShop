@@ -11,6 +11,9 @@ export interface User extends Document {
     {
       customer_name: string
       phone_number: string
+      province: number
+      district: number
+      ward: string
       address: string
       is_default: boolean
     },

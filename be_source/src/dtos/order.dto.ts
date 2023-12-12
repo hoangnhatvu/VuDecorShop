@@ -1,15 +1,22 @@
-import { IsArray, IsBoolean, IsNotEmpty, IsNumber, Min } from 'class-validator';
+import { IsArray, IsBoolean, IsEnum, IsNotEmpty, IsNumber, Min } from 'class-validator';
 import { Expose, Transform, Type } from 'class-transformer';
 import { UserInfoDTO } from './user.dto';
 import { MetaDataDTO } from './meta-data.dto';
 import { ProductInfoDTO } from './product.dto';
 import { BooleanPipe } from 'src/pipes/boolean.pipe';
 import { NoInferType } from '@nestjs/config';
+import { OptionDTO } from './option.dto';
+import { PaymentMethod } from 'src/enums/payment.enum';
+import { OrderStatus } from 'src/enums/order.enum';
 
 export class OrderItemDTO {
   @Expose()
   @Type(() => ProductInfoDTO)
   product: ProductInfoDTO;
+
+  @Expose()
+  @Type(() => OptionDTO)
+  option: OptionDTO;
 
   @Expose()
   quantity: number;
@@ -20,6 +27,9 @@ export class CreateOrderItemDTO {
   product: string;
 
   @IsNotEmpty()
+  option: string;
+
+  @IsNotEmpty()
   @IsNumber()
   @Type(() => Number)
   @Min(0)
@@ -27,6 +37,9 @@ export class CreateOrderItemDTO {
 }
 
 export class PaymentDTO {
+  @Expose()
+  id: string;
+
   @Expose()
   amount: number;
 
@@ -45,7 +58,8 @@ export class CreatePaymentDTO {
   amount: number;
 
   @IsNotEmpty()
-  method: string;
+  @IsEnum(PaymentMethod)
+  method: PaymentMethod;
 }
 export class OrderDTO extends MetaDataDTO {
   @Expose()
@@ -89,6 +103,15 @@ export class CreateOrderDTO {
   phone_number: string;
 
   @IsNotEmpty()
+  @IsNumber()
+  @Type(() => Number)
+  @Min(0)
+  district: number;
+
+  @IsNotEmpty()
+  ward: string;
+
+  @IsNotEmpty()
   address: string;
 
   @IsNotEmpty()
@@ -98,8 +121,15 @@ export class CreateOrderDTO {
 
 export class UpdateOrderDTO {
   @IsNotEmpty()
-  status: string;
+  @IsEnum(OrderStatus)
+  status: OrderStatus;
 
   @IsNotEmpty()
   updated_token: string;
+}
+
+export class GetOrderByUserDTO {
+  @IsNotEmpty()
+  @IsEnum(OrderStatus)
+  status: OrderStatus;
 }
