@@ -1,4 +1,5 @@
 export interface Option {
+  id: string,
   option_image: string
   size: string
   color: string

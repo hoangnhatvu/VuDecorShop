@@ -73,22 +73,32 @@ export class OptionService {
 
       const product = await this.productModel.findOne({ _id: updateOptionDTO.product })
 
+      if (product) {
+        const existingItemIndex = product?.options.findIndex((item) => item.id === optionid)
+
+        if (existingItemIndex === -1) {
+          throw new HttpException('Sản phẩm không có option tương ứng !', HttpStatus.CONFLICT)
+        }
+      } else {
+        throw new HttpException('Không tìm thấy sản phẩm !', HttpStatus.NOT_FOUND)
+      }
+
       await product.updateOne({ updated_token: generateUpdateToken(), updated_by: user, updated_date: Date.now() })
 
       if (updateResult.modifiedCount > 0) {
         if (newImage) {
           deleteImage(oldImage)
         }
-        return { message: 'Cập nhật thành công' }
+        return { message: 'Cập nhật thành công !' }
       } else {
-        throw new HttpException('Cập nhật thất bại', HttpStatus.NOT_IMPLEMENTED)
+        throw new HttpException('Cập nhật thất bại !', HttpStatus.NOT_IMPLEMENTED)
       }
     } catch (err) {
       deleteImage(newImage)
       if (err instanceof HttpException) {
         throw err
       } else {
-        throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR)
+        throw new HttpException('Lỗi mạng !', HttpStatus.INTERNAL_SERVER_ERROR)
       }
     }
   }

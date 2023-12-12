@@ -21,12 +21,6 @@ export class ProductDTO extends MetaDataDTO {
   product_image: string
 
   @Expose()
-  price: number
-
-  @Expose()
-  discount_rate: number
-
-  @Expose()
   view_number: number
 
   @Expose()
@@ -34,9 +28,6 @@ export class ProductDTO extends MetaDataDTO {
 
   @Expose()
   description: string
-
-  @Expose()
-  stock: number
 
   @Expose()
   @Type(() => OptionDTO)
@@ -57,14 +48,14 @@ export class ProductInfoDTO {
   id: string
 
   @Expose()
+  @Type(() => CategoryInfoDTO)
+  category: CategoryInfoDTO
+
+  @Expose()
   product_name: string
 
   @Expose()
   product_image: string
-
-  @Expose()
-  @Type(() => OptionDTO)
-  options: OptionDTO
 }
 
 export class CreateProductDTO {

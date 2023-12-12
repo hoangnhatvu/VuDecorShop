@@ -1,4 +1,4 @@
-import { IsNotEmpty, Length, IsEmail, IsOptional, IsBoolean, IsArray, Matches, IsPhoneNumber, MaxLength, IsDateString } from 'class-validator';
+import { IsNotEmpty, Length, IsEmail, IsOptional, IsBoolean, IsArray, Matches, IsPhoneNumber, MaxLength, IsDateString, IsNumber, Min } from 'class-validator';
 import { Transform, Expose, Exclude, Type } from 'class-transformer';
 import { BooleanPipe } from 'src/pipes/boolean.pipe';
 
@@ -13,6 +13,15 @@ export class ShipInfoDTO {
   phone_number: string;
   
   @Expose()
+  province: number
+
+  @Expose()
+  district: number
+
+  @Expose()
+  ward: string
+
+  @Expose()
   address: string;
 
   @Expose()
@@ -26,6 +35,23 @@ export class UpdateShipInfoDTO {
   @IsNotEmpty()
   @IsPhoneNumber('VN', { message: 'Số điện thoại không hợp lệ' })
   phone_number: string;
+
+  
+  @IsNotEmpty()
+  @IsNumber()
+  @Type(() => Number)
+  @Min(0)
+  province: number
+
+  @IsNotEmpty()
+  @IsNumber()
+  @Type(() => Number)
+  @Min(0)
+  district: number
+
+  @IsNotEmpty()
+  @Expose()
+  ward: string
   
   @IsNotEmpty()
   @MaxLength(200)
