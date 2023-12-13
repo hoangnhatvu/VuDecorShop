@@ -1,7 +1,6 @@
 import requestApi from './apiConfig';
 
 const updateUser = async data => {
-  console.log(data)
   const request = {
     endpoint: 'users/update',
     method: 'PUT',

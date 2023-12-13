@@ -17,7 +17,6 @@ class CartManager {
       );
 
       if (existingItemIndex !== -1) {
-        console.log('đúng rồi nè hggodbvsdgogh');
         updatedCart[existingItemIndex].quantity += quantity;
       } else {
         updatedCart.push({

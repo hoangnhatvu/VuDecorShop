@@ -28,9 +28,9 @@ export default async function requestApi({
   const user = await getUserData();
   try {
     const userResponse = await axios.post(`${API_URL}auth/getUserStatus`, {
-      'id': `${user.id}`,
+      id: `${user.id}`,
     });
-    
+
     if (userResponse.data.is_blocked) {
       console.log('Tài khoản của bạn đã bị chặn !');
       clearUserData();
@@ -40,7 +40,7 @@ export default async function requestApi({
       clearUserData();
       clearToken();
     } else {
-      instance.interceptors.request.use(        
+      instance.interceptors.request.use(
         config => {
           if (token && !config.headers?.Authorization) {
             config.headers['Authorization'] = `Bearer ${token.accessToken}`;
@@ -53,7 +53,7 @@ export default async function requestApi({
       );
 
       instance.interceptors.response.use(
-        response => {          
+        response => {
           return response;
         },
         async error => {
@@ -88,8 +88,7 @@ export default async function requestApi({
                 clearUserData();
                 clearToken();
               }
-            } catch (err) {             
-              console.log("hehe")
+            } catch (err) {
               if (err.response && err.response.status === 400) {
                 clearToken();
                 clearUserData();
@@ -112,6 +111,7 @@ export default async function requestApi({
       });
     }
   } catch (error) {
+    console.log(error)
     throw error;
   }
 }

@@ -5,6 +5,7 @@ import {
   Address,
   Cart,
   EditAddress,
+  EditProfile,
   Favourites,
   ForgotPassword,
   LoginPage,
@@ -90,6 +91,11 @@ export default function App() {
             <Stack.Screen
               name="OrderSuccess"
               component={OrderSuccess}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="EditProfile"
+              component={EditProfile}
               options={{headerShown: false}}
             />
           </Stack.Navigator>

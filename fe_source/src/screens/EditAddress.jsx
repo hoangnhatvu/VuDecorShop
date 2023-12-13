@@ -1,4 +1,4 @@
-import {View, Text, ScrollView, TextInput, Alert, Switch} from 'react-native';
+import {View, Text, TextInput, Alert, Switch} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Button, Heading} from '../components';
