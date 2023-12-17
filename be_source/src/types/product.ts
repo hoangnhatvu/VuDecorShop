@@ -8,6 +8,7 @@ export interface Product extends MetaData {
   product_image: string
   view_number: number
   order_number: number
+  temp_price: number
   description: string
   options: Option[]
   is_actived: boolean

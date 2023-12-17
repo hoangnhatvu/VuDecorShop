@@ -1,6 +1,7 @@
-import { IsNotEmpty, Length, IsEmail, IsOptional, IsBoolean, IsArray, Matches, IsPhoneNumber, MaxLength, IsDateString, IsNumber, Min } from 'class-validator';
+import { IsNotEmpty, Length, IsEmail, IsOptional, IsBoolean, IsArray, Matches, IsPhoneNumber, MaxLength, IsDateString, IsNumber, Min, IsEnum } from 'class-validator';
 import { Transform, Expose, Exclude, Type } from 'class-transformer';
 import { BooleanPipe } from 'src/pipes/boolean.pipe';
+import { Gender } from 'src/enums/gender.enum';
 
 export class ShipInfoDTO {
   @Expose()
@@ -86,6 +87,9 @@ export class UserDTO {
   birth_date: string;
 
   @Expose()
+  gender: string;
+
+  @Expose()
   @Type(() => ShipInfoDTO)
   ship_infos: ShipInfoDTO[];
 
@@ -113,6 +117,9 @@ export class UserInfoDTO {
   
   @Expose()
   email: string;
+
+  @Expose()
+  user_image: string;
 }
 
 export class UpdateUserDTO {
@@ -130,6 +137,10 @@ export class UpdateUserDTO {
   @IsOptional()
   @IsDateString()
   birth_date: Date
+
+  @IsOptional()
+  @IsEnum(Gender)
+  gender: Gender;
 
   @IsOptional()
   @IsBoolean()

@@ -114,7 +114,10 @@ export class OrderService {
 
   async getOrderByUser(page?: number, limit?: number, userid?: string, status?: string): Promise<PaginatedOrder> {
     const orders = await this.orderModel
-      .find({ user: userid, status: status })
+      .find({
+        user: userid,
+        status: status === OrderStatus.IN_RATING ? { $in: [OrderStatus.IN_RATING, OrderStatus.COMPLETED] } : status,
+      })
       .populate('products.product')
       .populate('products.option')
       .populate('created_by')

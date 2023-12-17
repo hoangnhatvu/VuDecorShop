@@ -1,7 +1,8 @@
-import * as mongoose from 'mongoose';
+import * as mongoose from 'mongoose'
+import { baseSchema } from './base.schema'
 
-const reviewSchema = new mongoose.Schema({
-  product_id: {
+export const reviewSchema = new mongoose.Schema({
+  product: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Product',
     required: true,
@@ -12,34 +13,20 @@ const reviewSchema = new mongoose.Schema({
     required: true,
   },
 
-  content: String,
+  content: {
+    type: String,
+    default: '',
+  },
 
-  is_active: {
+  num_update: {
+    type: Number,
+    default: 0,
+  },
+
+  is_actived: {
     type: Boolean,
-    default: true,
+    default: false,
   },
 
-  created_by: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
-  },
-
-  created_date: {
-    type: Date,
-    default: Date.now,
-  },
-
-  updated_by: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-  },
-
-  updated_date: Date,
-  
-  updated_token: String,
-});
-
-const Review = mongoose.model('Review', reviewSchema);
-
-module.exports = Review;
+  ...baseSchema.obj,
+})
