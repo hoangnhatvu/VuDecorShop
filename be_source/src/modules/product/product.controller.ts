@@ -19,14 +19,14 @@ import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { storageConfig } from 'src/common/config';
 import { fileFilter } from 'src/common/fileFilter';
 import { ProductService } from './product.service';
-import { CreateProductDTO, UpdateProductDTO } from 'src/dtos/product.dto';
+import { CreateProductDTO, FilterProductDTO, UpdateProductDTO } from 'src/dtos/product.dto';
 
 @Controller('products')
 export class ProductController {
   constructor(private productService: ProductService) {}
   @Post('create')
   @UseGuards(AuthGuard)
-  @Roles(UserRole.ADMIN, UserRole.EMPLOYEE)
+  @Roles(UserRole.ADMIN, UserRole.EMPLOYEE, UserRole.USER)
   @UseInterceptors(
     FileInterceptor('product_image', {
       storage: storageConfig('product_image'),
@@ -74,24 +74,24 @@ export class ProductController {
     );
   }
 
-  @Get('search')
+  @Post('search')
   @HttpCode(200)
-  async findProducts(@Query() query) {
+  async findProducts(@Query() query, @Body() filterProductDTO: FilterProductDTO) {
     const page = query.page ? Number(query.page) : 1;
     const limit = query.limit ? Number(query.limit) : 20;
 
-    return this.productService.getAll(page, limit, true);
+    return this.productService.getAll(page, limit, false, filterProductDTO);
   }
 
   @Get()
   @UseGuards(AuthGuard)
   @Roles(UserRole.ADMIN, UserRole.EMPLOYEE, UserRole.USER)
   @HttpCode(200)
-  async getAll(@Query() query) {
+  async getAll(@Query() query ) {
     const page = query.page ? Number(query.page) : 1;
     const limit = query.limit ? Number(query.limit) : 20;
 
-    return this.productService.getAll(page, limit, false);
+    return this.productService.getAll(page, limit, true, null);
   }
 
   @Put('delete')

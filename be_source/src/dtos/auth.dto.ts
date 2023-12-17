@@ -61,3 +61,19 @@ export class ForgotPasswordDTO {
   @IsNotEmpty()
   updated_token: string
 }
+
+export class ChangePasswordDTO {
+  @IsNotEmpty()
+  @Length(8)
+  oldPassword: string
+
+  @IsNotEmpty()
+  updated_token: string
+
+  @IsNotEmpty()
+  @Length(8)
+  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/, {
+    message: 'Mật khẩu phải chứa ít nhất một ký tự in hoa, một ký tự thường, một chữ số và một ký tự đặc biệt!',
+  })
+  password: string
+}

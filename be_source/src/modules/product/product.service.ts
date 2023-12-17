@@ -6,8 +6,10 @@ import { Model } from 'mongoose'
 import { InjectModel } from '@nestjs/mongoose'
 import { User } from 'src/types/user'
 import { deleteImage } from 'src/common/deleteImage'
-import { CreateProductDTO, ProductDTO, UpdateProductDTO } from 'src/dtos/product.dto'
+import { CreateProductDTO, FilterProductDTO, ProductDTO, UpdateProductDTO } from 'src/dtos/product.dto'
 import { Product } from 'src/types/product'
+import { Option } from 'src/types/option'
+import mongoose from 'mongoose'
 
 export interface PaginatedProduct {
   data: ProductDTO[]
@@ -23,6 +25,7 @@ export class ProductService {
     @InjectModel('Category') private categoryModel: Model<Category>,
     @InjectModel('Product') private productModel: Model<Product>,
     @InjectModel('User') private userModel: Model<User>,
+    @InjectModel('Option') private optionModel: Model<Option>,
   ) {}
 
   async create(createProductDTO: CreateProductDTO, userid: string, productImage: string): Promise<ProductDTO> {
@@ -40,9 +43,12 @@ export class ProductService {
         throw new HttpException('Category not found', HttpStatus.NOT_FOUND)
       }
 
+      const tempPrice = await this.getTempPrice(createProductDTO.options)
+
       const product = new this.productModel({
         ...createProductDTO,
         category: category,
+        temp_price: tempPrice,
         updated_token: generateUpdateToken(),
         product_image: productImage,
         created_by: user,
@@ -87,16 +93,19 @@ export class ProductService {
 
       const oldImage = product.product_image
 
+      const tempPrice = await this.getTempPrice(updateProductDTO.options)
+
       const updateProductData = {
         ...updateProductDTO,
         updated_token: generateUpdateToken(),
         updated_by: user,
+        temp_price: tempPrice,
         product_image: newImage ? newImage : oldImage,
         updated_date: Date.now(),
       }
 
       if (product.deleted_at) {
-        throw new HttpException('Product have been deleted', HttpStatus.CONFLICT)
+        throw new HttpException('Sản phẩm đã bị xóa !', HttpStatus.CONFLICT)
       } else {
         const updateResult = await product.updateOne(updateProductData)
 
@@ -104,9 +113,9 @@ export class ProductService {
           if (newImage) {
             deleteImage(oldImage)
           }
-          return { message: 'Update successfully' }
+          return { message: 'Cập nhật thành công !' }
         } else {
-          throw new HttpException('Update fail', HttpStatus.NOT_IMPLEMENTED)
+          throw new HttpException('Cập nhật thất bại !', HttpStatus.NOT_IMPLEMENTED)
         }
       }
     } catch (err) {
@@ -114,41 +123,87 @@ export class ProductService {
       if (err instanceof HttpException) {
         throw err
       } else {
-        throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR)
+        throw new HttpException('Lỗi mạng !', HttpStatus.INTERNAL_SERVER_ERROR)
       }
     }
   }
 
-  async getAll(page: number, limit: number, isAdmin: boolean): Promise<PaginatedProduct> {
-    const query = {
-      deleted_at: null,
-      ...(isAdmin ? { is_actived: true } : {}),
-    }
-    const products = await this.productModel
-      .find(query)
-      .populate('category')
-      .populate('created_by')
-      .populate('updated_by')
-      .populate({
-        path: 'options',
-        options: { sort: { price: 1 } },
-      })
-      .skip((page - 1) * limit)
-      .limit(limit)
+  async getAll(
+    page: number,
+    limit: number,
+    isAdmin: boolean,
+    filterProductDTO: FilterProductDTO,
+  ): Promise<PaginatedProduct> {
+    try {
+      const query: any = {
+        deleted_at: null,
+        ...(isAdmin ? {} : { is_actived: true }),
+      }
 
-    const totalCount = products.length
+      if (filterProductDTO) {
+        if (filterProductDTO.searchText) {
+          query.$or = [
+            { product_name: { $regex: new RegExp(filterProductDTO.searchText, 'i') } },
+            { description: { $regex: new RegExp(filterProductDTO.searchText, 'i') } },
+          ]
+        }
 
-    const totalPage = Math.ceil(totalCount / limit)
+        if (filterProductDTO.minPrice !== undefined || filterProductDTO.maxPrice !== undefined) {
+          query.temp_price = {
+            $gte: filterProductDTO.minPrice !== undefined ? filterProductDTO.minPrice : 0,
+            $lte: filterProductDTO.maxPrice !== undefined ? filterProductDTO.maxPrice : Number.MAX_SAFE_INTEGER,
+          }
+        }
 
-    return {
-      data: plainToInstance(ProductDTO, products, {
-        excludeExtraneousValues: true,
-        enableImplicitConversion: true,
-      }),
-      page,
-      limit,
-      totalCount,
-      totalPage,
+          if (filterProductDTO.selectedCategories && filterProductDTO.selectedCategories.length > 0) {
+            query.category = { $in: filterProductDTO.selectedCategories }
+          }
+
+        //   if (filterProductDTO.sortByPopularity !== undefined && filterProductDTO.sortByPopularity) {
+        //     query.$orderby = { view_number: -1 }
+        //   }
+
+        //   if (filterProductDTO.sortByNewest !== undefined && filterProductDTO.sortByNewest) {
+        //     query.$orderby = { create_date: -1 }
+        //   }
+      }
+
+      const products = await this.productModel
+        .find(query)
+        .populate('category')
+        .populate('created_by')
+        .populate('updated_by')
+        .populate({
+          path: 'options',
+          options: { sort: { price: 1 } },
+        })
+        .sort({
+          temp_price:
+            filterProductDTO.sortByPriceAscending !== undefined ? (filterProductDTO.sortByPriceAscending ? 1 : -1) : 0,
+        } as any)
+        .skip((page - 1) * limit)
+        .limit(limit)
+
+      const totalCount = products.length
+
+      const totalPage = Math.ceil(totalCount / limit)
+
+      return {
+        data: plainToInstance(ProductDTO, products, {
+          excludeExtraneousValues: true,
+          enableImplicitConversion: true,
+        }),
+        page,
+        limit,
+        totalCount,
+        totalPage,
+      }
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error
+      } else {
+        throw new HttpException('Lỗi mạng', HttpStatus.INTERNAL_SERVER_ERROR)
+      }
     }
   }
 
@@ -183,5 +238,29 @@ export class ProductService {
         throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR)
       }
     }
+  }
+
+  private async getTempPrice(options: string[]) {
+    const newOptions = []
+
+    for (const id of options) {
+      const newId = new mongoose.Types.ObjectId(id)
+
+      newOptions.push(newId)
+    }
+    const result = await this.optionModel.aggregate([
+      {
+        $match: {
+          _id: { $in: newOptions },
+        },
+      },
+      {
+        $sort: { price: 1 },
+      },
+      {
+        $limit: 1,
+      },
+    ])
+    return result[0].price
   }
 }

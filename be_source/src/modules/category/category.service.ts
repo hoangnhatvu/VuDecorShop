@@ -126,11 +126,17 @@ export class CategoryService {
     }
   }
 
-  async getAll(page?: number, limit?: number): Promise<PaginatedCategory> {
+  async getAll(page?: number, limit?: number, isAdmin?: boolean): Promise<PaginatedCategory> {
+    const query = {
+      ...(isAdmin ? {} : {is_actived: true}),
+    }
+
     const categories = await this.categoryModel
-      .find()
+      .find(query)
       .populate('created_by')
-      .populate('updated_by');
+      .populate('updated_by')
+      .skip((page - 1) * limit)
+      .limit(limit)
 
     const totalCount = categories.length;
 

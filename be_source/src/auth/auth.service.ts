@@ -1,6 +1,13 @@
 import { Injectable, HttpException, HttpStatus, ConflictException, InternalServerErrorException } from '@nestjs/common'
 
-import { ForgotPasswordDTO, LoginDTO, RegisterDTO, SendOtpDTO, VerifyOtpDTO } from 'src/dtos/auth.dto'
+import {
+  ChangePasswordDTO,
+  ForgotPasswordDTO,
+  LoginDTO,
+  RegisterDTO,
+  SendOtpDTO,
+  VerifyOtpDTO,
+} from 'src/dtos/auth.dto'
 import * as bcrypt from 'bcrypt'
 import { JwtService } from '@nestjs/jwt'
 import { ConfigService } from '@nestjs/config'
@@ -163,6 +170,47 @@ export class AuthService {
         excludeExtraneousValues: true,
       }),
       token: token,
+    }
+  }
+
+  async changePassword(changePasswordDTO: ChangePasswordDTO, email: string) {
+    try {
+      const user = await this.userModel.findOne({
+        email: email,
+      })
+      if (!user) {
+        throw new HttpException('Không tìm thấy người dùng !', HttpStatus.UNAUTHORIZED)
+      }
+      const isMatch = await bcrypt.compare(changePasswordDTO.oldPassword, user.password)
+      if (!isMatch) {
+        throw new HttpException('Mật khẩu hiện tại không chính xác !', HttpStatus.UNAUTHORIZED)
+      }
+
+      if (user.updated_token !== changePasswordDTO.updated_token) {
+        throw new HttpException('User đang được cập nhật bởi ai đó!', HttpStatus.CONFLICT)
+      }
+
+      const hashPass = await hashPassword(changePasswordDTO.password)
+
+      const updatePasswordData = {
+        password: hashPass,
+        updated_token: generateUpdateToken(),
+        updated_date: Date.now(),
+      }
+
+      const updateResult = await user.updateOne(updatePasswordData)
+
+      if (updateResult.modifiedCount > 0) {
+        return { message: 'Cập nhật thành công' }
+      } else {
+        throw new HttpException('Cập nhật thất bại', HttpStatus.NOT_IMPLEMENTED)
+      }
+    } catch (err) {
+      if (err instanceof HttpException) {
+        throw err
+      } else {
+        throw new HttpException('Lỗi Internet', HttpStatus.INTERNAL_SERVER_ERROR)
+      }
     }
   }
 

@@ -11,6 +11,7 @@ import { OrderModule } from './modules/order/order.module'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'path'
 import { OptionModule } from './modules/option/option.module'
+import { ReviewModule } from './modules/review/review.module'
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { OptionModule } from './modules/option/option.module'
     ProductModule,
     OrderModule,
     OptionModule,
+    ReviewModule,
   ],
   controllers: [AppController],
   providers: [AppService],

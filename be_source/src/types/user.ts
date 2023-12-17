@@ -7,6 +7,7 @@ export interface User extends Document {
   readonly password: string
   role: string
   birth_date: Date
+  gender: string
   ship_infos: [
     {
       customer_name: string

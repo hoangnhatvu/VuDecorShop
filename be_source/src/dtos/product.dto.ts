@@ -1,10 +1,16 @@
-import { IsArray, IsBoolean, IsNotEmpty, IsNumber, IsOptional, Max, Min } from 'class-validator'
+import {
+  IsArray,
+  IsBoolean,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  Min,
+} from 'class-validator'
 import { Expose, Transform, Type } from 'class-transformer'
 import { CategoryInfoDTO } from './category.dto'
 import { BooleanPipe } from 'src/pipes/boolean.pipe'
 import { MetaDataDTO } from './meta-data.dto'
-import { CreateOptionDTO, OptionDTO } from './option.dto'
-import { Optional } from '@nestjs/common'
+import { OptionDTO } from './option.dto'
 
 export class ProductDTO extends MetaDataDTO {
   @Expose()
@@ -70,7 +76,7 @@ export class CreateProductDTO {
 
   @IsNotEmpty()
   @IsArray()
-  options: string[];
+  options: string[]
 
   @IsNotEmpty()
   @IsBoolean()
@@ -90,7 +96,7 @@ export class UpdateProductDTO {
 
   @IsNotEmpty()
   @IsArray()
-  options: string[];
+  options: string[]
 
   @IsNotEmpty()
   @IsBoolean()
@@ -99,4 +105,40 @@ export class UpdateProductDTO {
 
   @IsNotEmpty()
   updated_token: string
+}
+
+export class FilterProductDTO {
+  @IsOptional()
+  searchText: string
+
+  @IsOptional()
+  @IsNumber()
+  @Type(() => Number)
+  @Min(0)
+  minPrice: number
+
+  @IsOptional()
+  @IsNumber()
+  @Type(() => Number)
+  @Min(0)
+  maxPrice: number
+
+  @IsOptional()
+  @IsBoolean()
+  @Transform((value) => new BooleanPipe().transform(value.value))
+  sortByPriceAscending: boolean
+
+  @IsOptional()
+  @IsArray()
+  selectedCategories: string[]
+
+  @IsOptional()
+  @IsBoolean()
+  @Transform((value) => new BooleanPipe().transform(value.value))
+  sortByPopularity: boolean
+
+  @IsOptional()
+  @IsBoolean()
+  @Transform((value) => new BooleanPipe().transform(value.value))
+  sortByNewest: boolean
 }

@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+import { Gender } from 'src/enums/gender.enum';
 import { UserRole } from 'src/enums/role.enum';
 
 export const userSchema = new mongoose.Schema({
@@ -35,6 +36,12 @@ export const userSchema = new mongoose.Schema({
     get: function (val: Date) {
       return val ? val.toISOString().split('T')[0] : null;
     },
+  },
+
+  gender: {
+    type: String,
+    enum: Gender,
+    default: "",
   },
 
   is_active: {

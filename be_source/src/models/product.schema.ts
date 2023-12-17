@@ -30,6 +30,11 @@ export const productSchema = new mongoose.Schema({
     required: true,
   },
 
+  temp_price: {
+    type: Number,
+    required: true,
+  },
+
   options: [
     {
       type: mongoose.Schema.Types.ObjectId,

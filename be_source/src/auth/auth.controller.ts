@@ -1,7 +1,7 @@
 import { Req, Body, Controller, HttpCode, Post, UseGuards, Get } from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { AuthGuard } from '../guards/auth.guard'
-import { ForgotPasswordDTO, LoginDTO, RegisterDTO, SendOtpDTO, VerifyOtpDTO } from 'src/dtos/auth.dto'
+import { ChangePasswordDTO, ForgotPasswordDTO, LoginDTO, RegisterDTO, SendOtpDTO, VerifyOtpDTO } from 'src/dtos/auth.dto'
 import { Roles } from 'src/decorators/roles.decorator'
 import { UserRole } from 'src/enums/role.enum'
 
@@ -44,6 +44,14 @@ export class AuthController {
   @Post('getUserStatus')
   getUserStatus(@Body() body: {id: string}) {
     return this.authService.getStatusUser(body.id)
+  }
+
+  @UseGuards(AuthGuard)
+  @HttpCode(200)
+  @Roles(UserRole.USER)
+  @Post('changePassword')
+  changePassword(@Req() request: any, @Body() changePasswordDTO: ChangePasswordDTO) {
+    return this.authService.changePassword(changePasswordDTO, request.user_data.email)
   }
 
   @UseGuards(AuthGuard)
