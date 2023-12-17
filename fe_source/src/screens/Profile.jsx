@@ -22,6 +22,7 @@ import {setIsLogin} from '../redux/slices/isLogin.slice';
 import {API_URL} from '@env';
 import { clearToken } from '../helpers/tokenManager';
 import useRefreshUser from '../hook/refreshUser';
+import { Loading } from '../components';
 
 const Profile = ({navigation}) => {
   const [userData, setUserData] = useState(null);
@@ -65,7 +66,8 @@ const Profile = ({navigation}) => {
         dispatch(setIsLogin(false))
       }
     } catch (error) {
-      showToast(`${error}`);
+      showToast("Phiên đăng nhập hết hạn !", "warning");
+      dispatch(setIsLogin(false))
     } finally {
       setIsLoading(false);
     }
@@ -135,12 +137,12 @@ const Profile = ({navigation}) => {
                   <Ionicons
                     name="person-outline"
                     color={COLORS.primary}
-                    size={24}
+                    size={24}   
                   />
                   <Text style={styles.menuText}>Hồ sơ cá nhân</Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate('Address')}>
+              <TouchableOpacity onPress={() => navigation.navigate('ChangePassword')}>
                 <View style={styles.menuItem(0.2)}>
                   <MaterialCommunityIcons
                     name="key-change"
@@ -202,9 +204,10 @@ const Profile = ({navigation}) => {
         </View>
       </View>
       {isLoading && (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size={80} color={COLORS.primary} />
-        </View>
+        // <View style={styles.loadingContainer}>
+        //   <ActivityIndicator size={80} color={COLORS.primary} />
+        // </View>
+        <Loading/>
       )}
     </View>
   );

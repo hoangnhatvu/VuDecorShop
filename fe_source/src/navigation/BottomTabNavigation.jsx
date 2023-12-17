@@ -43,7 +43,7 @@ const BottomTabNavigation = () => {
           tabBarIcon: ({ focused }) => {
             return (
               <IonIcon
-                name={"search-sharp"}
+                name={focused ? "storefront" : "storefront-outline"}
                 size={24}
                 color={focused ? COLORS.primary : COLORS.gray2}
               />

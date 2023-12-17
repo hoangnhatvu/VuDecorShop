@@ -13,6 +13,8 @@ import AddressList from './addresses/AddressList';
 import DropdownComponent from './DropDown';
 import Loading from './Loading';
 import OrderHistoryList from './orders/OrderHistoryList';
+import Filter from './products/Filter';
+
 export {
   Welcome,
   ProductCardView,
@@ -29,4 +31,5 @@ export {
   DropdownComponent,
   Loading,
   OrderHistoryList,
+  Filter,
 };

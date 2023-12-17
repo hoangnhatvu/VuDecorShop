@@ -18,7 +18,7 @@ const NewProducts = ({navigation}) => {
               color={COLORS.lightWhite}
             />
           </TouchableOpacity>
-          <Text style={styles.heading}>All Products</Text>
+          <Text style={styles.heading}>Sản phẩm mới</Text>
         </View>
         <ProductList/>
       </View>

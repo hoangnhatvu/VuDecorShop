@@ -6,7 +6,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import React from 'react';
-import {COLORS} from '../../constants';
+import {COLORS, SIZES} from '../../constants';
 
 const Button = ({title, onPress, isValid, loader, width}) => {
   return (
@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     fontFamily: 'OpenSans-Bold',
     color: COLORS.white,
     fontSize: 18,
+    marginHorizontal: SIZES.xLarge
   },
   btnStyle: (backgroundColor, width) => ({
     height: 50,

@@ -14,6 +14,7 @@ import Address from './Address';
 import EditAddress from './EditAddress';
 import OrderSuccess from './OrderSuccess';
 import EditProfile from './EditProfile';
+import ChangePassword from './ChangePassword';
 
 export {
   Home,
@@ -32,4 +33,5 @@ export {
   EditAddress,
   OrderSuccess,
   EditProfile,
+  ChangePassword,
 };

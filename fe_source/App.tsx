@@ -4,6 +4,7 @@ import BottomTabNavigation from './src/navigation/BottomTabNavigation';
 import {
   Address,
   Cart,
+  ChangePassword,
   EditAddress,
   EditProfile,
   Favourites,
@@ -96,6 +97,11 @@ export default function App() {
             <Stack.Screen
               name="EditProfile"
               component={EditProfile}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="ChangePassword"
+              component={ChangePassword}
               options={{headerShown: false}}
             />
           </Stack.Navigator>

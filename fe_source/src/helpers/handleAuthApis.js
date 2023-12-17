@@ -91,4 +91,20 @@ const logout = async () => {
   }
 };
 
-export {register, sendOtp, verifyOtp, forgotPassword, login, logout};
+const changePassword = async (data) => {
+  const request = {
+    endpoint: 'auth/changePassword',
+    method: 'POST',
+    params: undefined,
+    body: data,
+    responseType: undefined,
+  };
+  try {
+    const response = await requestApi(request);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export {register, sendOtp, verifyOtp, forgotPassword, login, logout, changePassword};

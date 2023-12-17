@@ -40,7 +40,7 @@ const StatusOrderNavigation = () => {
         name="Delivered"
         component={OrderHistoryList}
         options={{tabBarLabel: 'Đã giao hàng'}}
-        initialParams={{status: 'Đã giao hàng'}}
+        initialParams={{status: 'Chờ đánh giá'}}
       />
       <Tab.Screen
         name="Canceled"

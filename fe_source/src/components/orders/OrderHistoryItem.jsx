@@ -64,7 +64,7 @@ const OrderHistoryItem = ({item}) => {
         </View>
       </View>
       <View style={{alignItems: "center"}}>
-        {item?.status === 'Đang xác nhận' ||
+        {item?.status === 'Chờ xác nhận' ||
         item?.status === 'Đang lấy hàng' ? (
           <Button
             title="Hủy đơn hàng"
@@ -73,7 +73,7 @@ const OrderHistoryItem = ({item}) => {
             width="70%"
           />
         ) : (
-          <View>
+          <View style={{alignItems: "center"}}>
             {item?.status === 'Đang vận chuyển' ? (
               <Button
                 title="Đã nhận được hàng"
@@ -82,8 +82,8 @@ const OrderHistoryItem = ({item}) => {
                 width="70%"
               />
             ) : (
-              <View>
-                {item?.status === 'Đã giao hàng' && (
+              <View style={{alignItems: "center"}}>
+                {item?.status === 'Chờ đánh giá' && (
                   <Button
                     title="Đánh giá sản phẩm"
                     loader={false}
