@@ -1,23 +1,19 @@
-import {View, Text, ActivityIndicator} from 'react-native';
+import {View, ActivityIndicator} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import styles from './orderHistoryList.style';
-import OrderHistoryItem from './OrderHistoryItem';
-import {getOrderByUser} from '../../helpers/handleOrderApis';
+import styles from './reviewList.style';
 import {useToastMessage} from '../../hook/showToast';
-import {COLORS, SIZES} from '../../../constants';
-import { useFocusEffect } from '@react-navigation/native';
+import {COLORS} from '../../../constants';
+import ReviewItem from './ReviewItem';
 
-const OrderHistoryList = ({route}) => {
+const ReviewList = ({listOrderProduct}) => {
   const [data, setdata] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const {showToast} = useToastMessage();
-  const {status} = route.params;
 
   const loadData = async () => {
     setIsLoading(true);
     try {
-      const responseResults = await getOrderByUser(status);
-      setdata(responseResults.data);
+      setdata(listOrderProduct?.products);
     } catch (error) {
       showToast('Có lỗi xảy ra !', 'danger');
     } finally {
@@ -28,13 +24,7 @@ const OrderHistoryList = ({route}) => {
   useEffect(() => {
     loadData();
   }, []);
-
-  useFocusEffect(
-    React.useCallback(() => {
-      loadData();
-    }, [])
-  );
-
+  
   return (
     <View style={styles.container}>
       {isLoading ? (
@@ -42,11 +32,11 @@ const OrderHistoryList = ({route}) => {
           <ActivityIndicator size={80} color={COLORS.primary} />
         </View>
       ) : (
-        <View>
-          {data.length > 0 && (
-            <View style={{gap: SIZES.small}}>
+        <View >
+          {data?.length > 0 && (
+            <View>
               {data?.map((item, index) => {
-                return <OrderHistoryItem item={item} key={index} />;
+                return <ReviewItem item={item} order={listOrderProduct.id} key={index} />;
               })}
             </View>
           )}
@@ -56,4 +46,4 @@ const OrderHistoryList = ({route}) => {
   );
 };
 
-export default OrderHistoryList;
+export default ReviewList;

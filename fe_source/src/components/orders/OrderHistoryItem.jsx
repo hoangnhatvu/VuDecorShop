@@ -5,9 +5,11 @@ import {API_URL} from '@env';
 import {formatCurrency} from '../../helpers/formatCurrency';
 import {COLORS, SIZES} from '../../../constants';
 import Button from '../Button';
+import {useNavigation} from '@react-navigation/native';
 
 const OrderHistoryItem = ({item}) => {
   const {color, size} = item?.products[0]?.option || {};
+  const navigation = useNavigation();
 
   const optionText =
     color && size ? `${color}, ${size}` : color ? color : size && size;
@@ -63,9 +65,8 @@ const OrderHistoryItem = ({item}) => {
           </Text>
         </View>
       </View>
-      <View style={{alignItems: "center"}}>
-        {item?.status === 'Chờ xác nhận' ||
-        item?.status === 'Đang lấy hàng' ? (
+      <View style={{alignItems: 'center'}}>
+        {item?.status === 'Chờ xác nhận' || item?.status === 'Đang lấy hàng' ? (
           <Button
             title="Hủy đơn hàng"
             loader={false}
@@ -73,7 +74,7 @@ const OrderHistoryItem = ({item}) => {
             width="70%"
           />
         ) : (
-          <View style={{alignItems: "center"}}>
+          <View style={{alignItems: 'center'}}>
             {item?.status === 'Đang vận chuyển' ? (
               <Button
                 title="Đã nhận được hàng"
@@ -82,12 +83,12 @@ const OrderHistoryItem = ({item}) => {
                 width="70%"
               />
             ) : (
-              <View style={{alignItems: "center"}}>
+              <View style={{alignItems: 'center'}}>
                 {item?.status === 'Chờ đánh giá' && (
                   <Button
                     title="Đánh giá sản phẩm"
                     loader={false}
-                    onPress={() => {}}
+                    onPress={() => navigation.navigate("Review", { listOrderProduct: item })}
                     width="70%"
                   />
                 )}

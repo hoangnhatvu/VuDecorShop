@@ -3,6 +3,7 @@ import {COLORS, SIZES, SHADOWS} from '../../../constants';
 
 const styles = StyleSheet.create({
   container: {
+    gap: 10,
     backgroundColor: COLORS.offwhite,
     flex: 1,
     paddingTop: SIZES.small,

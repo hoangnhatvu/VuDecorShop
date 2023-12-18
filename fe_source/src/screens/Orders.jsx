@@ -12,9 +12,7 @@ const Orders = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <Heading navigation={navigation} text="Đơn hàng của bạn" />
-      <NavigationContainer independent={true}>
-        <StatusOrderNavigation />
-      </NavigationContainer>
+      <StatusOrderNavigation />
     </SafeAreaView>
   );
 };

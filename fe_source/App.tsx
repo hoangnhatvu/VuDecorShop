@@ -15,11 +15,13 @@ import {
   Orders,
   Payment,
   ProductDetail,
+  Review,
   SignUp,
 } from './src/screens';
 import {Provider} from 'react-redux';
 import {ToastProvider} from 'react-native-toast-notifications';
 import store from './src/redux/store';
+import StatusOrderNavigation from './src/navigation/StatusOrderNavigation';
 
 const Stack = createNativeStackNavigator();
 
@@ -102,6 +104,11 @@ export default function App() {
             <Stack.Screen
               name="ChangePassword"
               component={ChangePassword}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Review"
+              component={Review}
               options={{headerShown: false}}
             />
           </Stack.Navigator>
