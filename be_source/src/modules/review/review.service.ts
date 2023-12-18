@@ -31,7 +31,12 @@ export class ReviewService {
     try {
       const user = await this.userModel.findOne({ _id: userid })
       const product = await this.productModel.findOne({ _id: createReviewDTO.product })
-      const orders = await this.orderModel.find({user: userid, 'products.product': createReviewDTO.product, status: OrderStatus.IN_RATING})
+      const orders = await this.orderModel.find({
+        user: userid,
+        'products.product': createReviewDTO.product,
+        status: OrderStatus.IN_RATING,
+        _id: createReviewDTO.order,
+      })
 
       if (!user) {
         throw new HttpException('Không tìm thấy người dùng !', HttpStatus.NOT_FOUND)
@@ -53,6 +58,8 @@ export class ReviewService {
       })
 
       await review.save()
+
+      await orders[0].updateOne({ status: OrderStatus.COMPLETED })
 
       return plainToInstance(ReviewDTO, review, {
         excludeExtraneousValues: true,
@@ -104,9 +111,9 @@ export class ReviewService {
     }
   }
 
-  async getAll(page?: number, limit?: number, isAdmin?: boolean, productid?: string): Promise<PaginatedReview> {
+  async getAll(page?: number, limit?: number, isAdmin?: boolean, product?: string): Promise<PaginatedReview> {
     const query = {
-      ...(isAdmin ? {} : { is_actived: true, product: productid }),
+      ...(isAdmin ? {} : { is_actived: true, product: product }),
     }
 
     const reviews = await this.reviewModel
