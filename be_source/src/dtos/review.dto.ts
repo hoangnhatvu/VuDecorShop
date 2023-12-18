@@ -30,13 +30,16 @@ export class CreateReviewDTO {
   product: string
 
   @IsNotEmpty()
+  order: string
+
+  @IsNotEmpty()
   @IsNumber()
   @Type(() => Number)
   @Min(0)
   @Max(5)
   rate: number
 
-  @IsNotEmpty()
+  @IsOptional()
   content: string
 }
 

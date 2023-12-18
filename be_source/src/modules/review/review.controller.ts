@@ -24,10 +24,10 @@ export class ReviewController {
 
   @Post('getReviewsByProduct')
   @HttpCode(200)
-  async getReviewsByProduct(@Query() query: any, @Body() body: { productid: string }) {
+  async getReviewsByProduct(@Query() query: any, @Body() body: { product: string }) {
     const page = query.page ? Number(query.page) : 1
     const limit = query.limit ? Number(query.limit) : 20
-    return this.reviewService.getAll(page, limit, false, body.productid)
+    return this.reviewService.getAll(page, limit, false, body.product)
   }
 
   @Get()
