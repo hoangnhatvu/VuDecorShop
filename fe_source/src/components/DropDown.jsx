@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     alignItems: 'center',
     marginBottom: SIZES.large,
-    ...SHADOWS.small,
+    elevation: 2,    
   },
   icon: {
     marginRight: 5,

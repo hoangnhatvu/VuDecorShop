@@ -8,12 +8,12 @@ const OrderList = () => {
   const listOrderItem = useSelector(state => state.listOrderItem.value);
 
   return (
-    <View>
-      <FlatList
-        data={listOrderItem}
-        renderItem={({item}) => <OrderItem item={item} />}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
-      />
+    <View style={{gap: 5}}>
+      {listOrderItem.map((item, index) => {
+        return(
+          <OrderItem item={item} key={index}/>
+        )
+      })}
     </View>
   );
 };

@@ -9,11 +9,12 @@ import Carousel from '../components/home/Carousel';
 import Headings from '../components/home/Headings';
 import ProductRow from '../components/products/ProductRow';
 import { useNavigation } from '@react-navigation/native';
+import { COLORS } from '../../constants';
 
 const Home = () => {
   const navigation = useNavigation();
   return (
-      <SafeAreaView>
+      <SafeAreaView style={{backgroundColor: COLORS.offwhite, flex: 1}}>
         <View style={styles.appBarWrapper}>
           <View style={styles.appBar}>
             <IonIcon name='location-outline' size={24} />

@@ -6,13 +6,12 @@ import useFetch from '../../hook/fetchData';
 
 const ProductRow = () => {
   const {data, isLoading, error} = useFetch();
-  const products = [1, 2, 3, 4];
   return (
     <View style={{marginTop: SIZES.small, marginHorizontal: 12}}>
       {isLoading ? (
         <ActivityIndicator size={SIZES.xxLarge} color={COLORS.primary} />
       ) : error ? (
-        <Text>Something went wrong</Text>
+        <Text>Có lỗi xảy ra</Text>
       ) : (
         <FlatList
           data={data}

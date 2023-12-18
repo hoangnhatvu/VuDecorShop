@@ -16,27 +16,43 @@ const getProvinces = async () => {
   }
 };
 
-const getDistrictsByProvince = async provinceCode => {
+const getDistrictsByProvince = async provinceId => {
   try {
-    if (!provinceCode) {
-      throw new Error('Vui lòng chọn tỉnh thành trước !');
+    if (!provinceId) {
+      throw new Error('Vui lòng chọn tỉnh thành trước!');
     }
-    const endpoint = `https://provinces.open-api.vn/api/p/${provinceCode}?depth=2`;
-    const response = await axios.get(endpoint);
-    return response;
+    const endpoint =
+      'https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district';
+    const response = await axios.get(endpoint, {
+      headers: {
+        Token: token,
+      },
+      params: {
+        province_id: provinceId,
+      },
+    });
+    return response.data;
   } catch (error) {
     throw error;
   }
 };
 
-const getWardsByDistrict = async districtCode => {
+const getWardsByDistrict = async districtId => {
   try {
-    if (!districtCode) {
+    if (!districtId) {
       throw new Error('Vui lòng chọn quận huyện trước !');
     }
-    const endpoint = `https://provinces.open-api.vn/api/d/${districtCode}?depth=2`;
-    const response = await axios.get(endpoint);
-    return response;
+    const endpoint =
+      'https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward';
+    const response = await axios.get(endpoint, {
+      headers: {
+        Token: token,
+      },
+      params: {
+        district_id: districtId,
+      },
+    });
+    return response.data;
   } catch (error) {
     throw error;
   }

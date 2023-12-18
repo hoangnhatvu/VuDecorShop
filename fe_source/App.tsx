@@ -4,19 +4,24 @@ import BottomTabNavigation from './src/navigation/BottomTabNavigation';
 import {
   Address,
   Cart,
+  ChangePassword,
   EditAddress,
+  EditProfile,
   Favourites,
   ForgotPassword,
   LoginPage,
   NewProducts,
+  OrderSuccess,
   Orders,
   Payment,
   ProductDetail,
+  Review,
   SignUp,
 } from './src/screens';
 import {Provider} from 'react-redux';
 import {ToastProvider} from 'react-native-toast-notifications';
 import store from './src/redux/store';
+import StatusOrderNavigation from './src/navigation/StatusOrderNavigation';
 
 const Stack = createNativeStackNavigator();
 
@@ -84,6 +89,26 @@ export default function App() {
             <Stack.Screen
               name="EditAddress"
               component={EditAddress}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="OrderSuccess"
+              component={OrderSuccess}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="EditProfile"
+              component={EditProfile}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="ChangePassword"
+              component={ChangePassword}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Review"
+              component={Review}
               options={{headerShown: false}}
             />
           </Stack.Navigator>

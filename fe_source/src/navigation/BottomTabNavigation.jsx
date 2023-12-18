@@ -1,7 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { COLORS } from '../../constants';
-import { ViewStyle } from 'react-native';
 import { Home, Profile, Search } from '../screens';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
@@ -11,7 +10,6 @@ const screenOptions = {
   tabBarHideOnKeyboard: true,
   headerShown: false,
   tabBarStyle: {
-    position: 'absolute',
     bottom: 0,
     right: 0,
     left: 0,
@@ -45,7 +43,7 @@ const BottomTabNavigation = () => {
           tabBarIcon: ({ focused }) => {
             return (
               <IonIcon
-                name={"search-sharp"}
+                name={focused ? "storefront" : "storefront-outline"}
                 size={24}
                 color={focused ? COLORS.primary : COLORS.gray2}
               />

@@ -2,6 +2,8 @@ import {StyleSheet} from 'react-native';
 import {SIZES, COLORS} from '../../constants';
 const styles = StyleSheet.create({
   container: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
     backgroundColor: COLORS.lightWhite,
   },
   upperRow: {
@@ -19,7 +21,8 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     resizeMode: 'cover',
   },
-  details: {
+  detailsWrapper: {
+    maxHeight: 390,
     marginTop: -SIZES.large,
     backgroundColor: COLORS.offwhite,
     width: SIZES.width,
@@ -27,6 +30,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: SIZES.medium,
     paddingHorizontal: SIZES.small,
   },
+
   titleRow: {
     paddingVertical: SIZES.small,
     marginLeft: 4,
@@ -35,7 +39,7 @@ const styles = StyleSheet.create({
     fontFamily: 'OpenSans-Bold',
     fontSize: SIZES.xLarge,
   },
-  
+
   price: {
     paddingHorizontal: 10,
     fontFamily: 'OpenSans-SemiBold',
@@ -47,14 +51,15 @@ const styles = StyleSheet.create({
     paddingBottom: SIZES.large,
   },
   priceWrapper: {
-    alignItems: "center",
+    alignItems: 'center',
     backgroundColor: COLORS.secondary,
     borderRadius: SIZES.large,
   },
   ratingRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingBottom: SIZES.large,
+    paddingBottom: SIZES.small,
+    paddingTop: SIZES.small / 2,
   },
   rating: {
     flexDirection: 'row',
@@ -67,7 +72,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: SIZES.xSmall,
   },
   descriptionWrapper: {
-    marginLeft: 4, 
+    marginLeft: 4,
     paddingBottom: SIZES.large,
   },
   description: {
@@ -89,6 +94,7 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.large,
   },
   cartRow: {
+    padding: SIZES.small,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -112,6 +118,39 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  imageUser: {
+    width: 34,
+    backgroundColor: COLORS.secondary,
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignContent: 'center',
+    marginVertical: 5,
+    marginRight: SIZES.small,
+  },
+  userImgwrapper: {
+    width: '100%',
+    height: 34,
+    borderRadius: 50,
+    resizeMode: 'cover',
+  },
+  ratingWrapper: {
+    backgroundColor: COLORS.white,
+    elevation: 1,
+    borderRadius: SIZES.small,
+    paddingHorizontal: SIZES.small,
+    paddingVertical: SIZES.small / 2,
+    marginBottom: 4
+  },
+  userWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.white,
+  },
+  textReview: {
+    fontFamily: 'OpenSans-Regular',
+    paddingLeft: SIZES.xxLarge,
+    marginTop: 4
   },
 });
 

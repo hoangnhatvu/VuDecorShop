@@ -14,6 +14,7 @@ import {
   removeOrderItem,
   updateOrderItem,
 } from '../../redux/slices/listOrderItem.slice';
+import { formatCurrency } from '../../helpers/formatCurrency';
 const CartItem = ({item, loadData}) => {
   const dispatch = useDispatch();
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
@@ -56,6 +57,9 @@ const CartItem = ({item, loadData}) => {
           text: 'Tiếp tục',
           onPress: async () => {
             await CartManager.removeFromCart(item);
+            if (toggleCheckBox){
+              dispatch(removeOrderItem(item));
+            }
             loadData();
           },
         },
@@ -94,7 +98,7 @@ const CartItem = ({item, loadData}) => {
             {item?.productName}
           </Text>
           {optionText && <Text style={styles.option}>{optionText}</Text>}
-          <Text style={styles.option}>{item?.price}</Text>
+          <Text style={styles.option}>{formatCurrency(item?.price)}</Text>
         </View>
         <View style={styles.actionContainer}>
           <TouchableOpacity onPress={() => handleRemoveFromCart()}>

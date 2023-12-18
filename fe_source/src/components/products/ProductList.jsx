@@ -5,8 +5,7 @@ import useFetch from '../../hook/fetchData';
 import {COLORS, SIZES} from '../../../constants';
 import ProductCardView from './ProductCardView';
 
-const ProductList = () => {
-  const {data, isLoading, error} = useFetch();
+const ProductList = ({data, isLoading}) => {
 
   if (isLoading) {
     return (
@@ -21,7 +20,6 @@ const ProductList = () => {
         data={data}
         numColumns={2}
         renderItem={({item}) => <ProductCardView item={item} />}
-        contentContainerStyle={styles.container}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
       />
     </View>

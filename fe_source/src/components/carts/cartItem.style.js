@@ -9,8 +9,8 @@ const styles = StyleSheet.create({
     paddingVertical: SIZES.xSmall,
     borderRadius: SIZES.small,
     backgroundColor: '#fff',
-    ...SHADOWS.medium,
-    shadowColor: COLORS.lightWhite,
+    elevation: 2,
+    margin: 2,
   },
   checkBox: {
     paddingHorizontal: SIZES.small,
@@ -51,7 +51,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingTop: SIZES.medium,
-
   },
   quantityText: {
     color: COLORS.gray,

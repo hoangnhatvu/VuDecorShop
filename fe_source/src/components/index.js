@@ -12,6 +12,11 @@ import Heading from './Heading';
 import AddressList from './addresses/AddressList';
 import DropdownComponent from './DropDown';
 import Loading from './Loading';
+import OrderHistoryList from './orders/OrderHistoryList';
+import Filter from './products/Filter';
+import ReviewList from './reviews/ReviewList';
+import StarRating from './products/StarRating';
+
 export {
   Welcome,
   ProductCardView,
@@ -27,4 +32,8 @@ export {
   AddressList,
   DropdownComponent,
   Loading,
+  OrderHistoryList,
+  Filter,
+  ReviewList,
+  StarRating,
 };

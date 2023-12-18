@@ -7,12 +7,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 22,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   heading: {
     paddingBottom: SIZES.medium,
-    fontFamily: "OpenSans-Bold",
+    fontFamily: 'OpenSans-Bold',
     fontSize: SIZES.medium,
-    textAlign: "center"
+    textAlign: 'center',
   },
   modalView: {
     margin: 20,
@@ -37,9 +38,9 @@ const styles = StyleSheet.create({
   },
   timer: {
     marginTop: SIZES.medium,
-    fontFamily: "OpenSans-SemiBold",
+    fontFamily: 'OpenSans-SemiBold',
     fontSize: 30,
-  }, 
+  },
   errorMessage: {
     color: COLORS.red,
     fontFamily: 'OpenSans-Regular',

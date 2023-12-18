@@ -2,7 +2,6 @@ import {
   TouchableOpacity,
   Text,
   View,
-  StatusBar,
   Image,
   Alert,
   ActivityIndicator,
@@ -22,6 +21,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {setIsLogin} from '../redux/slices/isLogin.slice';
 import {API_URL} from '@env';
 import { clearToken } from '../helpers/tokenManager';
+import useRefreshUser from '../hook/refreshUser';
+import { Loading } from '../components';
 
 const Profile = ({navigation}) => {
   const [userData, setUserData] = useState(null);
@@ -29,6 +30,15 @@ const Profile = ({navigation}) => {
   const {showToast} = useToastMessage();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
+  const {refreshUser} = useRefreshUser();
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      loadData();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   const logoutAlert = () => {
     Alert.alert('Đăng xuất tài khoản', 'Bạn có chắc muốn đăng xuất không ?', [
@@ -43,38 +53,34 @@ const Profile = ({navigation}) => {
     ]);
   };
 
-  const getDataUser = async () => {
-    const data = await getUserData();
-    if (isLogin && data) {
-      setUserData(data);
-    } else if (data) {
-      dispatch(setIsLogin(true));
-    } else {
+  const loadData = async () => {
+    try {
+      setIsLoading(true);
+      await refreshUser();
+      const data = await getUserData();
+      if (isLogin && data) {
+        setUserData(data);
+      } else if (data) {
+        dispatch(setIsLogin(true));
+      } else {
+        dispatch(setIsLogin(false))
+      }
+    } catch (error) {
+      showToast("Phiên đăng nhập hết hạn !", "warning");
       dispatch(setIsLogin(false))
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    getDataUser();
+    loadData();
   }, [isLogin]);
 
   useEffect(() => {
-    getDataUser();
+    loadData();
   }, []);
 
-  const clearCache = () => {
-    Alert.alert('Logout', 'Are you sure you want to logout', [
-      {
-        text: 'Cancel',
-        onPress: () => {},
-      },
-      {
-        text: 'Continute',
-        onPress: () => {},
-      },
-      {defaultIndex: 1},
-    ]);
-  };
   handleLogout = async () => {
     setIsLoading(true);
     try {
@@ -92,7 +98,6 @@ const Profile = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.container}>
-        <StatusBar backgroundColor={COLORS.gray} />
         <View style={{width: '100%'}}>
           <Image
             source={require('../../assets/images/coverProfile.jpg')}
@@ -127,14 +132,24 @@ const Profile = ({navigation}) => {
             <View></View>
           ) : (
             <ScrollView style={styles.menuWrapper}>
-              <TouchableOpacity onPress={() => {}}>
+              <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
                 <View style={styles.menuItem(0.2)}>
                   <Ionicons
                     name="person-outline"
                     color={COLORS.primary}
-                    size={24}
+                    size={24}   
                   />
                   <Text style={styles.menuText}>Hồ sơ cá nhân</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('ChangePassword')}>
+                <View style={styles.menuItem(0.2)}>
+                  <MaterialCommunityIcons
+                    name="key-change"
+                    color={COLORS.primary}
+                    size={24}
+                  />
+                  <Text style={styles.menuText}>Đổi mật khẩu</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.navigate('Address')}>
@@ -189,9 +204,10 @@ const Profile = ({navigation}) => {
         </View>
       </View>
       {isLoading && (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size={80} color={COLORS.primary} />
-        </View>
+        // <View style={styles.loadingContainer}>
+        //   <ActivityIndicator size={80} color={COLORS.primary} />
+        // </View>
+        <Loading/>
       )}
     </View>
   );

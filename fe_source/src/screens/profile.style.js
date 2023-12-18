@@ -4,7 +4,7 @@ import {COLORS, SIZES, SHADOWS} from '../../constants';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.lightWhite,
+    backgroundColor: COLORS.offwhite,
   },
   cover: {
     height: 290,

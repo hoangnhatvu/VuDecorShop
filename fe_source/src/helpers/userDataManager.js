@@ -13,7 +13,6 @@ const getUserData = async () => {
   try {
     const userData = await AsyncStorage.getItem('userData');
     if (userData !== null) {
-      console.log('Thông tin người dùng:', JSON.parse(userData));
       return JSON.parse(userData);
     } else {
       console.log('Không có thông tin người dùng.');

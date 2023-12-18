@@ -12,11 +12,10 @@ const useFetch = () => {
     const limit = 20;
     setIsLoading(true);
     console.log(`${API_URL}products/search?page=1&limit=20`)
-    console.log(`${API_URL}products/search?page=1&limit=20`)
     
     try {
       
-      const response = await axios.get(
+      const response = await axios.post(
         `${API_URL}products/search?page=1&limit=20`,
       );
       setData(response.data.data);

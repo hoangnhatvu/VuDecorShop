@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 12,
     alignItems: 'center',
-    ...SHADOWS.small,
+    elevation: 2,
   }),
   iconStyle: {
     marginRight: 10,

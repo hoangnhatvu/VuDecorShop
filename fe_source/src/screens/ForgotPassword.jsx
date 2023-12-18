@@ -17,7 +17,7 @@ import styles from './login.style';
 import {COLORS} from '../../constants';
 import {forgotPassword, register, sendOtp} from '../helpers/handleAuthApis';
 import {useToastMessage} from '../hook/showToast';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 
 const validationEmail = Yup.object().shape({
   email: Yup.string()
@@ -27,6 +27,10 @@ const validationEmail = Yup.object().shape({
 const validationPassword = Yup.object().shape({
   password: Yup.string()
     .min(8, 'Mật khẩu phải có tối thiểu 8 ký tự')
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+      'Mật khẩu phải chứa ít nhất một chữ in hoa, một chữ in thường, một ký tự đặc biệt và một số',
+    )
     .required('Đây là trường bắt buộc'),
   confirm: Yup.string()
     .oneOf([Yup.ref('password'), null], 'Mật khẩu không khớp')
@@ -88,7 +92,7 @@ const ForgotPassword = ({navigation}) => {
       setModalVisible(true);
       showToast('Vui lòng xác minh email của bạn!', 'warning');
     } catch (error) {
-      console.log(error)
+      console.log(error);
       if (error.response) {
         showToast(error.response.data.message, 'danger');
       } else {

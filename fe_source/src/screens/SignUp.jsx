@@ -25,6 +25,10 @@ const validationSchema = Yup.object().shape({
     .required('Đây là trường bắt buộc'),
   password: Yup.string()
     .min(8, 'Mật khẩu phải có tối thiểu 8 ký tự')
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+      'Mật khẩu phải chứa ít nhất một chữ in hoa, một chữ in thường, một ký tự đặc biệt và một số',
+    )
     .required('Đây là trường bắt buộc'),
   confirm: Yup.string()
     .oneOf([Yup.ref('password'), null], 'Mật khẩu không khớp')
@@ -39,16 +43,20 @@ const SignUp = ({navigation}) => {
   const {showToast} = useToastMessage();
 
   const inValidForm = () => {
-    Alert.alert('Thông tin nhập chưa đúng', 'Vui lòng nhập thông tin thỏa mãn yêu cầu', [
-      {
-        text: 'Hủy',
-        onPress: () => {},
-      },
-      {
-        text: 'Tiếp tục',
-        onPress: () => {},
-      },
-    ]);
+    Alert.alert(
+      'Thông tin nhập chưa đúng',
+      'Vui lòng nhập thông tin thỏa mãn yêu cầu',
+      [
+        {
+          text: 'Hủy',
+          onPress: () => {},
+        },
+        {
+          text: 'Tiếp tục',
+          onPress: () => {},
+        },
+      ],
+    );
   };
 
   const signup = async data => {
@@ -257,7 +265,13 @@ const SignUp = ({navigation}) => {
             )}
           </Formik>
         </View>
-        {data && <VerifyModal isVisible={modalVisible} email={data.email} type='verify'/>}
+        {data && (
+          <VerifyModal
+            isVisible={modalVisible}
+            email={data.email}
+            type="verify"
+          />
+        )}
       </SafeAreaView>
     </ScrollView>
   );

@@ -5,15 +5,19 @@ import styles from './addressItem.style';
 import {RadioButton} from 'react-native-paper';
 
 import {COLORS} from '../../../constants';
+import {useNavigation} from '@react-navigation/native';
 
 const AddressItem = ({item, selected, onSelect, mode}) => {
+  const navigation = useNavigation();
   const handleCheck = () => {
     onSelect(item);
   };
 
   return (
     <View>
-      <TouchableOpacity style={styles.container} onPress={handleCheck}>
+      <TouchableOpacity
+        style={styles.container}
+        onPress={mode === 'select' ? handleCheck : () => {}}>
         {mode === 'select' && (
           <View style={styles.radioButton}>
             <RadioButton.Android
@@ -42,6 +46,9 @@ const AddressItem = ({item, selected, onSelect, mode}) => {
           <TouchableOpacity onPress={() => {}}>
             {mode === 'payment' ? (
               <Ionicons
+                onPress={() =>
+                  navigation.navigate('Address', (mode = 'select'))
+                }
                 name="arrow-forward-circle-outline"
                 size={24}
                 color={COLORS.primary}

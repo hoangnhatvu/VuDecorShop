@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {COLORS, SIZES} from '../../../constants';
+import {SIZES} from '../../../constants';
 
 const styles = StyleSheet.create({
   loadingContainer: {
@@ -10,12 +10,11 @@ const styles = StyleSheet.create({
   },
   container: {
     alignItems: 'center',
-    paddingTop: SIZES.xxLarge,
-    paddingLeft: SIZES.small/2
+    paddingTop: SIZES.large,
   },
   separator: {
     height: 16,
-  }
+  },
 });
 
 export default styles;
