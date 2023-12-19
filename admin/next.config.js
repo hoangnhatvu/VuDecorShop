@@ -1,9 +1,22 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-    reactStrictMode: false,
-    env: {
-      APP_API_URL: process.env.APP_API_URL,
-    },
-  };
+module.exports = {
+  reactStrictMode: false,
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/i,
+      issuer: /\.[jt]sx?$/,
+      use: ['@svgr/webpack'],
+    })
 
-module.exports = nextConfig
+    return config
+  },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/example/login',
+        permanent: false,
+      },
+    ]
+  }
+}
