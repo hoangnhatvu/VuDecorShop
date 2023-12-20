@@ -2,7 +2,6 @@ import { useState } from 'react'
 
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from '@roketid/windmill-react-ui'
 import PageTitle from 'app/components/Typography/PageTitle'
-import CTA from 'app/components/CTA'
 import Layout from 'app/containers/Layout'
 
 function Modals() {
@@ -19,8 +18,6 @@ function Modals() {
   return (
     <Layout>
       <PageTitle>Modals</PageTitle>
-      <CTA />
-
       <div>
         <Button onClick={openModal}>Open modal</Button>
       </div>

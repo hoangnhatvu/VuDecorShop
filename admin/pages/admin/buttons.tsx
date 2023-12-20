@@ -2,7 +2,6 @@ import React from 'react'
 import { Button } from '@roketid/windmill-react-ui'
 import PageTitle from 'app/components/Typography/PageTitle'
 import SectionTitle from 'app/components/Typography/SectionTitle'
-import CTA from 'app/components/CTA'
 import Layout from 'app/containers/Layout'
 import { HeartIcon, EditIcon } from 'icons'
 
@@ -10,8 +9,6 @@ function Buttons() {
   return (
     <Layout>
       <PageTitle>Buttons</PageTitle>
-
-      <CTA />
 
       <SectionTitle>Primary</SectionTitle>
       <div className="flex flex-col flex-wrap mb-8 space-y-4 md:flex-row md:items-end md:space-x-4">

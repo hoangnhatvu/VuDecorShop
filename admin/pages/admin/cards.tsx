@@ -3,7 +3,6 @@ import React from 'react'
 import { Card, CardBody } from '@roketid/windmill-react-ui'
 import PageTitle from 'app/components/Typography/PageTitle'
 import SectionTitle from 'app/components/Typography/SectionTitle'
-import CTA from 'app/components/CTA'
 import InfoCard from 'app/components/Cards/InfoCard'
 import RoundIcon from 'app/components/RoundIcon'
 import Layout from 'app/containers/Layout'
@@ -13,8 +12,6 @@ function Cards() {
   return (
     <Layout>
       <PageTitle>Cards</PageTitle>
-
-      <CTA />
 
       <SectionTitle>Big section cards</SectionTitle>
 

@@ -1,9 +1,3 @@
-/**
- * ⚠ These are used just to render the Sidebar!
- * You can include any link here, local or external.
- *
- */
-
 interface IRoute{
   path?: string
   icon?: string
@@ -25,40 +19,40 @@ export function routeIsActive (pathname: String, route: IRoute): boolean {
 
 const routes: IRoute[] = [
   {
-    path: '/app', // the url
-    icon: 'HomeIcon', // the component being exported from icons/index.js
-    name: 'Dashboard', // name that appear in Sidebar
+    path: '/admin',
+    icon: 'HomeIcon', 
+    name: 'Dashboard',
     exact: true,
   },
   {
-    path: '/app/forms',
+    path: '/admin/tables',
+    icon: 'TablesIcon',
+    name: 'Tài khoản',
+  },
+  {
+    path: '/admin/forms',
     icon: 'FormsIcon',
     name: 'Forms',
   },
   {
-    path: '/app/cards',
+    path: '/admin/cards',
     icon: 'CardsIcon',
     name: 'Cards',
   },
   {
-    path: '/app/charts',
+    path: '/admin/charts',
     icon: 'ChartsIcon',
     name: 'Charts',
   },
   {
-    path: '/app/buttons',
+    path: '/admin/buttons',
     icon: 'ButtonsIcon',
     name: 'Buttons',
   },
   {
-    path: '/app/modals',
+    path: '/admin/modals',
     icon: 'ModalsIcon',
     name: 'Modals',
-  },
-  {
-    path: '/app/tables',
-    icon: 'TablesIcon',
-    name: 'Tables',
   },
   {
     icon: 'PagesIcon',
@@ -66,23 +60,23 @@ const routes: IRoute[] = [
     routes: [
       // submenu
       {
-        path: '/app/login',
+        path: '/admin/login',
         name: 'Login',
       },
       {
-        path: '/app/create-account',
+        path: '/admin/create-account',
         name: 'Create account',
       },
       {
-        path: '/app/forgot-password',
+        path: '/admin/forgot-password',
         name: 'Forgot password',
       },
       {
-        path: '/app/404',
+        path: '/admin/404',
         name: '404',
       },
       {
-        path: '/app/blank',
+        path: '/admin/blank',
         name: 'Blank',
       },
     ],

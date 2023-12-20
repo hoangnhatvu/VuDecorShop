@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { Input, HelperText, Label, Select, Textarea } from '@roketid/windmill-react-ui'
-import CTA from 'app/components/CTA'
 import PageTitle from 'app/components/Typography/PageTitle'
 import SectionTitle from 'app/components/Typography/SectionTitle'
 
@@ -12,7 +11,6 @@ function Forms() {
   return (
     <Layout>
       <PageTitle>Forms</PageTitle>
-      <CTA />
       <SectionTitle>Elements</SectionTitle>
 
       <div className="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
