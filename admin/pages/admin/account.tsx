@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 
 import PageTitle from "app/components/Typography/PageTitle";
-import SectionTitle from "app/components/Typography/SectionTitle";
 import {
   Table,
   TableHeader,
@@ -17,50 +16,47 @@ import {
   Input,
 } from "@roketid/windmill-react-ui";
 import { EditIcon, TrashIcon, SearchIcon } from "icons";
-
-import response, { ITableData } from "utils/demo/tableData";
 import Layout from "app/containers/Layout";
-// make a copy of the data, for the second table
-const response2 = response.concat([]);
+import { User } from "app/types/user";
+import { getUsers } from "pages/api/userApis";
+import { toast } from "react-toastify";
+import Modals from "app/components/Modals";
 
 function Account() {
-  const [pageTable1, setPageTable1] = useState(1);
-  const [pageTable2, setPageTable2] = useState(1);
+  const [listUser, setListUser] = useState<User[]>([]);
+  // const [totalCount, setTotalCount] = useState<number>(0);
+  // const [totalCount, setTotalCount] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // setup data for every table
-  const [dataTable1, setDataTable1] = useState<ITableData[]>([]);
-  const [dataTable2, setDataTable2] = useState<ITableData[]>([]);
-
-  // pagination setup
-  const resultsPerPage = 10;
-  const totalResults = response.length;
-
-  // pagination change control
-  function onPageChangeTable1(p: number) {
-    setPageTable1(p);
+  function openModal() {
+    setIsModalOpen(true);
   }
 
-  function onPageChangeTable2(p: number) {
-    setPageTable2(p);
+  function closeModal() {
+    setIsModalOpen(false);
   }
 
-  useEffect(() => {
-    setDataTable1(
-      response.slice(
-        (pageTable1 - 1) * resultsPerPage,
-        pageTable1 * resultsPerPage
-      )
-    );
-  }, [pageTable1]);
+  const loadData = async () => {
+    try {
+      setIsLoading(true);
+      const responseResults = await getUsers();
+      setListUser(responseResults.data);
+    } catch (error: any) {
+      const messages = error.response.data.message;
+      if (Array.isArray(messages)) {
+        toast.error(messages.join("\n"));
+      } else {
+        toast.error(error.response.data.message);
+      }
+    } finally {
+      setIsLoading(false)
+    }
+  };
 
   useEffect(() => {
-    setDataTable2(
-      response2.slice(
-        (pageTable2 - 1) * resultsPerPage,
-        pageTable2 * resultsPerPage
-      )
-    );
-  }, [pageTable2]);
+    loadData();
+  }, []);
 
   return (
     <Layout>
@@ -76,7 +72,7 @@ function Account() {
             aria-label="Search"
           />
         </div>
-        <Button className="w-full w-36" block>
+        <Button className="w-full w-24" block>
           Tìm kiếm
         </Button>
       </div>
@@ -85,45 +81,45 @@ function Account() {
         <Table>
           <TableHeader>
             <tr>
-              <TableCell>Client</TableCell>
-              <TableCell>Amount</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Date</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell>Tài khoản</TableCell>
+              <TableCell>Vai trò</TableCell>
+              <TableCell>Trạng thái</TableCell>
+              <TableCell>Ngày tham gia</TableCell>
+              <TableCell>Hành động</TableCell>
             </tr>
           </TableHeader>
           <TableBody>
-            {dataTable2.map((user, i) => (
+            {listUser.map((user, i) => (
               <TableRow key={i}>
                 <TableCell>
                   <div className="flex items-center text-sm">
                     <Avatar
                       className="hidden mr-3 md:block"
-                      src={user.avatar}
+                      src={process.env.APP_API_URL + user.user_image}
                       alt="User avatar"
                     />
                     <div>
-                      <p className="font-semibold">{user.name}</p>
+                      <p className="font-semibold">{user.user_name}</p>
                       <p className="text-xs text-gray-600 dark:text-gray-400">
-                        {user.job}
+                        {user.email}
                       </p>
                     </div>
                   </div>
                 </TableCell>
                 <TableCell>
-                  <span className="text-sm">$ {user.amount}</span>
+                  <span className="text-sm">{user.role}</span>
                 </TableCell>
                 <TableCell>
-                  <Badge type={user.status}>{user.status}</Badge>
+                  <Badge type={user.is_blocked ? 'danger' : (user.is_active ? 'success' : "warning")}>{user.is_blocked ?  "Bị khóa" : (user.is_active ? 'Đã kích hoạt' : "Chưa kích hoạt")}</Badge>
                 </TableCell>
                 <TableCell>
                   <span className="text-sm">
-                    {new Date(user.date).toLocaleDateString()}
+                    {new Date(user.created_date).toLocaleDateString()}
                   </span>
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center space-x-4">
-                    <Button layout="link" size="small" aria-label="Edit">
+                    <Button layout="link" size="small" aria-label="Edit" onClick={openModal}>
                       <EditIcon className="w-5 h-5" aria-hidden="true" />
                     </Button>
                     <Button layout="link" size="small" aria-label="Delete">
@@ -134,13 +130,14 @@ function Account() {
               </TableRow>
             ))}
           </TableBody>
+          <Modals isModalOpen={isModalOpen} onCloseModal={closeModal}>hello</Modals>
         </Table>
         <TableFooter>
           <Pagination
-            totalResults={totalResults}
-            resultsPerPage={resultsPerPage}
-            onChange={onPageChangeTable2}
-            label="Table navigation"
+            totalResults={2}
+            resultsPerPage={2}
+            onChange={()=> {}}
+            label="Account navigation"
           />
         </TableFooter>
       </TableContainer>

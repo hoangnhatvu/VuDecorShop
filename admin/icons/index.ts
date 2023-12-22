@@ -5,7 +5,7 @@ import FormsIcon from './forms.svg'
 import HomeIcon from './home.svg'
 import ModalsIcon from './modals.svg'
 import PagesIcon from './pages.svg'
-import TablesIcon from './tables.svg'
+import AccountIcon from './account.svg'
 import HeartIcon from './heart.svg'
 import EditIcon from './edit.svg'
 import TrashIcon from './trash.svg'
@@ -35,7 +35,7 @@ export {
   HomeIcon,
   ModalsIcon,
   PagesIcon,
-  TablesIcon,
+  AccountIcon,
   HeartIcon,
   EditIcon,
   TrashIcon,

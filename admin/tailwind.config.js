@@ -1,7 +1,11 @@
-const defaultTheme = require('tailwindcss/defaultTheme')
-const windmill = require('@roketid/windmill-react-ui/config')
+const windmill = require("@roketid/windmill-react-ui/config");
 module.exports = windmill({
-  content: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}', './containers/**/*.{js,ts,jsx,tsx}', './admin/**/*.{js,ts,jsx,tsx}'],
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./pages/admin/**/*.{js,ts,jsx,tsx}",
+    "./app/components/**/*.{js,ts,jsx,tsx}",
+    "./app/containers/**/*.{js,ts,jsx,tsx}",
+  ],
   extend: {},
   plugins: [],
-})
+});

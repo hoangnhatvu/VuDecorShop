@@ -2,7 +2,7 @@
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { login } from "app/redux/features/userSlice";
 import { useAppDispatch, useAppSelector } from "app/redux/hooks";
@@ -27,7 +27,7 @@ function LoginPage() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      router.push("/");
+      router.push("/admin");
     }
   }, []);
 
@@ -40,6 +40,7 @@ function LoginPage() {
 
   const handleLogin = async () => {
     try {
+      console.log(`${process.env.APP_API_URL}auth/loginAdmin`)
       const response = await axios.post(
         `${process.env.APP_API_URL}auth/loginAdmin`,
         data
@@ -47,7 +48,7 @@ function LoginPage() {
 
       dispatch(login(response.data));
       toast.success("Đăng nhập thành công !");
-      router.push("/");
+      router.push("/admin");
     } catch (error: any) {
       if (error) {
         const messages = error.response.data.message;
@@ -118,7 +119,6 @@ function LoginPage() {
           </div>
         </div>
       </div>
-      <ToastContainer />
     </>
   );
 }

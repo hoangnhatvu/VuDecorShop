@@ -25,8 +25,8 @@ const routes: IRoute[] = [
     exact: true,
   },
   {
-    path: '/admin/tables',
-    icon: 'TablesIcon',
+    path: '/admin/account',
+    icon: 'PeopleIcon',
     name: 'Tài khoản',
   },
   {
@@ -48,11 +48,6 @@ const routes: IRoute[] = [
     path: '/admin/buttons',
     icon: 'ButtonsIcon',
     name: 'Buttons',
-  },
-  {
-    path: '/admin/modals',
-    icon: 'ModalsIcon',
-    name: 'Modals',
   },
   {
     icon: 'PagesIcon',

@@ -1,10 +1,14 @@
 interface User {
   id: string;
-  updated_token: string;
   email: string;
   user_name: string;
   user_image: string;
   role: string;
+  is_active: boolean;
+  is_blocked: boolean;
+  created_date: Date;
+  updated_date: Date;
+  updated_token: string;
 }
 
 interface Token {
