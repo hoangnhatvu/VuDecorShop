@@ -32,9 +32,9 @@ const ProductCardView = ({item}) => {
           </Text>
           <Text style={styles.price}>đ {formatCurrency(item.options[0].price)}</Text>
         </View>
-        <TouchableOpacity style={styles.addBtn}>
+        {/* <TouchableOpacity style={styles.addBtn}>
           <IonIcon name="add-circle" size={35} color={COLORS.primary} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </TouchableOpacity>
   );
