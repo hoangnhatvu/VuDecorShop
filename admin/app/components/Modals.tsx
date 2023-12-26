@@ -2,7 +2,6 @@ import { useState } from "react";
 
 import {
   Modal,
-  ModalHeader,
   ModalBody,
   ModalFooter,
   Button,
@@ -13,30 +12,30 @@ interface IModal {
   children: React.ReactNode;
   isModalOpen: boolean;
   onCloseModal: () => void;
+  onSubmit: () => void;
 }
 
-function Modals({ children, isModalOpen, onCloseModal }: IModal) {
+function Modals({ children, isModalOpen, onCloseModal, onSubmit }: IModal) {
   return (
     <Modal isOpen={isModalOpen} onClose={onCloseModal}>
-      <ModalHeader>Modal header</ModalHeader>
       <ModalBody>{children}</ModalBody>
       <ModalFooter>
         <div className="hidden sm:block">
           <Button layout="outline" onClick={onCloseModal}>
-            Cancel
+            Hủy
           </Button>
         </div>
-        <div className="hidden sm:block">
-          <Button>Accept</Button>
+        <div className="hidden sm:block" onClick={onSubmit}>
+          <Button>Chấp nhận</Button>
         </div>
         <div className="block w-full sm:hidden">
           <Button block size="large" layout="outline" onClick={onCloseModal}>
-            Cancel
+            Hủy
           </Button>
         </div>
         <div className="block w-full sm:hidden">
-          <Button block size="large">
-            Accept
+          <Button block size="large" onClick={onSubmit}>
+            Chấp nhận
           </Button>
         </div>
       </ModalFooter>

@@ -13,4 +13,16 @@ const getUsers = async () => {
   return response.data;
 };
 
-export { getUsers };
+const updateUserForAdmin = async (id: string, data: any) => {
+  const request: requestApiProps = {
+    endpoint: "users/updateUserForAdmin",
+    method: "PUT",
+    params: { id: id },
+    body: data,
+    responseType: undefined,
+  };
+  const response = await requestApi(request);
+  return response.data;
+};
+
+export { getUsers, updateUserForAdmin };

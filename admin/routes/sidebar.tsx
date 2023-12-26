@@ -25,14 +25,14 @@ const routes: IRoute[] = [
     exact: true,
   },
   {
-    path: '/admin/account',
+    path: '/admin/accounts',
     icon: 'PeopleIcon',
     name: 'Tài khoản',
   },
   {
-    path: '/admin/forms',
-    icon: 'FormsIcon',
-    name: 'Forms',
+    path: '/admin/products',
+    icon: 'MenuIcon',
+    name: 'Sản phẩm',
   },
   {
     path: '/admin/cards',
