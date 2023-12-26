@@ -13,12 +13,12 @@ const Welcome = () => {
       <View style={styles.container}>
         <Text style={styles.welcomeTxt(COLORS.black, SIZES.xSmall)}>
           {" "}
-          Find The Most
+          VuDecorShop
         </Text>
 
         <Text style={styles.welcomeTxt(COLORS.primary, 0)}>
           {" "}
-          Luxurious Furniture
+          Best design for you
         </Text>
       </View>
       <View style={styles.searchContainer}>
@@ -30,7 +30,7 @@ const Welcome = () => {
             style={styles.searchInput}
             value=""
             onPressIn={() => navigation.navigate("Search")}
-            placeholder='What are you looking for?'></TextInput>
+            placeholder='Bạn đang tìm gì?'></TextInput>
         </View>
         <View>
           <TouchableOpacity style={styles.searchBtn}>

@@ -11,7 +11,7 @@ const Headings = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>New Products</Text>
+        <Text style={styles.headerTitle}>Sản phẩm mới</Text>
         <TouchableOpacity onPress={() => navigation.navigate('NewProducts')}>
           <IonIcon name="grid" size={24} color={COLORS.primary} />
         </TouchableOpacity>
