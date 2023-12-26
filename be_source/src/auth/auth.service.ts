@@ -173,6 +173,43 @@ export class AuthService {
     }
   }
 
+  async loginAdmin(loginDTO: LoginDTO) {
+    const user = await this.userModel.findOne({
+      email: loginDTO.email,
+    })
+    if (!user) {
+      throw new HttpException('Email hoặc mật khẩu không đúng !', HttpStatus.UNAUTHORIZED)
+    }
+    const isMatch = await bcrypt.compare(loginDTO.password, user.password)
+    if (!isMatch) {
+      throw new HttpException('Email hoặc mật khẩu không đúng !', HttpStatus.UNAUTHORIZED)
+    }
+
+    if (user.is_blocked) {
+      throw new HttpException('Tài khoản hiện tại đang bị vô hiệu hóa !', HttpStatus.FORBIDDEN)
+    } else if (!user.is_active) {
+      throw new HttpException('Tài khoản chưa được kích hoạt !', HttpStatus.NOT_ACCEPTABLE)
+    }
+
+    if(user.role === UserRole.USER) {
+      throw new HttpException('Tài khoản không có quyền truy cập !', HttpStatus.FORBIDDEN)
+    }
+
+    const payload = {
+      id: user.id,
+      updatedToken: user.updated_token,
+      email: user.email,
+      role: user.role,
+    }
+    const token = await this.generateToken(payload)
+    return {
+      user: plainToInstance(UserDTO, user, {
+        excludeExtraneousValues: true,
+      }),
+      token: token,
+    }
+  }
+
   async changePassword(changePasswordDTO: ChangePasswordDTO, email: string) {
     try {
       const user = await this.userModel.findOne({

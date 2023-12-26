@@ -2,6 +2,7 @@ import { IsNotEmpty, Length, IsEmail, IsOptional, IsBoolean, IsArray, Matches, I
 import { Transform, Expose, Exclude, Type } from 'class-transformer';
 import { BooleanPipe } from 'src/pipes/boolean.pipe';
 import { Gender } from 'src/enums/gender.enum';
+import { UserRole } from 'src/enums/role.enum';
 
 export class ShipInfoDTO {
   @Expose()
@@ -108,6 +109,39 @@ export class UserDTO {
   @Expose()
   updated_token: string;
 }
+
+export class UserForAdminDTO {
+
+  @Expose()
+  id: string;
+
+  @Expose()
+  user_name: string;
+
+  @Expose()
+  user_image: string;
+
+  @Expose()
+  email: string;
+
+  @Expose()
+  role: string;
+
+  @Expose()
+  is_active: boolean;
+
+  @Expose()
+  is_blocked: boolean;
+
+  @Expose()
+  created_date: Date;
+
+  @Expose()
+  updated_date: Date;
+
+  @Expose()
+  updated_token: string;
+}
 export class UserInfoDTO {
   @Expose()
   id: string;
@@ -127,9 +161,6 @@ export class UpdateUserDTO {
   user_name: string;
   
   @IsOptional()
-  role: string;
-
-  @IsOptional()
   @IsArray()
   @Type(() => UpdateShipInfoDTO)
   ship_infos: UpdateShipInfoDTO[];
@@ -147,6 +178,15 @@ export class UpdateUserDTO {
   @Transform((value) => new BooleanPipe().transform(value.value))
   is_active: boolean;
 
+  @IsNotEmpty()
+  updated_token: string;
+}
+
+export class UpdateUserForAdminDTO {
+  @IsOptional()
+  @IsEnum(UserRole)
+  role: UserRole;
+
   @IsOptional()
   @IsBoolean()
   @Transform((value) => new BooleanPipe().transform(value.value))
@@ -155,6 +195,7 @@ export class UpdateUserDTO {
   @IsNotEmpty()
   updated_token: string;
 }
+
 export class CreateUserDto {
   @IsNotEmpty()
   user_name: string;

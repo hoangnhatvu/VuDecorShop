@@ -20,6 +20,7 @@ import { storageConfig } from 'src/common/config';
 import { fileFilter } from 'src/common/fileFilter';
 import { ProductService } from './product.service';
 import { CreateProductDTO, FilterProductDTO, UpdateProductDTO } from 'src/dtos/product.dto';
+import { query } from 'express';
 
 @Controller('products')
 export class ProductController {
@@ -83,15 +84,15 @@ export class ProductController {
     return this.productService.getAll(page, limit, false, filterProductDTO);
   }
 
-  @Get()
+  @Post('searchForAdmin')
   @UseGuards(AuthGuard)
   @Roles(UserRole.ADMIN, UserRole.EMPLOYEE, UserRole.USER)
   @HttpCode(200)
-  async getAll(@Query() query ) {
+  async getAll(@Query() query, @Body() filterProductDTO: FilterProductDTO) {
     const page = query.page ? Number(query.page) : 1;
     const limit = query.limit ? Number(query.limit) : 20;
 
-    return this.productService.getAll(page, limit, true, null);
+    return this.productService.getAll(page, limit, true, filterProductDTO);
   }
 
   @Put('delete')

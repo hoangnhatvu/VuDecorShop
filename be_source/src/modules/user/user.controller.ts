@@ -10,9 +10,10 @@ import {
   Req,
   BadRequestException,
   Get,
+  HttpCode,
 } from '@nestjs/common'
 import { UserService } from './user.service'
-import { CreateUserDto, UpdateUserDTO } from 'src/dtos/user.dto'
+import { CreateUserDto, UpdateUserDTO, UpdateUserForAdminDTO } from 'src/dtos/user.dto'
 import { AuthGuard } from 'src/guards/auth.guard'
 import { Roles } from 'src/decorators/roles.decorator'
 import { UserRole } from 'src/enums/role.enum'
@@ -36,27 +37,38 @@ export class UserController {
 
   @Put('update')
   @UseGuards(AuthGuard)
-  @Roles(UserRole.ADMIN, UserRole.EMPLOYEE, UserRole.USER)
+  @Roles(UserRole.USER)
   @UseInterceptors(
     FileInterceptor('user_image', {
       storage: storageConfig('user_image'),
       fileFilter,
     }),
   )
-  update(
-    @Query() query: { id: string },
-    @UploadedFile() file: Express.Multer.File,
-    @Body() updateUserDTO: UpdateUserDTO,
-    @Req() req: any,
-  ) {
+  update(@UploadedFile() file: Express.Multer.File, @Body() updateUserDTO: UpdateUserDTO, @Req() req: any) {
     if (req.fileValidationError) {
       throw new BadRequestException(req.fileValidationError)
     }
     return this.userService.update(
-      query.id ? query.id : req.user_data.id,
+      req.user_data.id,
       updateUserDTO,
       file ? file.destination + '/' + file.filename : null,
-      req.user_data.role
     )
+  }
+
+  @Put('updateUserForAdmin')
+  @UseGuards(AuthGuard)
+  @Roles(UserRole.ADMIN, UserRole.EMPLOYEE)
+  updateForAdmin(@Query() query: { id: string }, @Body() updateUserForAdmin: UpdateUserForAdminDTO, @Req() req: any) {
+    return this.userService.updateForAdmin(query.id, updateUserForAdmin, req.user_data.role)
+  }
+
+  @Get()
+  @UseGuards(AuthGuard)
+  @Roles(UserRole.ADMIN, UserRole.EMPLOYEE)
+  @HttpCode(200)
+  async getAllUsers(@Query() query: any) {
+    const page = query.page ? Number(query.page) : 1
+    const limit = query.limit ? Number(query.limit) : 20
+    return this.userService.getAllUsers(page, limit)
   }
 }

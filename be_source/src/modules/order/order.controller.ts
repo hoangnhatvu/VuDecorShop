@@ -10,7 +10,7 @@ export class OrderController {
   constructor(private orderService: OrderService) {}
   @Post('create')
   @UseGuards(AuthGuard)
-  @Roles(UserRole.USER)
+  @Roles(UserRole.USER, UserRole.ADMIN, UserRole.EMPLOYEE)
   create(@Body() createOrderDTO: CreateOrderDTO, @Req() req: any) {
     return this.orderService.create(createOrderDTO, req.user_data.id)
   }
