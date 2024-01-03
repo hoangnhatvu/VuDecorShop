@@ -1,12 +1,9 @@
-import { useState } from "react";
-
 import {
   Modal,
   ModalBody,
   ModalFooter,
   Button,
 } from "@roketid/windmill-react-ui";
-import Layout from "app/containers/Layout";
 
 interface IModal {
   children: React.ReactNode;

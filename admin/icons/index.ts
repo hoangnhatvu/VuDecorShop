@@ -1,34 +1,38 @@
-import ButtonsIcon from './buttons.svg'
-import CardsIcon from './cards.svg'
-import ChartsIcon from './charts.svg'
-import FormsIcon from './forms.svg'
-import HomeIcon from './home.svg'
-import ModalsIcon from './modals.svg'
-import PagesIcon from './pages.svg'
-import AccountIcon from './account.svg'
-import HeartIcon from './heart.svg'
-import EditIcon from './edit.svg'
-import TrashIcon from './trash.svg'
-import ForbiddenIcon from './forbidden.svg'
-import GithubIcon from './github.svg'
-import TwitterIcon from './twitter.svg'
-import MailIcon from './mail.svg'
-import CartIcon from './cart.svg'
-import ChatIcon from './chat.svg'
-import MoneyIcon from './money.svg'
-import PeopleIcon from './people.svg'
-import SearchIcon from './search.svg'
-import MoonIcon from './moon.svg'
-import SunIcon from './sun.svg'
-import BellIcon from './bell.svg'
-import MenuIcon from './menu.svg'
-import DropdownIcon from './dropdown.svg'
-import OutlinePersonIcon from './outlinePerson.svg'
-import OutlineCogIcon from './outlineCog.svg'
-import OutlineLogoutIcon from './outlineLogout.svg'
-import UnlockIcon from './unlock.svg'
-import LockIcon from './lock.svg'
-
+import ButtonsIcon from "./buttons.svg";
+import CardsIcon from "./cards.svg";
+import ChartsIcon from "./charts.svg";
+import FormsIcon from "./forms.svg";
+import HomeIcon from "./home.svg";
+import ModalsIcon from "./modals.svg";
+import PagesIcon from "./pages.svg";
+import AccountIcon from "./account.svg";
+import HeartIcon from "./heart.svg";
+import EditIcon from "./edit.svg";
+import TrashIcon from "./trash.svg";
+import ForbiddenIcon from "./forbidden.svg";
+import GithubIcon from "./github.svg";
+import TwitterIcon from "./twitter.svg";
+import MailIcon from "./mail.svg";
+import CartIcon from "./cart.svg";
+import ChatIcon from "./chat.svg";
+import MoneyIcon from "./money.svg";
+import PeopleIcon from "./people.svg";
+import SearchIcon from "./search.svg";
+import MoonIcon from "./moon.svg";
+import SunIcon from "./sun.svg";
+import BellIcon from "./bell.svg";
+import MenuIcon from "./menu.svg";
+import DropdownIcon from "./dropdown.svg";
+import OutlinePersonIcon from "./outlinePerson.svg";
+import OutlineCogIcon from "./outlineCog.svg";
+import OutlineLogoutIcon from "./outlineLogout.svg";
+import UnlockIcon from "./unlock.svg";
+import LockIcon from "./lock.svg";
+import TickIcon from "./tick.svg";
+import CancelIcon from "./cancel.svg";
+import TruckIcon from "./truck.svg";
+import EyeIcon from "./eye.svg";
+import CheckIcon from "./check.svg";
 
 export {
   ButtonsIcon,
@@ -61,13 +65,16 @@ export {
   OutlineLogoutIcon,
   UnlockIcon,
   LockIcon,
-}
-
-interface IIcon{
-  icon: string
-  [key: string]: string | undefined
-}
-
-export type {
-  IIcon
+  TickIcon,
+  CancelIcon,
+  TruckIcon,
+  EyeIcon,
+  CheckIcon,
 };
+
+interface IIcon {
+  icon: string;
+  [key: string]: string | undefined;
+}
+
+export type { IIcon };
