@@ -97,7 +97,7 @@ function Account() {
             aria-label="Search"
           />
         </div>
-        <Button className="w-full w-24" block>
+        <Button>
           Tìm kiếm
         </Button>
       </div>
@@ -198,6 +198,7 @@ function Account() {
                   </TableRow>
                   <Modals
                     isModalOpen={isModalOpen}
+                    buttonText="Xác nhận"
                     onCloseModal={closeModal}
                     onSubmit={() => handleSubmit(user.id, user.updated_token)}
                   >

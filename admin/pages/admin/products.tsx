@@ -24,9 +24,12 @@ import { getUsers, updateUserForAdmin } from "pages/api/userApis";
 import { toast } from "react-toastify";
 import Modals from "app/components/Modals";
 import Loader from "app/components/Loader/Loader";
+import { getProducts } from "pages/api/productApis";
+import { formatCurrency } from "utils/formatCurrency";
+import AddProductModal from "app/components/Product/AddProductModal";
 
 function Product() {
-  const [listUser, setListUser] = useState<User[]>([]);
+  const [listProduct, setListProduct] = useState<any[]>([]);
   // const [totalCount, setTotalCount] = useState<number>(0);
   // const [totalCount, setTotalCount] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -44,8 +47,8 @@ function Product() {
   const loadData = async () => {
     try {
       setIsLoading(true);
-      const responseResults = await getUsers();
-      setListUser(responseResults.data);
+      const responseResults = await getProducts();
+      setListProduct(responseResults.data);
     } catch (error: any) {
       const messages = error.response.data.message;
       if (Array.isArray(messages)) {
@@ -66,27 +69,27 @@ function Product() {
     setRole(event.target.value);
   };
 
-  const handleSubmit = async (id: string, updatedToken: string) => {
-    try {
-      setIsLoading(true);
-      const data = {
-        role: role,
-        updated_token: updatedToken,
-      };
-      await updateUserForAdmin(id, data);
-      closeModal();
-      loadData();
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
+  const handleSubmit = async () => {
+    // try {
+    //   setIsLoading(true);
+    //   const data = {
+    //     role: role,
+    //     updated_token: updatedToken,
+    //   };
+    //   await updateUserForAdmin(id, data);
+    //   closeModal();
+    //   loadData();
+    // } catch (error) {
+    //   console.log(error);
+    // } finally {
+    //   setIsLoading(false);
+    // }
   };
 
   return (
     <Layout>
       <PageTitle>Sản phẩm</PageTitle>
-      <div className="flex justify-start flex-1 mb-4 lg:mr-32">
+      <div className="flex justify-between flex-1 mb-4">
         <div className="relative w-full max-w-sm mr-2 focus-within:text-purple-500">
           <div className="absolute inset-y-0 flex items-center pl-2">
             <SearchIcon className="w-4 h-4" aria-hidden="true" />
@@ -97,9 +100,7 @@ function Product() {
             aria-label="Search"
           />
         </div>
-        <Button className="w-full w-24" block>
-          Tìm kiếm
-        </Button>
+        <Button>Tìm kiếm</Button>
       </div>
 
       {isLoading ? (
@@ -110,54 +111,44 @@ function Product() {
             <TableHeader>
               <tr>
                 <TableCell>Sản phẩm</TableCell>
-                <TableCell>Vai trò</TableCell>
+                <TableCell>Giá tạm thời</TableCell>
                 <TableCell>Trạng thái</TableCell>
-                <TableCell>Ngày tham gia</TableCell>
+                <TableCell>Ngày tạo</TableCell>
                 <TableCell>Hành động</TableCell>
               </tr>
             </TableHeader>
             <TableBody>
-              {listUser.map((user, i) => (
+              {listProduct.map((product, i) => (
                 <>
                   <TableRow key={i}>
                     <TableCell>
                       <div className="flex items-center text-sm">
                         <Avatar
                           className="hidden mr-3 md:block"
-                          src={process.env.APP_API_URL + user.user_image}
-                          alt="User avatar"
+                          src={process.env.APP_API_URL + product.product_image}
+                          alt="Product image"
                         />
                         <div>
-                          <p className="font-semibold">{user.user_name}</p>
+                          <p className="font-semibold">
+                            {product.product_name}
+                          </p>
                           <p className="text-xs text-gray-600 dark:text-gray-400">
-                            {user.email}
+                            {product.category.category_name}
                           </p>
                         </div>
                       </div>
                     </TableCell>
                     <TableCell>
-                      <span className="text-sm">{user.role}</span>
+                      <span className="text-sm">{formatCurrency(product.temp_price)} VNĐ</span>
                     </TableCell>
                     <TableCell>
-                      <Badge
-                        type={
-                          user.is_blocked
-                            ? "danger"
-                            : user.is_active
-                            ? "success"
-                            : "warning"
-                        }
-                      >
-                        {user.is_blocked
-                          ? "Bị khóa"
-                          : user.is_active
-                          ? "Đã kích hoạt"
-                          : "Chưa kích hoạt"}
+                      <Badge type={product.is_actived ? "success" : "danger"}>
+                        {product.is_actived ? "Đang bán" : "Dừng bán"}
                       </Badge>
                     </TableCell>
                     <TableCell>
                       <span className="text-sm">
-                        {new Date(user.created_date).toLocaleDateString()}
+                        {new Date(product.created_date).toLocaleDateString()}
                       </span>
                     </TableCell>
                     <TableCell>
@@ -183,24 +174,7 @@ function Product() {
                       </div>
                     </TableCell>
                   </TableRow>
-                  <Modals
-                    isModalOpen={isModalOpen}
-                    onCloseModal={closeModal}
-                    onSubmit={() => handleSubmit(user.id, user.updated_token)}
-                  >
-                    <Label className="mt-4">
-                      <span>Vai trò</span>
-                      <Select
-                        className="mt-4"
-                        value={role}
-                        onChange={handleRoleChange}
-                      >
-                        <option>admin</option>
-                        <option>employee</option>
-                        <option>user</option>
-                      </Select>
-                    </Label>
-                  </Modals>
+                  <AddProductModal isModalOpen={isModalOpen} closeModal={closeModal} loadDataProduct={loadData}/>
                 </>
               ))}
             </TableBody>
