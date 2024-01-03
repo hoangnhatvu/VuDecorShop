@@ -97,9 +97,7 @@ function Account() {
             aria-label="Search"
           />
         </div>
-        <Button>
-          Tìm kiếm
-        </Button>
+        <Button>Tìm kiếm</Button>
       </div>
 
       {isLoading ? (
@@ -182,15 +180,8 @@ function Account() {
                             />
                           </Button>
                         ) : (
-                          <Button
-                            layout="link"
-                            size="small"
-                            aria-label="Lock"
-                          >
-                            <LockIcon
-                              className="w-5 h-5"
-                              aria-hidden="true"
-                            />
+                          <Button layout="link" size="small" aria-label="Lock">
+                            <LockIcon className="w-5 h-5" aria-hidden="true" />
                           </Button>
                         )}
                       </div>

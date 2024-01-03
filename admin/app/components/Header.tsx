@@ -1,9 +1,6 @@
 import { useContext, useState } from "react";
 import SidebarContext from "context/SidebarContext";
 import {
-  SearchIcon,
-  MoonIcon,
-  SunIcon,
   BellIcon,
   MenuIcon,
   OutlinePersonIcon,
@@ -13,7 +10,6 @@ import {
 import {
   Avatar,
   Badge,
-  Input,
   Dropdown,
   DropdownItem,
 } from "@roketid/windmill-react-ui";

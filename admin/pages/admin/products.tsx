@@ -89,18 +89,21 @@ function Product() {
   return (
     <Layout>
       <PageTitle>Sản phẩm</PageTitle>
-      <div className="flex justify-between flex-1 mb-4">
-        <div className="relative w-full max-w-sm mr-2 focus-within:text-purple-500">
-          <div className="absolute inset-y-0 flex items-center pl-2">
-            <SearchIcon className="w-4 h-4" aria-hidden="true" />
+      <div className="flex justify-between mb-4">
+        <div className="flex flex-1">
+          <div className="relative w-full max-w-sm mr-2 focus-within:text-purple-500">
+            <div className="absolute inset-y-0 flex items-center pl-2">
+              <SearchIcon className="w-4 h-4" aria-hidden="true" />
+            </div>
+            <Input
+              className="pl-8 text-gray-700"
+              placeholder="Tìm kiếm sản phẩm"
+              aria-label="Search"
+            />
           </div>
-          <Input
-            className="pl-8 text-gray-700"
-            placeholder="Tìm kiếm sản phẩm"
-            aria-label="Search"
-          />
+          <Button>Tìm kiếm</Button>
         </div>
-        <Button>Tìm kiếm</Button>
+        <Button>Thêm sản phẩm</Button>
       </div>
 
       {isLoading ? (
@@ -139,7 +142,9 @@ function Product() {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <span className="text-sm">{formatCurrency(product.temp_price)} VNĐ</span>
+                      <span className="text-sm">
+                        {formatCurrency(product.temp_price)} VNĐ
+                      </span>
                     </TableCell>
                     <TableCell>
                       <Badge type={product.is_actived ? "success" : "danger"}>
@@ -164,9 +169,9 @@ function Product() {
                         <Button
                           layout="link"
                           size="small"
-                          aria-label="Forbidden"
+                          aria-label="Delete"
                         >
-                          <ForbiddenIcon
+                          <TrashIcon
                             className="w-5 h-5"
                             aria-hidden="true"
                           />
@@ -174,7 +179,11 @@ function Product() {
                       </div>
                     </TableCell>
                   </TableRow>
-                  <AddProductModal isModalOpen={isModalOpen} closeModal={closeModal} loadDataProduct={loadData}/>
+                  <AddProductModal
+                    isModalOpen={isModalOpen}
+                    closeModal={closeModal}
+                    loadDataProduct={loadData}
+                  />
                 </>
               ))}
             </TableBody>
