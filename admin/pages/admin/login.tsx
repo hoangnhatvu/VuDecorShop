@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { login } from "app/redux/features/userSlice";
 import { useAppDispatch, useAppSelector } from "app/redux/hooks";
 import { Label, Input, Button } from "@roketid/windmill-react-ui";
+import Loader from "app/components/Loader/Loader";
 
 interface FormData {
   email: string;
@@ -15,14 +16,13 @@ interface FormData {
 
 function LoginPage() {
   const imgSource = "/assets/img/bk.png";
-
   const router = useRouter();
-
   const [data, setData] = useState<FormData>({
     email: "",
     password: "",
   });
-  const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const isLoggedIn = useAppSelector((state: any) => state.userReducer.isLoggedIn);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -40,24 +40,27 @@ function LoginPage() {
 
   const handleLogin = async () => {
     try {
-      console.log(`${process.env.APP_API_URL}auth/loginAdmin`)
+      setIsLoading(true);
       const response = await axios.post(
         `${process.env.APP_API_URL}auth/loginAdmin`,
         data
       );
-
       dispatch(login(response.data));
       toast.success("Đăng nhập thành công !");
       router.push("/admin");
     } catch (error: any) {
-      if (error) {
+      if (error?.response?.data) {
         const messages = error.response.data.message;
         if (Array.isArray(messages)) {
           toast.error(messages.join("\n"));
         } else {
           toast.error(error.response.data.message);
         }
+      } else {
+        toast.error("Đăng nhập thất bại !");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -69,6 +72,7 @@ function LoginPage() {
 
   return (
     <>
+      {isLoading && <Loader />}
       <div className="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
         <div className="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800">
           <div className="flex flex-col overflow-y-auto my-12 mx-20 md:flex-row">

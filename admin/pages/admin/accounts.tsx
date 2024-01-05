@@ -17,7 +17,14 @@ import {
   Label,
   Select,
 } from "@roketid/windmill-react-ui";
-import { EditIcon, TrashIcon, SearchIcon, ForbiddenIcon, UnlockIcon, LockIcon } from "icons";
+import {
+  EditIcon,
+  TrashIcon,
+  SearchIcon,
+  ForbiddenIcon,
+  UnlockIcon,
+  LockIcon,
+} from "icons";
 import Layout from "app/containers/Layout";
 import { User } from "app/types/user";
 import { getUsers, updateUserForAdmin } from "pages/api/userApis";
@@ -32,6 +39,7 @@ function Account() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [role, setRole] = useState<string | null>(null);
+  const [currentUser, setCurrentUser] = useState<User>();
 
   function openModal() {
     setIsModalOpen(true);
@@ -97,136 +105,144 @@ function Account() {
             aria-label="Search"
           />
         </div>
-        <Button className="w-full w-24" block>
-          Tìm kiếm
-        </Button>
+        <Button>Tìm kiếm</Button>
       </div>
 
       {isLoading ? (
         <Loader />
       ) : (
-        <TableContainer className="mb-8">
-          <Table>
-            <TableHeader>
-              <tr>
-                <TableCell>Tài khoản</TableCell>
-                <TableCell>Vai trò</TableCell>
-                <TableCell>Trạng thái</TableCell>
-                <TableCell>Ngày tham gia</TableCell>
-                <TableCell>Hành động</TableCell>
-              </tr>
-            </TableHeader>
-            <TableBody>
-              {listUser.map((user, i) => (
-                <>
-                  <TableRow key={i}>
-                    <TableCell>
-                      <div className="flex items-center text-sm">
-                        <Avatar
-                          className="hidden mr-3 md:block"
-                          src={process.env.APP_API_URL + user.user_image}
-                          alt="User avatar"
-                        />
-                        <div>
-                          <p className="font-semibold">{user.user_name}</p>
-                          <p className="text-xs text-gray-600 dark:text-gray-400">
-                            {user.email}
-                          </p>
+        <>
+          <TableContainer className="mb-8">
+            <Table>
+              <TableHeader>
+                <tr>
+                  <TableCell>Tài khoản</TableCell>
+                  <TableCell>Vai trò</TableCell>
+                  <TableCell>Trạng thái</TableCell>
+                  <TableCell>Ngày tham gia</TableCell>
+                  <TableCell>Hành động</TableCell>
+                </tr>
+              </TableHeader>
+              <TableBody>
+                {listUser.map((user, i) => (
+                  <>
+                    <TableRow key={i}>
+                      <TableCell>
+                        <div className="flex items-center text-sm">
+                          <Avatar
+                            className="hidden mr-3 md:block"
+                            src={process.env.APP_API_URL + user.user_image}
+                            alt="User avatar"
+                          />
+                          <div>
+                            <p className="font-semibold">{user.user_name}</p>
+                            <p className="text-xs text-gray-600 dark:text-gray-400">
+                              {user.email}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-sm">{user.role}</span>
-                    </TableCell>
-                    <TableCell>
-                      <Badge
-                        type={
-                          user.is_blocked
-                            ? "danger"
-                            : user.is_active
-                            ? "success"
-                            : "warning"
-                        }
-                      >
-                        {user.is_blocked
-                          ? "Bị khóa"
-                          : user.is_active
-                          ? "Đã kích hoạt"
-                          : "Chưa kích hoạt"}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-sm">
-                        {new Date(user.created_date).toLocaleDateString()}
-                      </span>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center space-x-4">
-                        <Button
-                          layout="link"
-                          size="small"
-                          aria-label="Edit"
-                          onClick={openModal}
+                      </TableCell>
+                      <TableCell>
+                        <span className="text-sm">{user.role}</span>
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          type={
+                            user.is_blocked
+                              ? "danger"
+                              : user.is_active
+                              ? "success"
+                              : "warning"
+                          }
                         >
-                          <EditIcon className="w-5 h-5" aria-hidden="true" />
-                        </Button>
-                        {user.is_blocked ? (
+                          {user.is_blocked
+                            ? "Bị khóa"
+                            : user.is_active
+                            ? "Đã kích hoạt"
+                            : "Chưa kích hoạt"}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <span className="text-sm">
+                          {new Date(user.created_date).toLocaleDateString()}
+                        </span>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center space-x-4">
                           <Button
                             layout="link"
                             size="small"
-                            aria-label="Unlock"
+                            aria-label="Edit"
+                            onClick={() => {
+                              openModal();
+                              setCurrentUser(user);
+                            }}
                           >
-                            <UnlockIcon
-                              className="w-5 h-5"
-                              aria-hidden="true"
-                            />
+                            <EditIcon className="w-5 h-5" aria-hidden="true" />
                           </Button>
-                        ) : (
-                          <Button
-                            layout="link"
-                            size="small"
-                            aria-label="Lock"
-                          >
-                            <LockIcon
-                              className="w-5 h-5"
-                              aria-hidden="true"
-                            />
-                          </Button>
-                        )}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                  <Modals
-                    isModalOpen={isModalOpen}
-                    onCloseModal={closeModal}
-                    onSubmit={() => handleSubmit(user.id, user.updated_token)}
-                  >
-                    <Label className="mt-4">
-                      <span>Vai trò</span>
-                      <Select
-                        className="mt-4"
-                        value={role ? role : user.role}
-                        onChange={handleRoleChange}
-                      >
-                        <option>admin</option>
-                        <option>employee</option>
-                        <option>user</option>
-                      </Select>
-                    </Label>
-                  </Modals>
-                </>
-              ))}
-            </TableBody>
-          </Table>
-          <TableFooter>
-            <Pagination
-              totalResults={2}
-              resultsPerPage={2}
-              onChange={() => {}}
-              label="Account navigation"
-            />
-          </TableFooter>
-        </TableContainer>
+                          {user.is_blocked ? (
+                            <Button
+                              layout="link"
+                              size="small"
+                              aria-label="Unlock"
+                            >
+                              <UnlockIcon
+                                className="w-5 h-5"
+                                aria-hidden="true"
+                              />
+                            </Button>
+                          ) : (
+                            <Button
+                              layout="link"
+                              size="small"
+                              aria-label="Lock"
+                            >
+                              <LockIcon
+                                className="w-5 h-5"
+                                aria-hidden="true"
+                              />
+                            </Button>
+                          )}
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  </>
+                ))}
+              </TableBody>
+            </Table>
+            <TableFooter>
+              <Pagination
+                totalResults={2}
+                resultsPerPage={2}
+                onChange={() => {}}
+                label="Account navigation"
+              />
+            </TableFooter>
+          </TableContainer>
+          {currentUser && (
+            <Modals
+              isModalOpen={isModalOpen}
+              buttonText="Xác nhận"
+              onCloseModal={closeModal}
+              onSubmit={() =>
+                handleSubmit(currentUser.id, currentUser.updated_token)
+              }
+            >
+              <Label className="mt-4">
+                <span>Vai trò</span>
+                <Select
+                  className="mt-4"
+                  value={role ? role : currentUser.role}
+                  onChange={handleRoleChange}
+                >
+                  <option>admin</option>
+                  <option>employee</option>
+                  <option>user</option>
+                </Select>
+              </Label>
+            </Modals>
+          )}
+        </>
       )}
     </Layout>
   );

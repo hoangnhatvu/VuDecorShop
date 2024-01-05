@@ -1,24 +1,22 @@
-import { useState } from "react";
-
 import {
   Modal,
   ModalBody,
   ModalFooter,
   Button,
 } from "@roketid/windmill-react-ui";
-import Layout from "app/containers/Layout";
 
 interface IModal {
   children: React.ReactNode;
   isModalOpen: boolean;
+  buttonText: string
   onCloseModal: () => void;
   onSubmit: () => void;
 }
 
-function Modals({ children, isModalOpen, onCloseModal, onSubmit }: IModal) {
+function Modals({ children, isModalOpen, buttonText, onCloseModal, onSubmit }: IModal) {
   return (
     <Modal isOpen={isModalOpen} onClose={onCloseModal}>
-      <ModalBody>{children}</ModalBody>
+      <ModalBody className="overflow-y-auto max-h-96">{children}</ModalBody>
       <ModalFooter>
         <div className="hidden sm:block">
           <Button layout="outline" onClick={onCloseModal}>
@@ -26,7 +24,7 @@ function Modals({ children, isModalOpen, onCloseModal, onSubmit }: IModal) {
           </Button>
         </div>
         <div className="hidden sm:block" onClick={onSubmit}>
-          <Button>Chấp nhận</Button>
+          <Button>{buttonText}</Button>
         </div>
         <div className="block w-full sm:hidden">
           <Button block size="large" layout="outline" onClick={onCloseModal}>
@@ -35,7 +33,7 @@ function Modals({ children, isModalOpen, onCloseModal, onSubmit }: IModal) {
         </div>
         <div className="block w-full sm:hidden">
           <Button block size="large" onClick={onSubmit}>
-            Chấp nhận
+            {buttonText}
           </Button>
         </div>
       </ModalFooter>
