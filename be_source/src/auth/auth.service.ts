@@ -257,7 +257,6 @@ export class AuthService {
       const user = new this.userModel({
         ...registerDTO,
         updated_token: generateUpdateToken(),
-        is_active: false,
         password: hashPass,
       })
 
@@ -267,6 +266,7 @@ export class AuthService {
         excludeExtraneousValues: true,
       })
     } catch (err) {
+      console.log(err)
       if (err.code === 11000) {
         throw new ConflictException('Email đã tồn tại !')
       } else {

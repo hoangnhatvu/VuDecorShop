@@ -4,6 +4,11 @@ import { baseSchema } from './base.schema'
 import { PaymentMethod, PaymentStatus } from 'src/enums/payment.enum'
 
 export const orderSchema = new mongoose.Schema({
+  order_code_ship: {
+    type: String,
+    default: ""
+  },
+
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
