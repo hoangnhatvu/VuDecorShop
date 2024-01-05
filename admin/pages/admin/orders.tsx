@@ -71,7 +71,7 @@ function Order() {
     }
   };
 
-  const handleCancelProduct = async (updatedToken: string, orderid: string) => {
+  const handleCancelOrder = async (updatedToken: string, orderid: string) => {
     const userConfirmed = window.confirm(
       "Bạn có chắc muốn hủy đơn hàng này không?"
     );
@@ -98,7 +98,7 @@ function Order() {
     }
   };
 
-  const handleUpdateProduct = async (
+  const handleUpdateOrder = async (
     status: string,
     updatedToken: string,
     orderid: string
@@ -214,7 +214,7 @@ function Order() {
                                 size="small"
                                 aria-label="Confirm"
                                 onClick={() => {
-                                  handleUpdateProduct(
+                                  handleUpdateOrder(
                                     "Đang lấy hàng",
                                     order.updated_token,
                                     order.id
@@ -231,7 +231,7 @@ function Order() {
                                 size="small"
                                 aria-label="Cancel"
                                 onClick={() => {
-                                  handleCancelProduct(
+                                  handleCancelOrder(
                                     order.updated_token,
                                     order.id
                                   );
@@ -252,7 +252,7 @@ function Order() {
                                     size="small"
                                     aria-label="Deliver"
                                     onClick={() => {
-                                      handleUpdateProduct(
+                                      handleUpdateOrder(
                                         "Đang vận chuyển",
                                         order.updated_token,
                                         order.id
@@ -269,7 +269,7 @@ function Order() {
                                     size="small"
                                     aria-label="Cancel"
                                     onClick={() => {
-                                      handleCancelProduct(
+                                      handleCancelOrder(
                                         order.updated_token,
                                         order.id
                                       );

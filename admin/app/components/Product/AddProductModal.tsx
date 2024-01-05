@@ -448,7 +448,7 @@ const AddProductModal: React.FC<IProductModal> = ({
                           {...field}
                           type="number"
                           onChange={field.onChange}
-                          className="w-24"
+                          className="w-32"
                         />
                       )}
                     />
