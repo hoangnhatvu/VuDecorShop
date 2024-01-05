@@ -22,6 +22,14 @@ const Home = () => {
   };
 
   useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      loadData();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  useEffect(() => {
     loadData();
   }, []);
 

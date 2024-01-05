@@ -11,14 +11,15 @@ import {SIZES} from '../../constants';
 import {calculateFeeShip, createOrder} from '../helpers/handlePaymentApis';
 import {useToastMessage} from '../hook/showToast';
 import {useDispatch, useSelector} from 'react-redux';
-import { setSelectedAddress } from '../redux/slices/selectedAddress.slice';
+import {setSelectedAddress} from '../redux/slices/selectedAddress.slice';
+import CartManager from '../helpers/cartManager';
 
 const Payment = ({navigation}) => {
   const route = useRoute();
   const {total} = route.params;
   const [loader, setLoader] = useState(false);
   const [feeShip, setFeeShip] = useState(0);
-  const selectedAddress = useSelector(state => state.selectedAddress.value)
+  const selectedAddress = useSelector(state => state.selectedAddress.value);
   const {showToast} = useToastMessage();
   const [paymentMethod, setPaymentMethod] = useState(null);
   const listOrderItem = useSelector(state => state.listOrderItem.value);
@@ -35,7 +36,7 @@ const Payment = ({navigation}) => {
         item => item.is_default === true,
       )[0];
       console.log();
-      dispatch(setSelectedAddress(defaultAddress))
+      dispatch(setSelectedAddress(defaultAddress));
     }
   };
 
@@ -86,6 +87,10 @@ const Payment = ({navigation}) => {
       };
       await createOrder(data);
 
+      listOrderItem.forEach(async item => {
+        await CartManager.removeFromCart(item);
+      });
+
       showToast('Đặt hàng thành công !', 'success');
       navigation.navigate('OrderSuccess');
     } catch (error) {
@@ -108,10 +113,7 @@ const Payment = ({navigation}) => {
               <Text>tại đây</Text>
             </View>
           ) : (
-            <AddressItem
-              item={selectedAddress}
-              mode="payment"
-            />
+            <AddressItem item={selectedAddress} mode="payment" />
           )}
         </View>
         <View style={{marginBottom: SIZES.medium}}>

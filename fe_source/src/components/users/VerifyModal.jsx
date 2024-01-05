@@ -138,7 +138,7 @@ const VerifyModal = ({isVisible, email, type, hideModal}) => {
 
             <Button
               title="Xác minh"
-              width="50%"
+              width="70%"
               loader={loader}
               onPress={() => handleSubmit()}
             />

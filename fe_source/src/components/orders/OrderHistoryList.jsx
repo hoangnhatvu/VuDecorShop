@@ -46,7 +46,7 @@ const OrderHistoryList = ({route}) => {
           {data.length > 0 && (
             <View style={{gap: SIZES.small}}>
               {data?.map((item, index) => {
-                return <OrderHistoryItem item={item} key={index} />;
+                return <OrderHistoryItem item={item} key={index} loadData={loadData}/>;
               })}
             </View>
           )}

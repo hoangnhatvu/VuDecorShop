@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   },
   descText: {
     fontFamily: 'OpenSans-Regular',
-    fontSize: SIZES.small,
+    fontSize: SIZES.medium - 2,
     textAlign: 'justify',
   },
   location: {

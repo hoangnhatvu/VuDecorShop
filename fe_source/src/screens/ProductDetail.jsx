@@ -117,8 +117,12 @@ const ProductDetail = ({navigation}) => {
       warning();
     } else {
       try {
-        await CartManager.addToCart(product, count, optionProduct);
-        showToast('Đã thêm sản phẩm vào giỏ hàng !', 'success');
+        if (count > optionProduct.stock) {
+          showToast('Vượt quá số lượng sản phẩm trong kho', 'warning');
+        } else {
+          await CartManager.addToCart(product, count, optionProduct);
+          showToast('Đã thêm sản phẩm vào giỏ hàng !', 'success');
+        }
       } catch (error) {
         showToast(`${error}`, 'danger');
       }
@@ -162,7 +166,12 @@ const ProductDetail = ({navigation}) => {
             </View>
           </View>
 
-          <OptionsList options={item.options} />
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <OptionsList options={item.options} />
+            {optionProduct ? (
+              <Text>Số lượng còn lại: {optionProduct.stock}</Text>
+            ) : null}
+          </View>
 
           <View style={styles.ratingRow}>
             {isLoading ? (
@@ -216,7 +225,11 @@ const ProductDetail = ({navigation}) => {
                         />
                       </View>
                       <View>
-                        <Text style={{fontFamily: 'OpenSans-Bold', marginBottom: 2}}>
+                        <Text
+                          style={{
+                            fontFamily: 'OpenSans-Bold',
+                            marginBottom: 2,
+                          }}>
                           {item?.created_by?.user_name}
                         </Text>
                         <StarRating averageRate={item.rate} size={16} />

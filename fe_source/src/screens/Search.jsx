@@ -11,9 +11,8 @@ import Modal from 'react-native-modal';
 import {useToastMessage} from '../hook/showToast';
 import {searchProducts} from '../helpers/handleProductApis';
 
-const Search = () => {
+const Search = ({navigation}) => {
   const [searchKey, setSearchKey] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -35,6 +34,14 @@ const Search = () => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      loadData();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     loadData();
