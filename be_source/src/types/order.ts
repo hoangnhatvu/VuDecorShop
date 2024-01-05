@@ -4,6 +4,7 @@ import { MetaData } from './meta-data'
 import { Option } from './option'
 
 export interface Order extends MetaData {
+  order_code_ship: string
   user: User
   products: [
     {

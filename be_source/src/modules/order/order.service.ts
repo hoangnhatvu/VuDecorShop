@@ -9,6 +9,7 @@ import { CreateOrderDTO, OrderDTO, UpdateOrderDTO } from 'src/dtos/order.dto'
 import { Product } from 'src/types/product'
 import { OrderStatus } from 'src/enums/order.enum'
 import { Option } from 'src/types/option'
+import { cancelOrder, createOrder } from 'src/helpers/GHNApis'
 
 export interface PaginatedOrder {
   data: OrderDTO[]
@@ -73,9 +74,12 @@ export class OrderService {
   async update(orderId: string, updateOrderDTO: UpdateOrderDTO, userid: string) {
     try {
       const user = await this.userModel.findOne({ _id: userid })
-      const order = await this.orderModel.findOne({
-        _id: orderId,
-      })
+      const order = await this.orderModel
+        .findOne({
+          _id: orderId,
+        })
+        .populate('products.product')
+        .populate('products.option')
 
       if (!user) {
         throw new HttpException('Không tìm thấy user', HttpStatus.NOT_FOUND)
@@ -87,6 +91,46 @@ export class OrderService {
 
       if (order.updated_token !== updateOrderDTO.updated_token) {
         throw new HttpException('Đơn hàng đang được cập nhật bởi một ai đó', HttpStatus.CONFLICT)
+      }
+
+      if (order.status === OrderStatus.PENDING && updateOrderDTO.status === OrderStatus.BEING_PICKED_UP) {
+        const listProducts = order.products.map((item: any) => {
+          return { name: item.product.product_name, quantity: item.quantity, weight: 1000 }
+        })
+        const data = {
+          to_name: order.customer_name,
+          to_phone: order.phone_number,
+          to_address: order.address,
+          to_ward_code: order.ward,
+          to_district_id: order.district,
+          cod_amount: order.payment.amount,
+          items: listProducts,
+        }
+
+        const responseData = await createOrder(data)
+        await order.updateOne({ order_code_ship: responseData.data.order_code })
+      }
+
+      if(updateOrderDTO.status === OrderStatus.CANCELED) {
+        for (const item of order.products) {
+          const option = await this.optionModel.findOne({ _id: item.option.id })
+          if (option) {
+            await option.updateOne({ stock: option.stock + item.quantity })
+          }
+        }
+      }
+
+      if(updateOrderDTO.status === OrderStatus.IN_RATING) {
+        for (const item of order.products) {
+          const product = await this.productModel.findOne({ _id: item.product.id })
+          if (product) {
+            await product.updateOne({ order_number: product.order_number + item.quantity })
+          }
+        }
+      }
+
+      if (order.status === OrderStatus.BEING_PICKED_UP && updateOrderDTO.status === OrderStatus.CANCELED) {
+        await cancelOrder(order.order_code_ship)
       }
 
       const updateOrdertData = {
@@ -109,6 +153,30 @@ export class OrderService {
       } else {
         throw new HttpException('Lỗi mạng !', HttpStatus.INTERNAL_SERVER_ERROR)
       }
+    }
+  }
+
+  async getAll(page?: number, limit?: number): Promise<PaginatedOrder> {
+    const orders = await this.orderModel
+      .find()
+      .populate('products.product')
+      .populate('products.option')
+      .populate('created_by')
+      .populate('user')
+
+    const totalCount = orders.length
+
+    const totalPage = Math.ceil(totalCount / limit)
+
+    return {
+      data: plainToInstance(OrderDTO, orders, {
+        excludeExtraneousValues: true,
+        enableImplicitConversion: true,
+      }),
+      page,
+      limit,
+      totalCount,
+      totalPage,
     }
   }
 

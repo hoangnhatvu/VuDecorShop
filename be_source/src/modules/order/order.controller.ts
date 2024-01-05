@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards, Req, BadRequestException, Put, Query } from '@nestjs/common'
+import { Body, Controller, Post, UseGuards, Req, BadRequestException, Put, Query, Get } from '@nestjs/common'
 import { UserRole } from 'src/enums/role.enum'
 import { AuthGuard } from 'src/guards/auth.guard'
 import { Roles } from 'src/decorators/roles.decorator'
@@ -20,6 +20,15 @@ export class OrderController {
   @Roles(UserRole.ADMIN, UserRole.EMPLOYEE, UserRole.USER)
   update(@Query() query: { id: string }, @Body() updateOrdertDTO: UpdateOrderDTO, @Req() req: any) {
     return this.orderService.update(query.id, updateOrdertDTO, req.user_data.id)
+  }
+
+  @Get('')
+  @UseGuards(AuthGuard)
+  @Roles(UserRole.ADMIN, UserRole.EMPLOYEE)
+  async getAll(@Query() query: any) {
+    const page = query.page ? Number(query.page) : 1
+    const limit = query.limit ? Number(query.limit) : 20
+    return this.orderService.getAll(page, limit)
   }
 
   @Post('getOrderByUser')

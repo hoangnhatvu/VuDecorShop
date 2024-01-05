@@ -34,6 +34,9 @@ export class ProductDTO extends MetaDataDTO {
 
   @Expose()
   description: string
+  
+  @Expose()
+  temp_price: number
 
   @Expose()
   @Type(() => OptionDTO)

@@ -63,6 +63,9 @@ export class CreatePaymentDTO {
 }
 export class OrderDTO extends MetaDataDTO {
   @Expose()
+  order_code_ship: string;
+
+  @Expose()
   id: string;
 
   @Expose()
