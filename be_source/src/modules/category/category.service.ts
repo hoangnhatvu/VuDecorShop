@@ -41,7 +41,7 @@ export class CategoryService {
       const user = await this.userModel.findOne({ _id: userid });
 
       if (!user) {
-        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+        throw new HttpException('Không tìm thấy người dùng !', HttpStatus.NOT_FOUND);
       }
 
       const category = new this.categoryModel({
@@ -57,12 +57,11 @@ export class CategoryService {
         excludeExtraneousValues: true,
       });
     } catch (err) {
-      deleteImage(categoryImage);
       if (err instanceof HttpException) {
         throw err;
       } else
         throw new HttpException(
-          'Internal server error',
+          'Lỗi server !',
           HttpStatus.INTERNAL_SERVER_ERROR,
         );
     }

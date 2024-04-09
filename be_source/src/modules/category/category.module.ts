@@ -6,6 +6,7 @@ import { CategoryController } from './category.controller';
 import { userSchema } from 'src/models/user.schema';
 import { ConfigModule } from '@nestjs/config';
 import { BlackListModule } from '../black-list/black-list.module';
+import { CloudinaryService } from 'src/common/uploadImage';
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -16,6 +17,6 @@ import { BlackListModule } from '../black-list/black-list.module';
     BlackListModule,
   ],
   controllers: [CategoryController],
-  providers: [CategoryService],
+  providers: [CategoryService, CloudinaryService],
 })
 export class CategoryModule {}

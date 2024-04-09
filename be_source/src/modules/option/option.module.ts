@@ -7,6 +7,7 @@ import { optionSchema } from 'src/models/option.schema'
 import { productSchema } from 'src/models/product.schema'
 import { OptionController } from './option.controller'
 import { OptionService } from './option.service'
+import { CloudinaryService } from 'src/common/uploadImage'
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -18,6 +19,6 @@ import { OptionService } from './option.service'
     BlackListModule,
   ],
   controllers: [OptionController],
-  providers: [OptionService],
+  providers: [OptionService, CloudinaryService],
 })
 export class OptionModule {}

@@ -14,6 +14,8 @@ export const productSchema = new mongoose.Schema({
   },
 
   product_image: String,
+  
+  product_3d: String,
 
   view_number: {
     type: Number,

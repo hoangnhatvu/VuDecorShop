@@ -28,7 +28,12 @@ export class ProductService {
     @InjectModel('Option') private optionModel: Model<Option>,
   ) {}
 
-  async create(createProductDTO: CreateProductDTO, userid: string, productImage: string): Promise<ProductDTO> {
+  async create(
+    createProductDTO: CreateProductDTO,
+    userid: string,
+    productImage: string,
+    product3d: string,
+  ): Promise<ProductDTO> {
     try {
       const user = await this.userModel.findOne({ _id: userid })
       const category = await this.categoryModel.findOne({
@@ -36,11 +41,11 @@ export class ProductService {
       })
 
       if (!user) {
-        throw new HttpException('User not found', HttpStatus.NOT_FOUND)
+        throw new HttpException('Không tìm thấy người dùng !', HttpStatus.NOT_FOUND)
       }
 
       if (!category) {
-        throw new HttpException('Category not found', HttpStatus.NOT_FOUND)
+        throw new HttpException('Không tìm thấy loại sản phẩm !', HttpStatus.NOT_FOUND)
       }
 
       const tempPrice = await this.getTempPrice(createProductDTO.options)
@@ -48,9 +53,10 @@ export class ProductService {
       const product = new this.productModel({
         ...createProductDTO,
         category: category,
-        temp_price: tempPrice,
+        temp_price: tempPrice ? tempPrice : 0,
         updated_token: generateUpdateToken(),
         product_image: productImage,
+        product_3d: product3d,
         created_by: user,
       })
 
@@ -60,10 +66,13 @@ export class ProductService {
         excludeExtraneousValues: true,
       })
     } catch (err) {
-      deleteImage(productImage)
+      // deleteImage(productImage)
       if (err instanceof HttpException) {
         throw err
-      } else throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR)
+      } else {
+        console.log(err)
+        throw new HttpException('Lỗi server !', HttpStatus.INTERNAL_SERVER_ERROR)
+      }
     }
   }
 
@@ -155,9 +164,9 @@ export class ProductService {
           }
         }
 
-          if (filterProductDTO.selectedCategories && filterProductDTO.selectedCategories.length > 0) {
-            query.category = { $in: filterProductDTO.selectedCategories }
-          }
+        if (filterProductDTO.selectedCategories && filterProductDTO.selectedCategories.length > 0) {
+          query.category = { $in: filterProductDTO.selectedCategories }
+        }
 
         //   if (filterProductDTO.sortByPopularity !== undefined && filterProductDTO.sortByPopularity) {
         //     query.$orderby = { view_number: -1 }
@@ -261,6 +270,7 @@ export class ProductService {
         $limit: 1,
       },
     ])
-    return result[0].price
+    console.log(result)
+    return result.length > 0 ? result[0].price : null
   }
 }

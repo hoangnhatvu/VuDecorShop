@@ -16,7 +16,7 @@ import { ReviewModule } from './modules/review/review.module'
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRoot('mongodb+srv://hoangnhatvu35202:Vu586039@cluster0.e6rlg4q.mongodb.net/vudecorshop'),
+    MongooseModule.forRoot('mongodb+srv://hoangnhatvu35202:Vu586039@cluster0.e6rlg4q.mongodb.net/vushop'),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..'),
     }),

@@ -37,10 +37,10 @@ export class OptionService {
         excludeExtraneousValues: true,
       })
     } catch (err) {
-      deleteImage(optionImage)
+      // deleteImage(optionImage)
       if (err instanceof HttpException) {
         throw err
-      } else throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR)
+      } else throw new HttpException('Lỗi server !', HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 

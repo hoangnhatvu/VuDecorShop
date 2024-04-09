@@ -12,6 +12,8 @@ import {
   Get,
   Put,
   Param,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common'
 import { CategoryService, PaginatedCategory } from './category.service'
 import { UserRole } from 'src/enums/role.enum'
@@ -21,10 +23,15 @@ import { CreateCategoryDTO, UpdateCategoryDTO } from 'src/dtos/category.dto'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { storageConfig } from 'src/common/config'
 import { fileFilter } from 'src/common/fileFilter'
+import { CloudinaryService } from 'src/common/uploadImage'
+import { deleteImage } from 'src/common/deleteImage'
 
 @Controller('categories')
 export class CategoryController {
-  constructor(private categoryService: CategoryService) {}
+  constructor(
+    private categoryService: CategoryService,
+    private readonly cloudinaryService: CloudinaryService,
+  ) {}
   @Post('create')
   @UseGuards(AuthGuard)
   @Roles(UserRole.ADMIN)
@@ -34,15 +41,28 @@ export class CategoryController {
       fileFilter,
     }),
   )
-  create(@UploadedFile() file: Express.Multer.File, @Body() categoryCreateDTO: CreateCategoryDTO, @Req() req: any) {
+  async create(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() categoryCreateDTO: CreateCategoryDTO,
+    @Req() req: any,
+  ) {
     if (req.fileValidationError) {
       throw new BadRequestException(req.fileValidationError)
     }
-    return this.categoryService.create(
-      categoryCreateDTO,
-      req.user_data.id,
-      file ? file.destination + '/' + file.filename : null,
-    )
+    try {
+      const result_image = await this.cloudinaryService.uploadImage(file.path, 'category')
+      deleteImage(file.path)
+      return this.categoryService.create(
+        categoryCreateDTO,
+        req.user_data.id,
+        file ? result_image.secure_url : null,
+      )
+    } catch (error) {
+      console.log(error)
+      deleteImage(file.path)
+      throw new HttpException('Upload ảnh thất bại !', HttpStatus.BAD_REQUEST)
+    }
+ 
   }
 
   @Put('update')
