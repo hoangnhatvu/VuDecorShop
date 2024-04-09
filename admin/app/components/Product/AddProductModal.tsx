@@ -46,6 +46,8 @@ interface IOptionForm {
 interface IProductForm {
   productName: string;
   productImage: File | any;
+  product3d: File | any;
+  product3dText: string;
   category: string;
   description: string;
   isActived: boolean | any;
@@ -158,6 +160,9 @@ const AddProductModal: React.FC<IProductModal> = ({
       if (data.productImage) {
         productDataToSend.append("product_image", data.productImage);
       }
+      if (data.product3d) {
+        productDataToSend.append("product_3d", data.product3d);
+      }
       productDataToSend.append("description", data.description);
       productDataToSend.append("is_actived", String(data.isActived));
 
@@ -254,7 +259,7 @@ const AddProductModal: React.FC<IProductModal> = ({
             </div>
 
             <Label>
-              <div className="pl-12 flex-col">
+              <div className="pl-12">
                 <span>Ảnh sản phẩm</span>
                 <Image
                   src={
@@ -277,6 +282,7 @@ const AddProductModal: React.FC<IProductModal> = ({
                         {...field}
                         type="file"
                         id="productImage"
+                        accept=".png, .jpg, .jpeg"
                         value={undefined}
                         className="hidden"
                         onChange={(e) => {
@@ -292,7 +298,49 @@ const AddProductModal: React.FC<IProductModal> = ({
               </div>
             </Label>
           </div>
-
+          <Label className="mt-4">
+            <span>Mô hình 3D (.glb)</span>
+            <div>
+              <label htmlFor={"product3d"}>
+                <Controller
+                  name="product3d"
+                  control={controlProductForm}
+                  defaultValue={null}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      type="file"
+                      id="product3d"
+                      className="hidden"
+                      accept=".glb"
+                      value={undefined}
+                      onChange={(e) => {
+                        const file = e.target.files && e.target.files[0];
+                        if (file) {
+                          setValueProductForm("product3d", file);
+                          setValueProductForm("product3dText", file.name);
+                        }
+                      }}
+                    />
+                  )}
+                />
+              </label>
+              <div className="flex items-center justify-start mt-1">
+                <Image
+                  src={"/assets/img/3dObject.png"}
+                  alt="Product 3D"
+                  width={40}
+                  height={40}
+                  className="cursor-pointer rounded-lg"
+                />
+                <span>
+                  {watchProductForm("product3dText")
+                    ? watchProductForm("product3dText")
+                    : "Chọn mô hình"}
+                </span>
+              </div>
+            </div>
+          </Label>
           <Label className="mt-4">
             <span>Mô tả</span>
             <Controller

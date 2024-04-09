@@ -103,9 +103,7 @@ function Product() {
                         <div className="flex items-center text-sm">
                           <Avatar
                             className="hidden mr-3 md:block"
-                            src={
-                              process.env.APP_API_URL + product.product_image
-                            }
+                            src={product.product_image}
                             alt="Product image"
                           />
                           <div>
