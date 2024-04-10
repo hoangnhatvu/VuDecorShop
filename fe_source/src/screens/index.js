@@ -1,21 +1,22 @@
-import Search from './Search';
-import Home from './Home';
-import Profile from './Profile';
-import Cart from './Cart';
-import ProductDetail from './ProductDetail';
-import NewProducts from './NewProducts';
-import LoginPage from './LoginPage';
-import Orders from './Orders';
-import Favourites from './Favourites';
-import SignUp from './SignUp';
-import ForgotPassword from './ForgotPassword';
-import Payment from './Payment';
-import Address from './Address';
-import EditAddress from './EditAddress';
-import OrderSuccess from './OrderSuccess';
-import EditProfile from './EditProfile';
-import ChangePassword from './ChangePassword';
-import Review from './Review';
+import Search from './product/Search';
+import Home from './home/Home';
+import Profile from './profile/Profile';
+import Cart from './cart/Cart';
+import ProductDetail from './product/ProductDetail';
+import NewProducts from './product/NewProducts';
+import LoginPage from './auth/LoginPage';
+import Orders from './order/Orders';
+import Favourites from './profile/Favourites';
+import SignUp from './auth/SignUp';
+import ForgotPassword from './auth/ForgotPassword';
+import Payment from './order/Payment';
+import Address from './address/Address';
+import EditAddress from './address/EditAddress';
+import OrderSuccess from './order/OrderSuccess';
+import EditProfile from './profile/EditProfile';
+import ChangePassword from './profile/ChangePassword';
+import Review from './review/Review';
+import ViroAR3DObjectPage from './product/ARView';
 
 export {
   Home,
@@ -36,4 +37,5 @@ export {
   EditProfile,
   ChangePassword,
   Review,
+  ViroAR3DObjectPage,
 };

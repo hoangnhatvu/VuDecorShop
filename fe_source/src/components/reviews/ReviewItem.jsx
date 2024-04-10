@@ -69,7 +69,7 @@ const ReviewItem = ({item, order}) => {
           <Image
             source={
               item?.option?.option_image
-                ? {uri: API_URL + item?.option?.option_image}
+                ? {uri: item?.option?.option_image}
                 : require('../../../assets/images/no_image.png')
             }
             style={styles.productImg}

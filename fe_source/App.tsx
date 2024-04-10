@@ -17,6 +17,7 @@ import {
   ProductDetail,
   Review,
   SignUp,
+  ViroAR3DObjectPage,
 } from './src/screens';
 import {Provider} from 'react-redux';
 import {ToastProvider} from 'react-native-toast-notifications';
@@ -109,6 +110,11 @@ export default function App() {
             <Stack.Screen
               name="Review"
               component={Review}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="ViroAR3DObjectPage"
+              component={ViroAR3DObjectPage}
               options={{headerShown: false}}
             />
           </Stack.Navigator>

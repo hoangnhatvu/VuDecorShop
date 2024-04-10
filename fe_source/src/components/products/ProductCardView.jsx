@@ -4,12 +4,10 @@ import styles from './productCardView.style';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {COLORS} from '../../../constants';
 import {useNavigation} from '@react-navigation/native';
-import {API_URL} from '@env';
-import { formatCurrency } from '../../helpers/formatCurrency';
+import {formatCurrency} from '../../helpers/formatCurrency';
 
 const ProductCardView = ({item}) => {
   const navigation = useNavigation();
-  const [urlImage, setUrlImage] = useState(API_URL + item.product_image);
 
   return (
     <TouchableOpacity
@@ -18,7 +16,7 @@ const ProductCardView = ({item}) => {
         <View style={styles.imageContainer}>
           <Image
             source={{
-              uri: urlImage,
+              uri: item.product_image,
             }}
             style={styles.image}
           />
@@ -30,7 +28,9 @@ const ProductCardView = ({item}) => {
           <Text style={styles.supplier} numberOfLines={1}>
             {item.category.category_name}
           </Text>
-          <Text style={styles.price}>đ {formatCurrency(item.options[0].price)}</Text>
+          <Text style={styles.price}>
+            đ {formatCurrency(item.options[0].price)}
+          </Text>
         </View>
         {/* <TouchableOpacity style={styles.addBtn}>
           <IonIcon name="add-circle" size={35} color={COLORS.primary} />

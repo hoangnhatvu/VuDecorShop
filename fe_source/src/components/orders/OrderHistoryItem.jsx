@@ -41,7 +41,7 @@ const OrderHistoryItem = ({item, loadData}) => {
           <Image
             source={
               item?.products[0]?.option?.option_image
-                ? {uri: API_URL + item?.products[0]?.option?.option_image}
+                ? {uri: item?.products[0]?.option?.option_image}
                 : require('../../../assets/images/no_image.png')
             }
             style={styles.productImg}
