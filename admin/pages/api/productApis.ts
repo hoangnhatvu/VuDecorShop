@@ -1,9 +1,9 @@
 import requestApi from "./apiConfig";
 import type { requestApiProps } from "./apiConfig";
 
-const getProducts = async () => {
+const getProducts = async (page: number, limit: number) => {
   const request: requestApiProps = {
-    endpoint: "products/searchForAdmin?page=1&limit=20",
+    endpoint: `products/searchForAdmin?page=${page}&limit=${limit}`,
     method: "POST",
     params: undefined,
     body: {},
