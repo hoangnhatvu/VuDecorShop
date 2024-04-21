@@ -27,6 +27,9 @@ export class ProductDTO extends MetaDataDTO {
   product_image: string
 
   @Expose()
+  product_3d: string
+
+  @Expose()
   view_number: number
 
   @Expose()

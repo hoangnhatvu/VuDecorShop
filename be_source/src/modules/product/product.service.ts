@@ -186,6 +186,7 @@ export class ProductService {
           path: 'options',
           options: { sort: { price: 1 } },
         })
+        .sort({ created_date: -1 })
         .sort({
           temp_price:
             filterProductDTO.sortByPriceAscending !== undefined ? (filterProductDTO.sortByPriceAscending ? 1 : -1) : 0,
@@ -193,7 +194,7 @@ export class ProductService {
         .skip((page - 1) * limit)
         .limit(limit)
 
-      const totalCount = products.length
+      const totalCount = await (await this.productModel.find(query)).length
 
       const totalPage = Math.ceil(totalCount / limit)
 
@@ -270,7 +271,6 @@ export class ProductService {
         $limit: 1,
       },
     ])
-    console.log(result)
     return result.length > 0 ? result[0].price : null
   }
 }
