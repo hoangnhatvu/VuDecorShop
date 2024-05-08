@@ -1,9 +1,9 @@
 import requestApi from "./apiConfig";
 import type { requestApiProps } from "./apiConfig";
 
-const getOrders = async () => {
+const getOrders = async (page: number, limit: number, status: string) => {
   const request: requestApiProps = {
-    endpoint: "orders?page=1&limit=20",
+    endpoint: `orders?page=${page}&limit=${limit}&status=${status}`,
     method: "GET",
     params: undefined,
     body: {},
