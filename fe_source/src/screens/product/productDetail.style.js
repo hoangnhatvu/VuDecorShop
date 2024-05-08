@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   detailsWrapper: {
-    maxHeight: 390,
+    maxHeight: 360,
     marginTop: -SIZES.large,
     backgroundColor: COLORS.offwhite,
     width: SIZES.width,
@@ -32,8 +32,8 @@ const styles = StyleSheet.create({
   },
 
   titleRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingVertical: SIZES.small,
     marginLeft: 4,
   },
@@ -96,6 +96,8 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.large,
   },
   cartRow: {
+    bottom: 0,
+    position: 'absolute',
     padding: SIZES.small,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -142,7 +144,7 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.small,
     paddingHorizontal: SIZES.small,
     paddingVertical: SIZES.small / 2,
-    marginBottom: 4
+    marginBottom: 4,
   },
   userWrapper: {
     flexDirection: 'row',
@@ -152,7 +154,7 @@ const styles = StyleSheet.create({
   textReview: {
     fontFamily: 'OpenSans-Regular',
     paddingLeft: SIZES.xxLarge,
-    marginTop: 4
+    marginTop: 4,
   },
 });
 

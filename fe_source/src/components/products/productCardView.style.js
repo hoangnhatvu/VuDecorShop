@@ -3,7 +3,7 @@ import {COLORS, SIZES} from '../../../constants';
 
 const styles = StyleSheet.create({
   container: {
-    width: 186,
+    width: SIZES.width/2 - SIZES.large,
     height: 240,
     marginEnd: SIZES.small + 4,
     borderRadius: SIZES.medium,
