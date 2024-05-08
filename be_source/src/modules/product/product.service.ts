@@ -164,17 +164,32 @@ export class ProductService {
           }
         }
 
-        if (filterProductDTO.selectedCategories && filterProductDTO.selectedCategories.length > 0) {
+        if ((filterProductDTO.selectedCategories) && filterProductDTO.selectedCategories.length > 0) {
           query.category = { $in: filterProductDTO.selectedCategories }
         }
 
-        //   if (filterProductDTO.sortByPopularity !== undefined && filterProductDTO.sortByPopularity) {
-        //     query.$orderby = { view_number: -1 }
-        //   }
+        if (isAdmin && filterProductDTO.is_actived !== undefined) {
+          query.is_actived = filterProductDTO.is_actived
+        }
+      }
+      let sort = {}
 
-        //   if (filterProductDTO.sortByNewest !== undefined && filterProductDTO.sortByNewest) {
-        //     query.$orderby = { create_date: -1 }
-        //   }
+      switch (filterProductDTO.optionSort) {
+        case 'inprice':
+          sort = { temp_price: 1 }
+          break
+        case 'deprice':
+          sort = { temp_price: -1 }
+          break
+        case 'sold':
+          sort = { order_number: 1 }
+          break
+        case 'popular':
+          sort = { view_number: 1 }
+          break
+        default:
+          sort = { created_date: -1 }
+          break
       }
 
       const products = await this.productModel
@@ -186,15 +201,11 @@ export class ProductService {
           path: 'options',
           options: { sort: { price: 1 } },
         })
-        .sort({ created_date: -1 })
-        .sort({
-          temp_price:
-            filterProductDTO.sortByPriceAscending !== undefined ? (filterProductDTO.sortByPriceAscending ? 1 : -1) : 0,
-        } as any)
+        .sort({ ...sort } as any)
         .skip((page - 1) * limit)
         .limit(limit)
 
-      const totalCount = await (await this.productModel.find(query)).length
+      const totalCount = (await this.productModel.find(query)).length
 
       const totalPage = Math.ceil(totalCount / limit)
 

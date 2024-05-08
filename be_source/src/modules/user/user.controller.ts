@@ -11,6 +11,8 @@ import {
   BadRequestException,
   Get,
   HttpCode,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common'
 import { UserService } from './user.service'
 import { CreateUserDto, UpdateUserDTO, UpdateUserForAdminDTO } from 'src/dtos/user.dto'
@@ -20,9 +22,14 @@ import { UserRole } from 'src/enums/role.enum'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { storageConfig } from 'src/common/config'
 import { fileFilter } from 'src/common/fileFilter'
+import { CloudinaryService } from 'src/common/uploadImage'
+import { deleteImage } from 'src/common/deleteImage'
 @Controller('users')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private readonly cloudinaryService: CloudinaryService,
+  ) {}
   @Post('create')
   create(@Body() userCreate: CreateUserDto) {
     return this.userService.create(userCreate)
@@ -44,15 +51,21 @@ export class UserController {
       fileFilter,
     }),
   )
-  update(@UploadedFile() file: Express.Multer.File, @Body() updateUserDTO: UpdateUserDTO, @Req() req: any) {
+  async update(@UploadedFile() file: Express.Multer.File, @Body() updateUserDTO: UpdateUserDTO, @Req() req: any) {
     if (req.fileValidationError) {
       throw new BadRequestException(req.fileValidationError)
     }
-    return this.userService.update(
-      req.user_data.id,
-      updateUserDTO,
-      file ? file.destination + '/' + file.filename : null,
-    )
+
+    try {
+      const result_image = await this.cloudinaryService.uploadImage(file.path, 'avatar')
+      deleteImage(file.path)
+
+      return this.userService.update(req.user_data.id, updateUserDTO, file ? result_image.secure_url : null)
+    } catch (error) {
+      console.log(error)
+      deleteImage(file.path)
+      throw new HttpException('Upload ảnh thất bại !', HttpStatus.BAD_REQUEST)
+    }
   }
 
   @Put('updateUserForAdmin')

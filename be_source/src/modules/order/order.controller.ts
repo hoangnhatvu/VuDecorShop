@@ -28,7 +28,8 @@ export class OrderController {
   async getAll(@Query() query: any) {
     const page = query.page ? Number(query.page) : 1
     const limit = query.limit ? Number(query.limit) : 20
-    return this.orderService.getAll(page, limit)
+    const status = query.status ? query.status : ''
+    return this.orderService.getAll(page, limit, status)
   }
 
   @Post('getOrderByUser')
