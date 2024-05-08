@@ -1,6 +1,6 @@
-import * as mongoose from 'mongoose';
-import { Gender } from 'src/enums/gender.enum';
-import { UserRole } from 'src/enums/role.enum';
+import * as mongoose from 'mongoose'
+import { Gender } from 'src/enums/gender.enum'
+import { UserRole } from 'src/enums/role.enum'
 
 export const userSchema = new mongoose.Schema({
   user_name: {
@@ -10,7 +10,7 @@ export const userSchema = new mongoose.Schema({
 
   user_image: {
     type: String,
-    default: ""
+    default: '',
   },
 
   email: {
@@ -34,13 +34,18 @@ export const userSchema = new mongoose.Schema({
     type: Date,
     default: null,
     get: function (val: Date) {
-      return val ? val.toISOString().split('T')[0] : null;
+      return val ? val.toISOString().split('T')[0] : null
     },
   },
 
   gender: {
     type: String,
-    default: "",
+    default: '',
+  },
+
+  amount_spent: {
+    type: Number,
+    default: 0,
   },
 
   is_active: {
@@ -53,42 +58,44 @@ export const userSchema = new mongoose.Schema({
     default: false,
   },
 
-  ship_infos: [{
-    customer_name: {
-      type: String,
-      default: ""
-    },
+  ship_infos: [
+    {
+      customer_name: {
+        type: String,
+        default: '',
+      },
 
-    phone_number: {
-      type: String,
-      default: ""
-    },
+      phone_number: {
+        type: String,
+        default: '',
+      },
 
-    province: {
-      type: Number,
-      default: ""
-    },
+      province: {
+        type: Number,
+        default: '',
+      },
 
-    district: {
-      type: Number,
-      default: ""
-    },
+      district: {
+        type: Number,
+        default: '',
+      },
 
-    ward: {
-      type: String,
-      default: ""
-    },
+      ward: {
+        type: String,
+        default: '',
+      },
 
-    address: {
-      type: String,
-      default: ""
-    },
+      address: {
+        type: String,
+        default: '',
+      },
 
-    is_default: {
-      type: Boolean,
-      default: false
-    }
-  }],
+      is_default: {
+        type: Boolean,
+        default: false,
+      },
+    },
+  ],
 
   refresh_token: {
     type: String,
@@ -102,15 +109,15 @@ export const userSchema = new mongoose.Schema({
 
   updated_date: {
     type: Date,
-    default: ""
+    default: '',
   },
 
   updated_token: {
     type: String,
-    default: ""
+    default: '',
   },
-});
+})
 
-userSchema.path('ship_infos').validate(function(value) {
-  return value.length <= 10;
-}, 'Không được phép lưu quá 10 địa chỉ!');
+userSchema.path('ship_infos').validate(function (value) {
+  return value.length <= 10
+}, 'Không được phép lưu quá 10 địa chỉ!')

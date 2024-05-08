@@ -10,6 +10,7 @@ import { Product } from 'src/types/product'
 import { OrderStatus } from 'src/enums/order.enum'
 import { Option } from 'src/types/option'
 import { cancelOrder, createOrder } from 'src/helpers/GHNApis'
+import { PaymentStatus } from 'src/enums/payment.enum'
 
 export interface PaginatedOrder {
   data: OrderDTO[]
@@ -111,7 +112,7 @@ export class OrderService {
         await order.updateOne({ order_code_ship: responseData.data.order_code })
       }
 
-      if(updateOrderDTO.status === OrderStatus.CANCELED) {
+      if (updateOrderDTO.status === OrderStatus.CANCELED) {
         for (const item of order.products) {
           const option = await this.optionModel.findOne({ _id: item.option.id })
           if (option) {
@@ -120,11 +121,12 @@ export class OrderService {
         }
       }
 
-      if(updateOrderDTO.status === OrderStatus.IN_RATING) {
+      if (updateOrderDTO.status === OrderStatus.IN_RATING) {
         for (const item of order.products) {
           const product = await this.productModel.findOne({ _id: item.product.id })
           if (product) {
             await product.updateOne({ order_number: product.order_number + item.quantity })
+            await order.updateOne({ payment: { ...order.payment, status: PaymentStatus.PAID } })
           }
         }
       }
@@ -156,20 +158,31 @@ export class OrderService {
     }
   }
 
-  async getAll(page?: number, limit?: number): Promise<PaginatedOrder> {
-    const orders = await this.orderModel
-      .find()
+  async getAll(page: number, limit: number, status: string): Promise<PaginatedOrder> {
+    const orders = await this.orderModel.find({
+      status: OrderStatus.IN_RATING,
+    })
+
+    for (const order of orders) {
+      if (Date.now() - order.updated_date.getTime() >= 3 * 24 * 60 * 60 * 1000) {
+        await order.updateOne({ status: OrderStatus.COMPLETED })
+      }
+    }
+
+    const ordersList = await this.orderModel
+      .find(status ? { status } : {})
+      .sort({ created_date: -1 })
       .populate('products.product')
       .populate('products.option')
       .populate('created_by')
       .populate('user')
 
-    const totalCount = orders.length
+    const totalCount = (await this.orderModel.find(status ? { status } : {})).length
 
     const totalPage = Math.ceil(totalCount / limit)
 
     return {
-      data: plainToInstance(OrderDTO, orders, {
+      data: plainToInstance(OrderDTO, ordersList, {
         excludeExtraneousValues: true,
         enableImplicitConversion: true,
       }),

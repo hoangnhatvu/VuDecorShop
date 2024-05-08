@@ -60,6 +60,7 @@ export class ReviewService {
       await review.save()
 
       await orders[0].updateOne({ status: OrderStatus.COMPLETED })
+      await user.updateOne({amount_spent: orders[0].payment.amount})
 
       return plainToInstance(ReviewDTO, review, {
         excludeExtraneousValues: true,

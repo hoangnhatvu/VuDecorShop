@@ -27,6 +27,9 @@ export class ProductDTO extends MetaDataDTO {
   product_image: string
 
   @Expose()
+  product_3d: string
+
+  @Expose()
   view_number: number
 
   @Expose()
@@ -127,21 +130,14 @@ export class FilterProductDTO {
   maxPrice: number
 
   @IsOptional()
-  @IsBoolean()
-  @Transform((value) => new BooleanPipe().transform(value.value))
-  sortByPriceAscending: boolean
-
-  @IsOptional()
   @IsArray()
   selectedCategories: string[]
 
   @IsOptional()
-  @IsBoolean()
-  @Transform((value) => new BooleanPipe().transform(value.value))
-  sortByPopularity: boolean
+  optionSort: string
 
   @IsOptional()
   @IsBoolean()
   @Transform((value) => new BooleanPipe().transform(value.value))
-  sortByNewest: boolean
+  is_actived: boolean
 }

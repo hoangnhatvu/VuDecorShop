@@ -80,16 +80,12 @@ export class UserService {
         const updateResult = await user.updateOne(updateUserData)
 
         if (updateResult.modifiedCount > 0) {
-          if (newImage) {
-            deleteImage(oldImage)
-          }
           return { message: 'Cập nhật thành công' }
         } else {
           throw new HttpException('Cập nhật thất bại', HttpStatus.NOT_IMPLEMENTED)
         }
       }
     } catch (err) {
-      deleteImage(newImage)
       if (err instanceof HttpException) {
         throw err
       } else {
