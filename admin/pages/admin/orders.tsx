@@ -14,14 +14,10 @@ import {
   Button,
   Pagination,
   Input,
+  Label,
+  Select,
 } from "@roketid/windmill-react-ui";
-import {
-  SearchIcon,
-  TickIcon,
-  CancelIcon,
-  TruckIcon,
-  EyeIcon,
-} from "icons";
+import { SearchIcon, TickIcon, CancelIcon, TruckIcon, EyeIcon } from "icons";
 import Layout from "app/containers/Layout";
 import { toast } from "react-toastify";
 import Loader from "app/components/Loader/Loader";
@@ -30,15 +26,34 @@ import { getOrders, updateOrders } from "pages/api/orderApis";
 
 function Order() {
   const [listOrder, setListOrder] = useState<any[]>([]);
-  // const [totalCount, setTotalCount] = useState<number>(0);
-  // const [totalCount, setTotalCount] = useState<number>(0);
+  const [totalCount, setTotalCount] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [limit, setLimit] = useState<number>(10);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [status, setStatus] = useState<string>("");
+
+  const optionsNumberRow = [
+    { id: 10, value: 10 },
+    { id: 15, value: 15 },
+    { id: 20, value: 20 },
+  ];
+
+  const optionsStatusOrder = [
+    { id: "", value: "Tất cả" },
+    { id: "PENDING", value: "Chờ xác nhận" },
+    { id: "BEING_PICKED_UP", value: "Đang lấy hàng" },
+    { id: "IN_TRANSIT", value: "Đang vận chuyển" },
+    { id: "IN_RATING", value: "Chờ đánh giá" },
+    { id: "COMPLETED", value: "Hoàn thành" },
+    { id: "CANCELED", value: "Đã hủy" },
+  ];
 
   const loadData = async () => {
     try {
       setIsLoading(true);
-      const responseResults = await getOrders();
+      const responseResults = await getOrders(currentPage, limit, status);
       setListOrder(responseResults.data);
+      setTotalCount(responseResults.totalCount);
     } catch (error: any) {
       const messages = error.response.data.message;
       if (Array.isArray(messages)) {
@@ -53,7 +68,7 @@ function Order() {
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [currentPage]);
 
   const getBadgeType = (status: string) => {
     switch (status) {
@@ -128,6 +143,10 @@ function Order() {
     }
   };
 
+  const handleChangePage = (page: number) => {
+    setCurrentPage(page);
+  };
+
   return (
     <Layout>
       <PageTitle>Đơn hàng</PageTitle>
@@ -144,6 +163,42 @@ function Order() {
             />
           </div>
           <Button>Tìm kiếm</Button>
+        </div>
+      </div>
+
+      <div className="flex justify-between mb-4">
+        <div className="flex items-center w-full max-w-64 mr-8">
+          <Label className="mr-4">Trạng thái</Label>
+          <Select
+            onChange={(selectedOptions) => {
+              setStatus(selectedOptions.target.value);
+              loadData();
+            }}
+            className="flex flex-1 relative w-full max-w-64"
+          >
+            {optionsStatusOrder.map((option) => (
+              <option key={option.id} value={option.id}>
+                {option.value}
+              </option>
+            ))}
+          </Select>
+        </div>
+
+        <div className="flex items-center w-full max-w-36">
+          <Label className="mr-4">Số dòng</Label>
+          <Select
+            className="flex flex-1 relative w-full max-w-36"
+            onChange={(selectedOptions) => {
+              setLimit(selectedOptions.target.value as number | any);
+              loadData();
+            }}
+          >
+            {optionsNumberRow.map((option) => (
+              <option key={option.id} value={option.id}>
+                {option.value}
+              </option>
+            ))}
+          </Select>
         </div>
       </div>
 
@@ -294,12 +349,12 @@ function Order() {
               </TableBody>
             </Table>
             <TableFooter>
-              <Pagination
-                totalResults={2}
-                resultsPerPage={2}
-                onChange={() => {}}
-                label="Order navigation"
-              />
+            <Pagination
+            totalResults={totalCount}
+            resultsPerPage={limit}
+            onChange={handleChangePage}
+            label="Order navigation"
+          />
             </TableFooter>
           </TableContainer>
         </>

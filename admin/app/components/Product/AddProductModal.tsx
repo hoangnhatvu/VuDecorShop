@@ -26,7 +26,7 @@ import Loader from "../Loader/Loader";
 interface IProductModal {
   isModalOpen: boolean;
   closeModal: () => void;
-  loadDataProduct: () => void;
+  loadDataProduct: ({}) => void;
 }
 
 interface IOption {
@@ -172,7 +172,7 @@ const AddProductModal: React.FC<IProductModal> = ({
 
       await createProduct(productDataToSend);
       closeModal();
-      loadDataProduct();
+      loadDataProduct({});
       toast.success("Thêm sản phẩm thành công !");
     } catch (error: any | AxiosError) {
       if (error.response) {
