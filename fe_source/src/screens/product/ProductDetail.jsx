@@ -28,7 +28,6 @@ const ProductDetail = ({navigation}) => {
   const {item} = route.params;
   const [count, setCount] = useState(1);
   const [price, setPrice] = useState(null);
-  const [urlImage, setUrlImage] = useState(null);
   const {showToast} = useToastMessage();
   const optionProduct = useSelector(state => state.optionProduct.value);
   const [isLoading, setIsLoading] = useState(false);
@@ -88,9 +87,6 @@ const ProductDetail = ({navigation}) => {
             ' - đ ' +
             formatCurrency(item.options[item.options.length - 1].price),
     );
-    setUrlImage(
-      optionProduct ? optionProduct.option_image : item.product_image,
-    );
   }, [optionProduct]);
 
   const increment = () => {
@@ -141,14 +137,17 @@ const ProductDetail = ({navigation}) => {
 
         <Image
           source={{
-            uri: urlImage,
+            uri: optionProduct
+              ? optionProduct.option_image
+              : item.product_image,
           }}
           style={styles.image}
         />
         <ScrollView style={styles.detailsWrapper}>
           <View style={styles.titleRow}>
             <Text style={styles.title}>{item.product_name}</Text>
-            <TouchableOpacity onPress={()=>navigation.navigate('ViroAR3DObjectPage', {item})}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('ViroAR3DObjectPage', {item})}>
               <IonIcon
                 name="cube-outline"
                 size={36}

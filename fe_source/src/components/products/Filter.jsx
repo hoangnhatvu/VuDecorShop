@@ -65,12 +65,12 @@ const Filter = ({onApplyFilter}) => {
       sortByNewest,
     };
 
-    console.log(filters)
+    console.log(filters);
     onApplyFilter(filters);
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <Text style={styles.subText}>Khoảng giá</Text>
       <View
         style={{
@@ -111,34 +111,36 @@ const Filter = ({onApplyFilter}) => {
       {isLoading ? (
         <ActivityIndicator size={SIZES.xxLarge} color={COLORS.primary} />
       ) : (
-        <View style={{gap: 8, marginBottom: SIZES.medium}}>
-          {categories?.map((item, index) => {
-            return (
-              <View
-                key={index}
-                style={{flexDirection: 'row', alignItems: 'center'}}>
-                <CheckBox
-                  value={selectedCategories.includes(item.id)}
-                  onValueChange={() => handleCategoryToggle(item.id)}
-                  style={{marginRight: SIZES.small}}
-                />
-                <View style={styles.categoryWrapper}>
-                  <View style={styles.image}>
-                    <Image
-                      source={
-                        item.category_image
-                          ? {uri: API_URL + item.category_image}
-                          : require('../../../assets/images/no_image.png')
-                      }
-                      style={styles.productImg}
-                    />
+        <ScrollView style={{height: 170}}>
+          <View style={{gap: 8, marginBottom: SIZES.medium}}>
+            {categories?.map((item, index) => {
+              return (
+                <View
+                  key={index}
+                  style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <CheckBox
+                    value={selectedCategories.includes(item.id)}
+                    onValueChange={() => handleCategoryToggle(item.id)}
+                    style={{marginRight: SIZES.small}}
+                  />
+                  <View style={styles.categoryWrapper}>
+                    <View style={styles.image}>
+                      <Image
+                        source={{
+                          uri: item.category_image
+                            ? item.category_image
+                            : require('../../../assets/images/no_image.png'),
+                        }}
+                        style={styles.productImg}
+                      />
+                    </View>
+                    <Text>{item.category_name}</Text>
                   </View>
-                  <Text>{item.category_name}</Text>
                 </View>
-              </View>
-            );
-          })}
-        </View>
+              );
+            })}
+          </View>
+        </ScrollView>
       )}
 
       <Text style={styles.subText}>Sắp xếp theo </Text>
@@ -165,9 +167,8 @@ const Filter = ({onApplyFilter}) => {
         </View>
       </View>
 
-
       <Button loader={false} title="Áp dụng" onPress={applyFilter} />
-    </ScrollView>
+    </View>
   );
 };
 

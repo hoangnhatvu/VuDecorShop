@@ -3,7 +3,7 @@ import {
   ViroARSceneNavigator,
   ViroAmbientLight,
   ViroDirectionalLight,
-  ViroTrackingReason,
+  ViroSpinner,
   ViroTrackingStateConstants,
 } from '@viro-community/react-viro';
 import {StyleSheet, View} from 'react-native';
@@ -19,7 +19,7 @@ export default function ViroAR3DObjectPage({navigation}) {
       <ViroARSceneNavigator
         autofocus={true}
         initialScene={{
-          scene: () => <Ui3DObjectPage url={item.product_3d}/>,
+          scene: () => <Ui3DObjectPage url={item.product_3d} />,
         }}
         style={styles.rootContainer}
       />
@@ -49,8 +49,7 @@ class Ui3DObjectPage extends React.Component {
         <ViroDirectionalLight direction={[0, 0, -1]} color="#ffffff" />
 
         <ViroAmbientLight color="#ffffff" />
-
-        <Object3D url = {this.props.url} />
+        <Object3D url={this.props.url} />
       </ViroARScene>
     );
   }
