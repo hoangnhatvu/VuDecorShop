@@ -170,7 +170,7 @@ export class OrderService {
     }
 
     const ordersList = await this.orderModel
-      .find(status ? { status } : {})
+      .find(status !== "" ? { status } : {})
       .sort({ created_date: -1 })
       .populate('products.product')
       .populate('products.option')

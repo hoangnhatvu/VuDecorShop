@@ -44,7 +44,7 @@ export class UserController {
 
   @Put('update')
   @UseGuards(AuthGuard)
-  @Roles(UserRole.USER)
+  @Roles(UserRole.USER, UserRole.ADMIN, UserRole.EMPLOYEE)
   @UseInterceptors(
     FileInterceptor('user_image', {
       storage: storageConfig('user_image'),
@@ -57,14 +57,15 @@ export class UserController {
     }
 
     try {
-      const result_image = await this.cloudinaryService.uploadImage(file.path, 'avatar')
-      deleteImage(file.path)
-
+      const result_image = file ? await this.cloudinaryService.uploadImage(file.path, 'avatar') : null
       return this.userService.update(req.user_data.id, updateUserDTO, file ? result_image.secure_url : null)
     } catch (error) {
       console.log(error)
-      deleteImage(file.path)
       throw new HttpException('Upload ảnh thất bại !', HttpStatus.BAD_REQUEST)
+    } finally {
+      if (file) {
+        deleteImage(file.path)
+      }
     }
   }
 

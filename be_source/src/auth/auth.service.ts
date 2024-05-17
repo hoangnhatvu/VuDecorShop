@@ -158,19 +158,26 @@ export class AuthService {
       throw new HttpException('Tài khoản chưa được kích hoạt !', HttpStatus.NOT_ACCEPTABLE)
     }
 
-    const payload = {
-      id: user.id,
-      updatedToken: user.updated_token,
-      email: user.email,
-      role: user.role,
-    }
-    const token = await this.generateToken(payload)
-    return {
-      user: plainToInstance(UserDTO, user, {
-        excludeExtraneousValues: true,
-      }),
-      token: token,
-    }
+    if (user.device_token !== loginDTO.device_token) {
+      const updateResult = await user.updateOne({ device_token: loginDTO.device_token })
+      if (updateResult.modifiedCount > 0) {
+        const payload = {
+          id: user.id,
+          updatedToken: user.updated_token,
+          email: user.email,
+          role: user.role,
+        }
+        const token = await this.generateToken(payload)
+        return {
+          user: plainToInstance(UserDTO, user, {
+            excludeExtraneousValues: true,
+          }),
+          token: token,
+        }
+      } else {
+        throw new HttpException('Đăng nhập thất bại !', HttpStatus.NOT_IMPLEMENTED)
+      }
+    }    
   }
 
   async loginAdmin(loginDTO: LoginDTO) {
@@ -191,7 +198,7 @@ export class AuthService {
       throw new HttpException('Tài khoản chưa được kích hoạt !', HttpStatus.NOT_ACCEPTABLE)
     }
 
-    if(user.role === UserRole.USER) {
+    if (user.role === UserRole.USER) {
       throw new HttpException('Tài khoản không có quyền truy cập !', HttpStatus.FORBIDDEN)
     }
 

@@ -116,6 +116,11 @@ export const userSchema = new mongoose.Schema({
     type: String,
     default: '',
   },
+
+  device_token: {
+    type: String,
+    default: ''
+  }
 })
 
 userSchema.path('ship_infos').validate(function (value) {

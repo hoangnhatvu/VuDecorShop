@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, Length, Matches } from 'class-validator'
+import { IsEmail, IsNotEmpty, IsOptional, Length, Matches } from 'class-validator'
 import { Transform } from 'class-transformer'
 
 export class LoginDTO {
@@ -8,6 +8,8 @@ export class LoginDTO {
   email: string
   @IsNotEmpty()
   password: string
+  @IsOptional()
+  device_token: string
 }
 
 export class RegisterDTO {

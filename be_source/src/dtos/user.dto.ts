@@ -154,6 +154,9 @@ export class UserInfoDTO {
 
   @Expose()
   user_image: string;
+
+  @Expose()
+  device_token: string;
 }
 
 export class UpdateUserDTO {

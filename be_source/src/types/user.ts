@@ -25,4 +25,5 @@ export interface User extends Document {
   created_date: Date
   updated_date: Date
   updated_token: string
+  device_token: string
 }
