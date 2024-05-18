@@ -17,12 +17,13 @@ const register = async data => {
   }
 };
 
-const login = async data => {
+const login = async (data, deviceToken) => {
   try {
     const endpoint = `${API_URL}auth/login`;
     const body = {
       email: data.email,
       password: data.password,
+      device_token: deviceToken,
     };
     const response = await axios.post(endpoint, body);
     return response;

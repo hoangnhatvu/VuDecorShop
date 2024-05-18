@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
     alignContent: 'center',
   },
   container: {
+    height: 632,
     paddingTop: SIZES.large,
   },
   separator: {

@@ -92,7 +92,6 @@ const EditProfile = ({navigation}) => {
         formData.append('birth_date', selectedDate);
       }
       formData.append('updated_token', userData.updated_token);
-      console.log(formData);
 
       await updateUser(formData);
       showToast('Cập nhật thông tin người dùng thành công !', 'success');

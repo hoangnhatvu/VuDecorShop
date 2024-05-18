@@ -108,7 +108,7 @@ const Profile = ({navigation}) => {
           <Image
             source={
               userData?.user_image
-                ? {uri: API_URL + userData?.user_image}
+                ? {uri: userData?.user_image}
                 : require('../../../assets/images/userDefault.png')
             }
             style={styles.profile}
@@ -183,7 +183,7 @@ const Profile = ({navigation}) => {
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => navigation.navigate('Favourites')}>
+                onPress={() => navigation.navigate('TestZaloPay')}>
                 <View style={styles.menuItem(0.2)}>
                   <MaterialCommunityIcons
                     name="heart-outline"

@@ -31,7 +31,7 @@ function Object3D({url}: {url: string}) {
 
   return (
     <>
-      {isLoading && <ViroSpinner type="light" position={[0, 0, -2]} />}
+      {/* {isLoading && <ViroSpinner type="light" position={[0, 0, -2]} />} */}
       <Viro3DObject
         source={{uri: url}}
         type="GLB"

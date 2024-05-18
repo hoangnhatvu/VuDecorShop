@@ -9,7 +9,8 @@ import styles from './search.style';
 import {Filter, ProductList} from '../../components';
 import Modal from 'react-native-modal';
 import {useToastMessage} from '../../hook/showToast';
-import {searchProducts} from '../../helpers/handleProductApis';
+import {searchProducts, searchImage} from '../../helpers/handleProductApis';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 const Search = ({navigation}) => {
   const [searchKey, setSearchKey] = useState('');
@@ -18,6 +19,7 @@ const Search = ({navigation}) => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [productList, setProductList] = useState([]);
   const {showToast} = useToastMessage();
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const toggleBottomSheet = () => {
     setBottomSheetVisible(!isBottomSheetVisible);
@@ -33,6 +35,74 @@ const Search = ({navigation}) => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleCameraLaunch = () => {
+    setIsModalVisible(false);
+
+    const options = {
+      mediaType: 'photo',
+      includeBase64: false,
+      maxHeight: 2000,
+      maxWidth: 2000,
+    };
+
+    launchCamera(options, async response => {
+      if (response.didCancel) {
+        setIsModalVisible(true);
+      } else if (response.error) {
+        console.log('Camera Error: ', response.error);
+      } else {
+        const formData = new FormData();
+        formData.append('image', {
+          uri: response.assets[0].uri,
+          type: response.assets[0].type,
+          name: response.assets[0].fileName,
+        });
+
+        console.log(formData.getAll('image'));
+
+        setIsLoading(true);
+        try {
+          const responseData = await searchImage(formData);
+          const responseResult = await searchProducts({
+            searchText: responseData?.data?.result,
+          });
+          setProductList(responseResult.data);
+        } catch (error) {
+          console.log('error', error);
+          showToast('Có lỗi xảy ra !', 'danger');
+        } finally {
+          setIsLoading(false);
+        }
+        // let imageUri = response.uri || response.assets?.[0]?.uri;
+        // setSelectedImage(imageUri);
+        // console.log(imageUri);
+      }
+    });
+  };
+
+  const handleGalleryLaunch = () => {
+    setIsModalVisible(false); // Ẩn modal trước khi mở thư viện ảnh
+
+    const options = {
+      mediaType: 'photo',
+      includeBase64: false,
+      maxHeight: 2000,
+      maxWidth: 2000,
+    };
+
+    launchImageLibrary(options, response => {
+      if (response.didCancel) {
+        console.log('User cancelled gallery');
+      } else if (response.error) {
+        console.log('Gallery Error: ', response.error);
+      } else {
+        let imageUri = response.uri || response.assets?.[0]?.uri;
+        setSelectedImage(imageUri);
+        console.log(imageUri);
+      }
+    });
   };
 
   useEffect(() => {
@@ -80,8 +150,8 @@ const Search = ({navigation}) => {
       }
       console.log(data);
       const responseResult = await searchProducts(data);
-      console.log(responseResult.data)
-      setProductList(responseResult.data)
+      console.log(responseResult.data);
+      setProductList(responseResult.data);
     } catch (error) {
       if (error?.message) {
         showToast(error?.message, 'danger');
@@ -96,6 +166,7 @@ const Search = ({navigation}) => {
   const handleSearch = async () => {
     try {
       setIsLoading(true);
+      console.log('searchKey', searchKey);
       const responseResult = await searchProducts({searchText: searchKey});
       setProductList(responseResult.data);
     } catch (error) {
@@ -112,7 +183,7 @@ const Search = ({navigation}) => {
           alignItems: 'center',
         }}>
         <View style={styles.searchContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setIsModalVisible(true)}>
             <Ionicons
               name="camera-outline"
               size={SIZES.xLarge}
@@ -154,6 +225,28 @@ const Search = ({navigation}) => {
         renderItem={({item}) => <Text>{item.name}</Text>}
         keyExtractor={item => item.id.toString()}
       />
+      <Modal
+        animationIn="bounceIn"
+        animationOut="bounceOut"
+        isVisible={isModalVisible}
+        onBackdropPress={() => setIsModalVisible(false)}>
+        <View style={styles.modalView}>
+          <TouchableOpacity onPress={handleCameraLaunch}>
+            <Ionicons
+              name="camera-outline"
+              size={SIZES.xxLarge}
+              style={styles.searchIcon}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleGalleryLaunch}>
+            <Ionicons
+              name="image-outline"
+              size={SIZES.xxLarge}
+              style={styles.searchIcon}
+            />
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
