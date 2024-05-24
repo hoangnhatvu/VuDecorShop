@@ -74,12 +74,12 @@ const EditProfile = ({navigation}) => {
   const handleSave = async () => {
     try {
       setLoader(true);
-
       if (selectedImage) {
+        const fileName = (selectedImage.path.split("/")).pop()
         formData.append('user_image', {
           uri: selectedImage.path,
           type: selectedImage.mime,
-          name: 'userAvatar.jpg',
+          name: fileName,
         });
       }
       if (isEditName) {
@@ -98,7 +98,7 @@ const EditProfile = ({navigation}) => {
       setIsEdit(false);
       setIsEditName(false);
     } catch (error) {
-      showToast(`${error.response.data.message || error}`, 'danger');
+      showToast(`${error?.response?.data?.message || error}`, 'danger');
     } finally {
       setLoader(false);
     }
@@ -143,7 +143,7 @@ const EditProfile = ({navigation}) => {
                 selectedImage
                   ? {uri: selectedImage.path}
                   : userData?.user_image
-                  ? {uri: API_URL + userData?.user_image}
+                  ? {uri: userData?.user_image}
                   : require('../../../assets/images/userDefault.png')
               }
               style={styles.profile}

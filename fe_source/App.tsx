@@ -2,6 +2,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import BottomTabNavigation from './src/navigation/BottomTabNavigation';
 import {
+  ARDesignView,
   Address,
   Cart,
   ChangePassword,
@@ -181,6 +182,11 @@ export default function App() {
             <Stack.Screen
               name="TestZaloPay"
               component={TestZaloPay}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="ARDesignView"
+              component={ARDesignView}
               options={{headerShown: false}}
             />
           </Stack.Navigator>

@@ -1,7 +1,7 @@
 import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { COLORS } from '../../constants';
-import { Home, Profile, Search } from '../screens';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {COLORS} from '../../constants';
+import {Design, Home, Profile, Search} from '../screens';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator();
@@ -11,7 +11,7 @@ const screenOptions = {
   headerShown: false,
   tabBarStyle: {
     height: 60,
-  }
+  },
 };
 
 const BottomTabNavigation = () => {
@@ -21,10 +21,10 @@ const BottomTabNavigation = () => {
         name="Home"
         component={Home}
         options={{
-          tabBarIcon: ({ focused }) => {
+          tabBarIcon: ({focused}) => {
             return (
               <IonIcon
-                name={focused ? "home" : "home-outline"}
+                name={focused ? 'home' : 'home-outline'}
                 size={24}
                 color={focused ? COLORS.primary : COLORS.gray2}
               />
@@ -36,10 +36,25 @@ const BottomTabNavigation = () => {
         name="Search"
         component={Search}
         options={{
-          tabBarIcon: ({ focused }) => {
+          tabBarIcon: ({focused}) => {
             return (
               <IonIcon
-                name={focused ? "storefront" : "storefront-outline"}
+                name={focused ? 'storefront' : 'storefront-outline'}
+                size={24}
+                color={focused ? COLORS.primary : COLORS.gray2}
+              />
+            );
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Design"
+        component={Design}
+        options={{
+          tabBarIcon: ({focused}) => {
+            return (
+              <IonIcon
+                name={focused ? 'bulb' : 'bulb-outline'}
                 size={24}
                 color={focused ? COLORS.primary : COLORS.gray2}
               />
@@ -51,10 +66,10 @@ const BottomTabNavigation = () => {
         name="Profile"
         component={Profile}
         options={{
-          tabBarIcon: ({ focused }) => {
+          tabBarIcon: ({focused}) => {
             return (
               <IonIcon
-                name={focused ? "person" : "person-outline"}
+                name={focused ? 'person' : 'person-outline'}
                 size={24}
                 color={focused ? COLORS.primary : COLORS.gray2}
               />
@@ -64,6 +79,6 @@ const BottomTabNavigation = () => {
       />
     </Tab.Navigator>
   );
-}
+};
 
-export default BottomTabNavigation
+export default BottomTabNavigation;

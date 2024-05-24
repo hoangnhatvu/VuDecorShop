@@ -66,7 +66,6 @@ const Profile = ({navigation}) => {
         dispatch(setIsLogin(false))
       }
     } catch (error) {
-      showToast("Phiên đăng nhập hết hạn !", "warning");
       dispatch(setIsLogin(false))
     } finally {
       setIsLoading(false);

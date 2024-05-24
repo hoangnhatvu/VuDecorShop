@@ -17,6 +17,7 @@ import Filter from './products/Filter';
 import ReviewList from './reviews/ReviewList';
 import StarRating from './products/StarRating';
 import Object3D from './products/Object3D';
+import ListObject from './designs/ListObject';
 
 export {
   Welcome,
@@ -38,4 +39,5 @@ export {
   ReviewList,
   StarRating,
   Object3D,
+  ListObject,
 };

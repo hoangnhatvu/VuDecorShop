@@ -6,7 +6,8 @@ import {COLORS} from '../../../constants';
 import {useNavigation} from '@react-navigation/native';
 
 const Headings = () => {
-  
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>

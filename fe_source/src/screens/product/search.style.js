@@ -19,21 +19,27 @@ const styles = StyleSheet.create({
     height: 50,
   },
   searchIcon: {
-    marginHorizontal: 10,
+    paddingHorizontal: 10,
+    paddingStart: SIZES.small,
     color: COLORS.gray,
     marginTop: SIZES.small,
+  },
+  closeIcon: {
+    position: 'absolute',
+    right: -8,
+    top: -8,
   },
   searchWrapper: {
     flex: 1,
     backgroundColor: COLORS.secondary,
     marginRight: SIZES.small,
     borderRadius: SIZES.small,
+    zIndex: -1,
   },
   searchInput: {
     fontFamily: 'OpenSans-Regular',
     width: '100%',
     height: '100%',
-    paddingHorizontal: SIZES.small,
   },
   searchBtn: {
     width: 50,
@@ -60,8 +66,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   modalView: {
-    flexDirection: "row",
-    justifyContent: "space-around",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     margin: 20,
     backgroundColor: 'white',
     borderRadius: 20,
@@ -70,11 +76,18 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 5,
+  },
+  imageContainer: {},
+  image: {
+    height: 50,
+    width: 50,
+    borderRadius: SIZES.small,
+    resizeMode: 'cover',
   },
 });
 export default styles;

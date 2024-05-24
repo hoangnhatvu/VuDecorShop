@@ -42,8 +42,8 @@ const NewProducts = ({navigation}) => {
           </TouchableOpacity>
           <Text style={styles.heading}>Sản phẩm mới</Text>
         </View>
-        <ProductList data={productList} isLoading={isLoading}/>
       </View>
+      <ProductList data={productList} isLoading={isLoading} height={712}/>
     </SafeAreaView>
   );
 };

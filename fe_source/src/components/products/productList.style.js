@@ -9,8 +9,9 @@ const styles = StyleSheet.create({
     alignContent: 'center',
   },
   container: {
-    height: 632,
     paddingTop: SIZES.large,
+    width: SIZES.width,
+    paddingHorizontal: SIZES.small
   },
   separator: {
     height: 16,
