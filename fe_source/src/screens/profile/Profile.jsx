@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
   ScrollView,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {COLORS} from '../../../constants';
 import styles from './profile.style';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -20,9 +20,9 @@ import {useToastMessage} from '../../hook/showToast';
 import {useDispatch, useSelector} from 'react-redux';
 import {setIsLogin} from '../../redux/slices/isLogin.slice';
 import {API_URL} from '@env';
-import { clearToken } from '../../helpers/tokenManager';
+import {clearToken} from '../../helpers/tokenManager';
 import useRefreshUser from '../../hook/refreshUser';
-import { Loading } from '../../components';
+import {Loading} from '../../components';
 
 const Profile = ({navigation}) => {
   const [userData, setUserData] = useState(null);
@@ -31,14 +31,7 @@ const Profile = ({navigation}) => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const {refreshUser} = useRefreshUser();
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      loadData();
-    });
-
-    return unsubscribe;
-  }, [navigation]);
+  const isEditProfile = useSelector(state => state.isEditProfile.value);
 
   const logoutAlert = () => {
     Alert.alert('Đăng xuất tài khoản', 'Bạn có chắc muốn đăng xuất không ?', [
@@ -63,10 +56,10 @@ const Profile = ({navigation}) => {
       } else if (data) {
         dispatch(setIsLogin(true));
       } else {
-        dispatch(setIsLogin(false))
+        dispatch(setIsLogin(false));
       }
     } catch (error) {
-      dispatch(setIsLogin(false))
+      dispatch(setIsLogin(false));
     } finally {
       setIsLoading(false);
     }
@@ -74,11 +67,7 @@ const Profile = ({navigation}) => {
 
   useEffect(() => {
     loadData();
-  }, [isLogin]);
-
-  useEffect(() => {
-    loadData();
-  }, []);
+  }, [isLogin, isEditProfile]);
 
   handleLogout = async () => {
     setIsLoading(true);
@@ -131,17 +120,19 @@ const Profile = ({navigation}) => {
             <View></View>
           ) : (
             <ScrollView style={styles.menuWrapper}>
-              <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('EditProfile')}>
                 <View style={styles.menuItem(0.2)}>
                   <Ionicons
                     name="person-outline"
                     color={COLORS.primary}
-                    size={24}   
+                    size={24}
                   />
                   <Text style={styles.menuText}>Hồ sơ cá nhân</Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate('ChangePassword')}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('ChangePassword')}>
                 <View style={styles.menuItem(0.2)}>
                   <MaterialCommunityIcons
                     name="key-change"
@@ -192,6 +183,17 @@ const Profile = ({navigation}) => {
                   <Text style={styles.menuText}>Yêu thích</Text>
                 </View>
               </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Chat')}>
+                <View style={styles.menuItem(0.2)}>
+                  <Ionicons
+                    name="chatbubble-ellipses-outline"
+                    color={COLORS.primary}
+                    size={24}
+                  />
+                  <Text style={styles.menuText}>Hỗ trợ</Text>
+                </View>
+              </TouchableOpacity>
               <TouchableOpacity onPress={() => logoutAlert()}>
                 <View style={styles.menuItem(0.2)}>
                   <AntDesign name="logout" color={COLORS.primary} size={24} />
@@ -206,7 +208,7 @@ const Profile = ({navigation}) => {
         // <View style={styles.loadingContainer}>
         //   <ActivityIndicator size={80} color={COLORS.primary} />
         // </View>
-        <Loading/>
+        <Loading />
       )}
     </View>
   );

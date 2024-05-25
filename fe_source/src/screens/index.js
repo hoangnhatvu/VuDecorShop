@@ -19,6 +19,7 @@ import Review from './review/Review';
 import ViroAR3DObjectPage from './product/ARView';
 import Design from './design/Design';
 import ARDesignView from './design/ARDesignView';
+import Chat from './chat/Chat';
 
 export {
   Home,
@@ -42,4 +43,5 @@ export {
   ViroAR3DObjectPage,
   Design,
   ARDesignView,
+  Chat
 };

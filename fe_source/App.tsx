@@ -19,6 +19,7 @@ import {
   Review,
   SignUp,
   ViroAR3DObjectPage,
+  Chat
 } from './src/screens';
 import {Provider} from 'react-redux';
 import {ToastProvider} from 'react-native-toast-notifications';
@@ -182,6 +183,11 @@ export default function App() {
             <Stack.Screen
               name="TestZaloPay"
               component={TestZaloPay}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Chat"
+              component={Chat}
               options={{headerShown: false}}
             />
             <Stack.Screen

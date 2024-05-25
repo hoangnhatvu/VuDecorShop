@@ -2,9 +2,9 @@ import React from 'react';
 import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import {COLORS, SIZES} from '../../../constants';
 
-const ObjectItem = ({item}) => {
+const ObjectItem = ({item, onPress}) => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={()=>onPress(item)}>
       <View style={styles.productContainer}>
         <View style={styles.image}>
           <Image

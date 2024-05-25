@@ -6,7 +6,7 @@ import {
   ViroTrackingStateConstants,
 } from '@viro-community/react-viro';
 import {ListObject, Loading, Object3D} from '../../components';
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useEffect, useState, useCallback, useRef} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {COLORS, SIZES} from '../../../constants';
 import Modal from 'react-native-modal';
@@ -14,15 +14,24 @@ import {
   View,
   TouchableOpacity,
   TextInput,
-  FlatList,
   StyleSheet,
   SafeAreaView,
   KeyboardAvoidingView,
+  Vibration,
+  Animated,
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import {searchProducts} from '../../helpers/handleProductApis';
 import {useToastMessage} from '../../hook/showToast';
 import {debounce} from 'lodash';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  addCurrentObject,
+  hideCurrentObject,
+  setListCurrentObject,
+} from '../../redux/slices/listCurrentObject.slice';
+import MultiObject3D from '../../components/designs/MultiObject3D';
+import {setSelectedObject} from '../../redux/slices/selectedObject.slice';
 
 export default function ARDesignView({navigation}) {
   const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
@@ -30,6 +39,30 @@ export default function ARDesignView({navigation}) {
   const [isLoading, setIsLoading] = useState(false);
   const {showToast} = useToastMessage();
   const [productList, setProductList] = useState([]);
+  const dispatch = useDispatch();
+  const [iconColor, setIconColor] = useState('white');
+  const [iconSize, setIconSize] = useState(42);
+  const iconRef = useRef(null);
+  const [iconLayout, setIconLayout] = useState();
+  const isVibration = useState(false);
+  const translateY = useRef(new Animated.Value(0)).current;
+  const selectedObject = useSelector(state => state.selectedObject.value);
+
+  const handlePressIn = () => {
+    Animated.timing(translateY, {
+      toValue: -100, // Giá trị âm để di chuyển biểu tượng lên
+      duration: 40, // Thời gian di chuyển
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.timing(translateY, {
+      toValue: 0,
+      duration: 40,
+      useNativeDriver: true,
+    }).start();
+  };
 
   const toggleBottomSheet = () => {
     setBottomSheetVisible(!isBottomSheetVisible);
@@ -49,7 +82,6 @@ export default function ARDesignView({navigation}) {
     debounce(async () => {
       try {
         setIsLoading(true);
-        console.log('searchKey', searchKey);
         const responseResult = await searchProducts({searchText: searchKey});
         setProductList(responseResult.data);
       } catch (error) {
@@ -69,10 +101,72 @@ export default function ARDesignView({navigation}) {
   }, [searchKey, handleSearch]);
 
   useEffect(() => {
+    dispatch(setListCurrentObject());
     loadData();
   }, []);
+
+  const handlePress = item => {
+    dispatch(addCurrentObject(item.product_3d));
+    setBottomSheetVisible(false);
+  };
+  const handleMove = event => {
+    const {pageX, pageY} = event.nativeEvent;
+    const {fx, fy, width, height} = iconLayout;
+    if (
+      pageX >= fx &&
+      pageX <= fx + width &&
+      pageY >= fy - 100 &&
+      pageY <= fy - 100 + height
+    ) {
+      setIconSize(45);
+      setIconColor('red');
+
+      if (isVibration[0]) {
+        Vibration.vibrate(100);
+        isVibration[1](false);
+      }
+
+      if (selectedObject !== null) {
+        dispatch(hideCurrentObject(selectedObject));
+        dispatch(setSelectedObject(null));
+      }
+    } else {
+      setIconSize(42);
+      setIconColor('white');
+      isVibration[1](true);
+    }
+  };
+  handleTouchEnd = () => {
+    setIconColor('white');
+    setIconSize(42);
+    handlePressOut();
+  };
+
+  const Ui3DObjectPage = () => {
+    const onInitialized = (state, reason) => {
+      console.log('onInitialized', state, reason);
+      if (state === ViroTrackingStateConstants.TRACKING_NORMAL) {
+      } else if (state === ViroTrackingStateConstants.TRACKING_UNAVAILABLE) {
+        // Handle loss of tracking
+      }
+    };
+    return (
+      <ViroARScene style={styles.container} onTrackingUpdated={onInitialized}>
+        <ViroDirectionalLight direction={[1, 0, 0]} color="#ffffff" />
+        <ViroDirectionalLight direction={[-1, 0, 0]} color="#ffffff" />
+        <ViroDirectionalLight direction={[0, 1, 0]} color="#ffffff" />
+
+        <ViroAmbientLight color="#ffffff" />
+        <MultiObject3D handleDrag={handlePressIn} />
+      </ViroARScene>
+    );
+  };
+
   return (
-    <View style={styles.outer}>
+    <View
+      style={styles.outer}
+      onTouchMove={event => handleMove(event)}
+      onTouchEnd={() => handleTouchEnd()}>
       <ViroARSceneNavigator
         autofocus={true}
         initialScene={{
@@ -110,37 +204,33 @@ export default function ARDesignView({navigation}) {
                 </TouchableOpacity>
               </View>
             </View>
-            {isLoading ? <Loading /> : <ListObject data={productList} />}
+            {isLoading ? (
+              <Loading />
+            ) : (
+              <ListObject
+                data={productList}
+                handlePress={item => handlePress(item)}
+              />
+            )}
           </SafeAreaView>
         </Modal>
       </KeyboardAvoidingView>
+
+      <View style={styles.trashIcon}>
+        <View
+          ref={iconRef}
+          onLayout={() => {
+            iconRef.current.measure((px, py, width, height, fx, fy) => {
+              setIconLayout({width, height, fx, fy});
+            });
+          }}>
+          <Animated.View style={{transform: [{translateY}]}}>
+            <Ionicons name="trash-bin" size={iconSize} color={iconColor} />
+          </Animated.View>
+        </View>
+      </View>
     </View>
   );
-}
-
-class Ui3DObjectPage extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    function onInitialized(state, reason) {
-      console.log('onInitialized', state, reason);
-      if (state === ViroTrackingStateConstants.TRACKING_NORMAL) {
-      } else if (state === ViroTrackingStateConstants.TRACKING_UNAVAILABLE) {
-        // Handle loss of tracking
-      }
-    }
-    return (
-      <ViroARScene style={styles.container} onTrackingUpdated={onInitialized}>
-        <ViroDirectionalLight direction={[1, 0, 0]} color="#ffffff" />
-        <ViroDirectionalLight direction={[-1, 0, 0]} color="#ffffff" />
-        <ViroDirectionalLight direction={[0, 1, 0]} color="#ffffff" />
-
-        <ViroAmbientLight color="#ffffff" />
-        {/* <Object3D url={this.props.url} /> */}
-      </ViroARScene>
-    );
-  }
 }
 
 const styles = StyleSheet.create({
@@ -215,5 +305,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: COLORS.primary,
+  },
+  trashIcon: {
+    position: 'absolute',
+    bottom: -SIZES.xxLarge,
+    left: SIZES.width / 2 - 21,
   },
 });

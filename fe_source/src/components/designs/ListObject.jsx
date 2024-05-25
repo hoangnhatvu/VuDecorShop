@@ -3,14 +3,18 @@ import React, {useEffect, useState} from 'react';
 import {COLORS, SIZES} from '../../../constants';
 import ObjectItem from './ObjectItem';
 
-const ListObject = ({data}) => {
+const ListObject = ({data, handlePress}) => {
   return (
     <View style={styles.container}>
       <ScrollView>
         {data.length > 0 && (
           <View style={{paddingVertical: SIZES.small}}>
             {data.map((item, index) => (
-              <ObjectItem item={item} key={index} />
+              <ObjectItem
+                item={item}
+                key={index}
+                onPress={item => handlePress(item)}
+              />
             ))}
           </View>
         )}
