@@ -23,6 +23,7 @@ import { toast } from "react-toastify";
 import Loader from "app/components/Loader/Loader";
 import { formatCurrency } from "utils/formatCurrency";
 import { getOrders, updateOrders } from "pages/api/orderApis";
+import { sendNotification } from "pages/api/adminApis";
 
 function Order() {
   const [listOrder, setListOrder] = useState<any[]>([]);
@@ -40,12 +41,12 @@ function Order() {
 
   const optionsStatusOrder = [
     { id: "", value: "Tất cả" },
-    { id: "PENDING", value: "Chờ xác nhận" },
-    { id: "BEING_PICKED_UP", value: "Đang lấy hàng" },
-    { id: "IN_TRANSIT", value: "Đang vận chuyển" },
-    { id: "IN_RATING", value: "Chờ đánh giá" },
-    { id: "COMPLETED", value: "Hoàn thành" },
-    { id: "CANCELED", value: "Đã hủy" },
+    { id: "Chờ xác nhận", value: "Chờ xác nhận" },
+    { id: "Đang lấy hàng", value: "Đang lấy hàng" },
+    { id: "Đang vận chuyển", value: "Đang vận chuyển" },
+    { id: "Chờ đánh giá", value: "Chờ đánh giá" },
+    { id: "Hoàn thành", value: "Hoàn thành" },
+    { id: "Đã hủy", value: "Đã hủy" },
   ];
 
   const loadData = async () => {
@@ -68,7 +69,7 @@ function Order() {
 
   useEffect(() => {
     loadData();
-  }, [currentPage]);
+  }, [currentPage, status]);
 
   const getBadgeType = (status: string) => {
     switch (status) {
@@ -86,7 +87,7 @@ function Order() {
     }
   };
 
-  const handleCancelOrder = async (updatedToken: string, orderid: string) => {
+  const handleCancelOrder = async (updatedToken: string, orderid: string, deviceToken: string) => {
     const userConfirmed = window.confirm(
       "Bạn có chắc muốn hủy đơn hàng này không?"
     );
@@ -99,6 +100,12 @@ function Order() {
         };
         await updateOrders(data, orderid);
         toast.success("Đã hủy đơn hàng");
+        sendNotificationTest(
+          deviceToken,
+          `Đơn hàng ${orderid} đã được hủy !`,
+          "Thông báo đơn hàng",
+          "https://cdn1.iconfinder.com/data/icons/premium-ui-collection/32/Cancel_Order-512.png"
+        );
         loadData();
       } catch (error: any) {
         const messages = error.response.data.message;
@@ -116,7 +123,8 @@ function Order() {
   const handleUpdateOrder = async (
     status: string,
     updatedToken: string,
-    orderid: string
+    orderid: string,
+    deviceToken: string
   ) => {
     try {
       setIsLoading(true);
@@ -127,8 +135,20 @@ function Order() {
       await updateOrders(data, orderid);
       if (status === "Đang lấy hàng") {
         toast.success("Đã xác nhận đơn hàng");
+        sendNotificationTest(
+          deviceToken,
+          `Đơn hàng ${orderid} đã được xác nhận !`,
+          "Thông báo đơn hàng",
+          "https://icons.veryicon.com/png/o/miscellaneous/icondian/icon-order-1.png"
+        );
       } else {
         toast.success("Đã giao cho đơn vị vận chuyển");
+        sendNotificationTest(
+          deviceToken,
+          `Đơn hàng ${orderid} đã được giao cho đơn vị vận chuyển !`,
+          "Thông báo đơn hàng",
+          "https://cdn-icons-png.freepik.com/256/691/691038.png?semt=ais_hybrid"
+        );
       }
       loadData();
     } catch (error: any) {
@@ -141,6 +161,15 @@ function Order() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const sendNotificationTest = async (
+    clientToken: string,
+    bodyContent: string,
+    title: string,
+    image: string
+  ) => {
+    await sendNotification(clientToken, bodyContent, title, image);
   };
 
   const handleChangePage = (page: number) => {
@@ -172,7 +201,6 @@ function Order() {
           <Select
             onChange={(selectedOptions) => {
               setStatus(selectedOptions.target.value);
-              loadData();
             }}
             className="flex flex-1 relative w-full max-w-64"
           >
@@ -190,7 +218,6 @@ function Order() {
             className="flex flex-1 relative w-full max-w-36"
             onChange={(selectedOptions) => {
               setLimit(selectedOptions.target.value as number | any);
-              loadData();
             }}
           >
             {optionsNumberRow.map((option) => (
@@ -272,7 +299,8 @@ function Order() {
                                   handleUpdateOrder(
                                     "Đang lấy hàng",
                                     order.updated_token,
-                                    order.id
+                                    order.id,
+                                    order.created_by.device_token
                                   );
                                 }}
                               >
@@ -286,9 +314,10 @@ function Order() {
                                 size="small"
                                 aria-label="Cancel"
                                 onClick={() => {
-                                  handleCancelOrder(
+                                  handleCancelOrder(                                    
                                     order.updated_token,
-                                    order.id
+                                    order.id,
+                                    order.created_by.device_token
                                   );
                                 }}
                               >
@@ -310,7 +339,8 @@ function Order() {
                                       handleUpdateOrder(
                                         "Đang vận chuyển",
                                         order.updated_token,
-                                        order.id
+                                        order.id,
+                                        order.created_by.device_token
                                       );
                                     }}
                                   >
@@ -326,7 +356,8 @@ function Order() {
                                     onClick={() => {
                                       handleCancelOrder(
                                         order.updated_token,
-                                        order.id
+                                        order.id,
+                                        order.created_by.device_token
                                       );
                                     }}
                                   >
@@ -349,12 +380,12 @@ function Order() {
               </TableBody>
             </Table>
             <TableFooter>
-            <Pagination
-            totalResults={totalCount}
-            resultsPerPage={limit}
-            onChange={handleChangePage}
-            label="Order navigation"
-          />
+              <Pagination
+                totalResults={totalCount}
+                resultsPerPage={limit}
+                onChange={handleChangePage}
+                label="Order navigation"
+              />
             </TableFooter>
           </TableContainer>
         </>

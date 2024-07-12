@@ -37,6 +37,11 @@ const routes: IRoute[] = [
     name: "Sản phẩm",
   },
   {
+    path: "/admin/templates",
+    icon: "SunIcon",
+    name: "Mẫu thiết kế",
+  },
+  {
     path: "/admin/orders",
     icon: "FormsIcon",
     name: "Đơn hàng",
