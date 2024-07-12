@@ -2,12 +2,12 @@ import { IFilterForm } from "pages/admin/products";
 import requestApi from "./apiConfig";
 import type { requestApiProps } from "./apiConfig";
 
-const getProducts = async (page: number, limit: number, body: IFilterForm) => {
+const getProducts = async (page: number, limit: number, body?: IFilterForm) => {
   const request: requestApiProps = {
     endpoint: `products/searchForAdmin?page=${page}&limit=${limit}`,
     method: "POST",
     params: undefined,
-    body: body,
+    body: body || {},
     responseType: undefined,
   };
   const response = await requestApi(request);

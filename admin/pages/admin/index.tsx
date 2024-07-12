@@ -44,7 +44,7 @@ import {
 } from "@roketid/windmill-react-ui";
 import response, { ITableData } from "utils/demo/tableData";
 import DatePicker from "app/components/DatePicker";
-import { getInfoDashboard } from "pages/api/admiApis";
+import { getInfoDashboard } from "pages/api/adminApis";
 import Loader from "app/components/Loader/Loader";
 import { toast } from "react-toastify";
 
@@ -82,8 +82,8 @@ function Dashboard() {
       const responseData = await getInfoDashboard();
       totalUser[1](responseData.totalUser);
       totalBlance[1](responseData.totalBlance);
-      totalProduct[1](responseData.totalUser);
-      totalOrderCompleted[1](responseData.totalUser);
+      totalProduct[1](responseData.totalProduct);
+      totalOrderCompleted[1](responseData.totalOrderCompleted);
     } catch (error) {
       toast.error(error);
     } finally {

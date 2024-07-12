@@ -13,7 +13,6 @@ const SearchTile = ({item}) => {
           <Text style={styles.productTitle}>{item.product_name}</Text>
           <Text style={styles.supplier}>{item.category.category_name}</Text>
           <Text style={styles.supplier}>{item.price}</Text>
-
         </View>
       </TouchableOpacity>
     </View>

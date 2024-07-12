@@ -58,9 +58,12 @@ export class UserController {
 
     try {
       const result_image = file ? await this.cloudinaryService.uploadImage(file.path, 'avatar') : null
-      return this.userService.update(req.user_data.id, updateUserDTO, file ? result_image.secure_url : null)
+      file && deleteImage(file.path)
+
+      return this.userService.update(req.user_data.id, updateUserDTO, file ? result_image?.secure_url : null)
     } catch (error) {
       console.log(error)
+      file && deleteImage(file.path)
       throw new HttpException('Upload ảnh thất bại !', HttpStatus.BAD_REQUEST)
     } finally {
       if (file) {

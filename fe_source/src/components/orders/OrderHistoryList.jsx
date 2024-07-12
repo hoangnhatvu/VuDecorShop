@@ -1,4 +1,4 @@
-import {View, Text, ActivityIndicator} from 'react-native';
+import {View, Text, ActivityIndicator, ScrollView} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import styles from './orderHistoryList.style';
 import OrderHistoryItem from './OrderHistoryItem';
@@ -42,15 +42,15 @@ const OrderHistoryList = ({route}) => {
           <ActivityIndicator size={80} color={COLORS.primary} />
         </View>
       ) : (
-        <View>
+        <ScrollView>
           {data.length > 0 && (
-            <View style={{gap: SIZES.small}}>
-              {data?.map((item, index) => {
-                return <OrderHistoryItem item={item} key={index} loadData={loadData}/>;
-              })}
+            <View style={{ paddingVertical: SIZES.small }}>
+              {data.map((item, index) => (
+                <OrderHistoryItem item={item} key={index} loadData={loadData} />
+              ))}
             </View>
           )}
-        </View>
+        </ScrollView>
       )}
     </View>
   );

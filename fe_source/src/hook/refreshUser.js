@@ -5,6 +5,7 @@ const useRefreshUser = () => {
   const refreshUser = async () => {
     try {
       const responseData = await getUser();
+      console.log(responseData)
       await saveUserData(responseData);
     } catch (error) {
       throw error;

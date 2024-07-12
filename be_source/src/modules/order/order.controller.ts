@@ -41,4 +41,18 @@ export class OrderController {
 
     return this.orderService.getOrderByUser(page, limit, req.user_data.id, getOrderByUserDTO.status)
   }
+
+  @Get('createPayment')
+  @UseGuards(AuthGuard)
+  @Roles(UserRole.USER)
+  async createPayment(@Query() query: any) {
+    const amount = query.amount
+    const orderId = query.orderId
+    return this.orderService.createPayment(amount, orderId)
+  }
+
+  @Get('getPaymentResult')
+  async getPaymentResult(@Query() query: any) {
+    return this.orderService.getPaymentResult(query)
+  }
 }

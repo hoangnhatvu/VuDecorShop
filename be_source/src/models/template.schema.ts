@@ -1,51 +1,52 @@
-import * as mongoose from 'mongoose';
+import * as mongoose from 'mongoose'
+import { baseSchema } from './base.schema'
 
-const templateSchema = new mongoose.Schema({
+export const templateSchema = new mongoose.Schema({
   template_name: {
     type: String,
     required: true,
   },
 
-  template_image: String,
+  template_image: {
+    type: String,
+    required: true,
+  },
 
-  description: String,
+  description: {
+    type: String,
+    required: true,
+  },
+
+  products: [
+    {
+      product: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product',
+        required: true,
+      },
+      option: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Option',
+        required: true,
+      },
+      quantity: {
+        type: Number,
+        required: true,
+      },
+    },
+  ],
 
   view_number: {
     type: Number,
     default: 0,
   },
 
-  is_active: {
+  is_actived: {
     type: Boolean,
     default: true,
   },
 
-  created_by: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
-  },
+  deleted_at: Date,
 
-  created_date: {
-    type: Date,
-    default: Date.now,
-  },
-
-  updated_by: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-  },
-
-  updated_date: Date,
-
-  updated_token: String,
-
-  is_deleted: {
-    type: Boolean,
-    default: false,
-  },
-});
-
-const Template = mongoose.model('Template', templateSchema);
-
-module.exports = Template;
+  ...baseSchema.obj,
+})

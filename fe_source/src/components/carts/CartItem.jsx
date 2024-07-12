@@ -84,7 +84,7 @@ const CartItem = ({item, loadData}) => {
           <Image
             source={
               item.image
-                ? {uri: API_URL + item?.image}
+                ? {uri: item?.image}
                 : require('../../../assets/images/no_image.png')
             }
             style={styles.productImg}
