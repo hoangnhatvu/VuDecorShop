@@ -1,22 +1,22 @@
-import { IFilterForm } from "pages/admin/products";
+import { IFilterForm } from "pages/admin/templates";
 import requestApi from "./apiConfig";
 import type { requestApiProps } from "./apiConfig";
 
-const getProducts = async (page: number, limit: number, body?: IFilterForm) => {
+const getTemplates = async (page: number, limit: number, body: IFilterForm) => {
   const request: requestApiProps = {
-    endpoint: `products/searchForAdmin?page=${page}&limit=${limit}`,
+    endpoint: `templates/getAllForAdmin?page=${page}&limit=${limit}`,
     method: "POST",
     params: undefined,
-    body: body || {},
+    body: body,
     responseType: undefined,
   };
   const response = await requestApi(request);
   return response.data;
 };
 
-const createProduct = async (data: FormData) => {
+const createTemplate = async (data: FormData) => {
   const request: requestApiProps = {
-    endpoint: "products/create",
+    endpoint: "templates/create",
     method: "POST",
     params: undefined,
     body: data,
@@ -27,4 +27,4 @@ const createProduct = async (data: FormData) => {
   return response.data;
 };
 
-export { getProducts, createProduct };
+export { getTemplates, createTemplate };
