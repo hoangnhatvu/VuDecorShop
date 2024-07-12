@@ -19,7 +19,8 @@ import {
   Review,
   SignUp,
   ViroAR3DObjectPage,
-  Chat
+  Chat,
+  VNPay
 } from './src/screens';
 import {Provider} from 'react-redux';
 import {ToastProvider} from 'react-native-toast-notifications';
@@ -28,7 +29,7 @@ import {PermissionsAndroid} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Linking} from 'react-native';
 import messaging from '@react-native-firebase/messaging';
-import TestZaloPay from './src/screens/order/testZalopay';
+import TemplateDetail from './src/screens/design/TemplateDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -181,11 +182,6 @@ export default function App() {
               options={{headerShown: false}}
             />
             <Stack.Screen
-              name="TestZaloPay"
-              component={TestZaloPay}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
               name="Chat"
               component={Chat}
               options={{headerShown: false}}
@@ -193,6 +189,16 @@ export default function App() {
             <Stack.Screen
               name="ARDesignView"
               component={ARDesignView}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="TemplateDetail"
+              component={TemplateDetail}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="VNPay"
+              component={VNPay}
               options={{headerShown: false}}
             />
           </Stack.Navigator>

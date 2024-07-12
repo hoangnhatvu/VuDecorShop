@@ -20,6 +20,7 @@ import ViroAR3DObjectPage from './product/ARView';
 import Design from './design/Design';
 import ARDesignView from './design/ARDesignView';
 import Chat from './chat/Chat';
+import VNPay from './order/VNPay';
 
 export {
   Home,
@@ -43,5 +44,6 @@ export {
   ViroAR3DObjectPage,
   Design,
   ARDesignView,
-  Chat
+  Chat,
+  VNPay
 };

@@ -18,6 +18,8 @@ import ReviewList from './reviews/ReviewList';
 import StarRating from './products/StarRating';
 import Object3D from './products/Object3D';
 import ListObject from './designs/ListObject';
+import TemplateList from './templates/TemplateList';
+import ProductTemplateItem from './templates/ProductTemplateItem';
 
 export {
   Welcome,
@@ -40,4 +42,6 @@ export {
   StarRating,
   Object3D,
   ListObject,
+  TemplateList,
+  ProductTemplateItem
 };

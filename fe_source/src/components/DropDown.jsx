@@ -15,7 +15,7 @@ const DropdownComponent = ({placeholder, onValueChange, data, mode}) => {
               source={
                 item.value === 1
                   ? require('../../assets/images/payOnReceived.png')
-                  : require('../../assets/images/MoMo.png')
+                  : require('../../assets/images/vnpay.jpg')
               }
               style={styles.paymentImg}
             />
