@@ -13,6 +13,7 @@ import { join } from 'path'
 import { OptionModule } from './modules/option/option.module'
 import { ReviewModule } from './modules/review/review.module'
 import { AdminModule } from './modules/admin/admin.module'
+import { TemplateModule } from './modules/template/template.module'
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { AdminModule } from './modules/admin/admin.module'
     OptionModule,
     ReviewModule,
     AdminModule,
+    TemplateModule,
   ],
   controllers: [AppController],
   providers: [AppService],

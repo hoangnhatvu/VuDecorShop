@@ -2,7 +2,7 @@ import { extname } from 'path'
 
 export const fileFilter = (req, file, cb) => {
   const ext = extname(file.originalname)
-  const allowedExtArr = ['.jpg', '.png', '.jpeg', '.glb']
+  const allowedExtArr = ['.jpg', '.png', '.jpeg', '.glb', '.JPG', '.PNG', '.JPEG', '.GLB']
   if (!allowedExtArr.includes(ext)) {
     req.fileValidationError = `Sai định dạng. Định dạng cho phép: ${allowedExtArr.toString()}`
     cb(null, false)

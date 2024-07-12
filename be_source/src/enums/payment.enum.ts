@@ -5,5 +5,5 @@ export enum PaymentStatus {
 
 export enum PaymentMethod {
   PAYMENT_ON_DELIVERY = 'Thanh toán khi nhận hàng',
-  MOMO = 'momo',
+  VNPAY = 'VNPAY',
 }
