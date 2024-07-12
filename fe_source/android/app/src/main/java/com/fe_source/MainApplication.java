@@ -9,10 +9,13 @@ import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactNativeHost;
 import com.facebook.soloader.SoLoader;
 import java.util.List;
+
+import com.fe_source.zpmodule.PayZaloBridge;
 import com.viromedia.bridge.ReactViroPackage;
+import vn.zalopay.sdk.Environment;
+import vn.zalopay.sdk.ZaloPaySDK;
 
 public class MainApplication extends Application implements ReactApplication {
-
   private final ReactNativeHost mReactNativeHost =
       new DefaultReactNativeHost(this) {
         @Override
@@ -27,6 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
 
           // Add this line
           packages.add(new ReactViroPackage(ReactViroPackage.ViroPlatform.valueOf("AR")));
+          packages.add(new PayZaloBridge());
 
           return packages;
       }
@@ -56,7 +60,8 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
-    if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
+      ZaloPaySDK.init(2554, Environment.SANDBOX);
+      if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
       // If you opted-in for the New Architecture, we load the native entry point for this app.
       DefaultNewArchitectureEntryPoint.load();
     }

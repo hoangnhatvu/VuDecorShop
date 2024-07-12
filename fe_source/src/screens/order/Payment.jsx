@@ -1,4 +1,4 @@
-import {View, Text, ScrollView} from 'react-native';
+import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import styles from './payment.style';
@@ -7,8 +7,12 @@ import {useRoute} from '@react-navigation/native';
 import {formatCurrency} from '../../helpers/formatCurrency';
 import AddressItem from '../../components/addresses/AddressItem';
 import {getUserData} from '../../helpers/userDataManager';
-import {SIZES} from '../../../constants';
-import {calculateFeeShip, createOrder} from '../../helpers/handlePaymentApis';
+import {COLORS, SIZES} from '../../../constants';
+import {
+  calculateFeeShip,
+  createOrder,
+  createPayment,
+} from '../../helpers/handlePaymentApis';
 import {useToastMessage} from '../../hook/showToast';
 import {useDispatch, useSelector} from 'react-redux';
 import {setSelectedAddress} from '../../redux/slices/selectedAddress.slice';
@@ -26,7 +30,7 @@ const Payment = ({navigation}) => {
   const dispatch = useDispatch();
   const paymentMethodData = [
     {label: 'Thanh toán khi nhận hàng', value: 1},
-    {label: 'Thanh toán qua Momo', value: 2},
+    {label: 'VNPAY', value: 2},
   ];
 
   const loadData = async () => {
@@ -85,14 +89,18 @@ const Payment = ({navigation}) => {
           method: paymentMethod.label,
         },
       };
-      await createOrder(data);
+      const responseOrder = await createOrder(data);
 
       listOrderItem.forEach(async item => {
         await CartManager.removeFromCart(item);
       });
 
-      showToast('Đặt hàng thành công !', 'success');
-      navigation.navigate('OrderSuccess');
+      if (paymentMethod.label === 'VNPAY') {
+        const vpnUrl = await createPayment(15000, responseOrder.id );
+        navigation.navigate('VNPay', {vpnUrl});
+      } else {
+        navigation.navigate('OrderSuccess');
+      }
     } catch (error) {
       console.log(error.response.data.message);
       showToast(error.response.data.message, 'danger');
@@ -110,7 +118,17 @@ const Payment = ({navigation}) => {
           {!selectedAddress ? (
             <View style={styles.addAddressText}>
               <Text>Bạn chưa có địa chỉ, vui lòng thêm địa chỉ </Text>
-              <Text>tại đây</Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('EditAddress', [])}>
+                <Text
+                  style={{
+                    textDecorationColor: 'blue',
+                    color: 'blue',
+                    textDecorationLine: 'underline',
+                  }}>
+                  tại đây
+                </Text>
+              </TouchableOpacity>
             </View>
           ) : (
             <AddressItem item={selectedAddress} mode="payment" />
@@ -120,7 +138,7 @@ const Payment = ({navigation}) => {
           <Text style={styles.subText}>Danh sách sản phẩm </Text>
           <OrderList />
         </View>
-        <View>
+        <View style={{marginBottom: SIZES.large}}>
           <Text style={styles.subText}>Phương thức thanh toán</Text>
           <DropdownComponent
             data={paymentMethodData}
@@ -144,10 +162,10 @@ const Payment = ({navigation}) => {
           <Text style={styles.totalText}>Phí vận chuyển:</Text>
           <Text style={styles.totalText}>đ {formatCurrency(feeShip)}</Text>
         </View>
-        <View style={styles.total}>
+        {/* <View style={styles.total}>
           <Text style={styles.totalText}>Giảm giá:</Text>
           <Text style={styles.totalText}>đ 0</Text>
-        </View>
+        </View> */}
         <View style={styles.total}>
           <Text style={styles.totalText}>Tổng thanh toán:</Text>
           <Text style={styles.totalText}>

@@ -1,5 +1,9 @@
 import axios from 'axios';
 import requestApi from './apiConfig';
+import moment from 'moment';
+import {VNPAY_URL, VNP_TMNCODE, VNP_HASHSECRET} from '@env';
+import querystring from 'qs';
+import CryptoJS from 'crypto-js';
 
 const token = '101e2d64-95a3-11ee-b1d4-92b443b7a897';
 
@@ -30,20 +34,36 @@ const calculateFeeShip = async (districtId, wardCode, codAmount) => {
   }
 };
 
-const createOrder = async (data) => {
-    const request = {
-      endpoint: 'orders/create',
-      method: 'POST',
-      params: undefined,
-      body: data,
-      responseType: undefined,
-    };
-    try {
-      const response = await requestApi(request);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+const createOrder = async data => {
+  const request = {
+    endpoint: 'orders/create',
+    method: 'POST',
+    params: undefined,
+    body: data,
+    responseType: undefined,
   };
+  try {
+    const response = await requestApi(request);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
-export {calculateFeeShip, createOrder};
+const createPayment = async (amount, orderId) => {
+  const request = {
+    endpoint: 'orders/createPayment',
+    method: 'GET',
+    params: {amount: amount, orderId: orderId},
+    body: undefined,
+    responseType: undefined,
+  };
+  try {
+    const response = await requestApi(request);
+    return response?.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export {calculateFeeShip, createOrder, createPayment};

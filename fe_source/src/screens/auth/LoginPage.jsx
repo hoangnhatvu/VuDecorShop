@@ -21,6 +21,7 @@ import {saveUserData} from '../../helpers/userDataManager';
 import {saveToken} from '../../helpers/tokenManager';
 import {useDispatch} from 'react-redux';
 import {setIsLogin} from '../../redux/slices/isLogin.slice';
+import messaging from '@react-native-firebase/messaging';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -77,7 +78,9 @@ const LoginPage = ({navigation}) => {
   const handleLogin = async data => {
     try {
       setLoader(true);
-      const response = await login(data);
+      await messaging().registerDeviceForRemoteMessages();
+      const deviceToken = await messaging().getToken();
+      const response = await login(data, deviceToken);
       saveUserData(response.data.user);
       saveToken(response.data.token);
       showToast('Đăng nhập thành công !', 'success');
@@ -90,7 +93,7 @@ const LoginPage = ({navigation}) => {
           activeAccount(data);
         }
       } else {
-        showToast('Lỗi mạng !', 'danger');
+        showToast('Lỗi không xác định !', 'danger');
       }
     } finally {
       setLoader(false);

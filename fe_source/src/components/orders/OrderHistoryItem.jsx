@@ -18,11 +18,11 @@ const OrderHistoryItem = ({item, loadData}) => {
   const optionText =
     color && size ? `${color}, ${size}` : color ? color : size && size;
 
-  const handleUpdateOrder = async (updatedToken, orderid) => {
+  const handleUpdateOrder = async (updatedToken, orderid, status) => {
     try {
       setIsLoading(true);
       const data = {
-        status: 'Chờ đánh giá',
+        status: status,
         updated_token: updatedToken,
       };
       await updateOrders(data, orderid);
@@ -88,18 +88,29 @@ const OrderHistoryItem = ({item, loadData}) => {
       </View>
       <View style={{alignItems: 'center'}}>
         {item?.status === 'Chờ xác nhận' || item?.status === 'Đang lấy hàng' ? (
-          <Button title="Hủy đơn hàng" loader={false} onPress={() => {}} width="70%"/>
+          <Button
+            title="Hủy đơn hàng"
+            loader={isLoading}
+            onPress={() => {
+              handleUpdateOrder(item.updated_token, item.id, 'Đã hủy');
+            }}
+            width="70%"
+          />
         ) : (
           <>
             {item?.status === 'Đang vận chuyển' ? (
-                <Button
-                  title="Đã nhận được hàng"
-                  width="70%"
-                  loader={isLoading}
-                  onPress={() => {
-                    handleUpdateOrder(item.updated_token, item.id);
-                  }}
-                />
+              <Button
+                title="Đã nhận được hàng"
+                width="70%"
+                loader={isLoading}
+                onPress={() => {
+                  handleUpdateOrder(
+                    item.updated_token,
+                    item.id,
+                    'Chờ đánh giá',
+                  );
+                }}
+              />
             ) : (
               <>
                 {item?.status === 'Chờ đánh giá' && (

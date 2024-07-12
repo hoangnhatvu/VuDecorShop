@@ -17,6 +17,10 @@ import EditProfile from './profile/EditProfile';
 import ChangePassword from './profile/ChangePassword';
 import Review from './review/Review';
 import ViroAR3DObjectPage from './product/ARView';
+import Design from './design/Design';
+import ARDesignView from './design/ARDesignView';
+import Chat from './chat/Chat';
+import VNPay from './order/VNPay';
 
 export {
   Home,
@@ -38,4 +42,8 @@ export {
   ChangePassword,
   Review,
   ViroAR3DObjectPage,
+  Design,
+  ARDesignView,
+  Chat,
+  VNPay
 };

@@ -5,8 +5,7 @@ import useFetch from '../../hook/fetchData';
 import {COLORS, SIZES} from '../../../constants';
 import ProductCardView from './ProductCardView';
 
-const ProductList = ({data, isLoading}) => {
-
+const ProductList = ({data, isLoading, height}) => {
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
@@ -15,7 +14,7 @@ const ProductList = ({data, isLoading}) => {
     );
   }
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {height: height}]}>
       <FlatList
         data={data}
         numColumns={2}

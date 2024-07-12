@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
   title: {
+    flex: 1,
     fontFamily: 'OpenSans-Bold',
     fontSize: SIZES.xLarge,
   },
@@ -96,8 +97,7 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.large,
   },
   cartRow: {
-    bottom: 0,
-    position: 'absolute',
+    bottom: 30,
     padding: SIZES.small,
     flexDirection: 'row',
     justifyContent: 'space-between',

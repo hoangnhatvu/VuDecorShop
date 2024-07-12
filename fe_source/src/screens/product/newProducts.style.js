@@ -6,11 +6,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: COLORS.offwhite,
-    paddingHorizontal: SIZES.small,
   },
   wrapper: {
-    flex: 1,
     backgroundColor: COLORS.lightWhite,
+    width: SIZES.width,
+    paddingHorizontal: SIZES.small,
   },
   upperRow: {
     flexDirection: 'row',

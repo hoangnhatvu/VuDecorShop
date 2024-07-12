@@ -10,6 +10,8 @@ const styles = StyleSheet.create({
   },
   container: {
     paddingTop: SIZES.large,
+    width: SIZES.width,
+    paddingHorizontal: SIZES.small
   },
   separator: {
     height: 16,

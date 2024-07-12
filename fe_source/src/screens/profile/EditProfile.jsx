@@ -12,6 +12,8 @@ import {API_URL} from '@env';
 import {TextInput, Modal} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import {formatDate} from '../../helpers/formatDate';
+import {useDispatch} from 'react-redux';
+import {setIsEditProfile} from '../../redux/slices/isEditProfile.slice';
 
 const EditProfile = ({navigation}) => {
   const {refreshUser} = useRefreshUser();
@@ -28,6 +30,7 @@ const EditProfile = ({navigation}) => {
   const [openModalDatePicker, setOpenModalDatePicker] = useState(false);
   const [openModalGender, setOpenModalGender] = useState(false);
   const nameInputRef = useRef(null);
+  const dispatch = useDispatch();
 
   const formData = new FormData();
 
@@ -74,12 +77,12 @@ const EditProfile = ({navigation}) => {
   const handleSave = async () => {
     try {
       setLoader(true);
-
       if (selectedImage) {
+        const fileName = selectedImage.path.split('/').pop();
         formData.append('user_image', {
           uri: selectedImage.path,
           type: selectedImage.mime,
-          name: 'userAvatar.jpg',
+          name: fileName,
         });
       }
       if (isEditName) {
@@ -92,14 +95,14 @@ const EditProfile = ({navigation}) => {
         formData.append('birth_date', selectedDate);
       }
       formData.append('updated_token', userData.updated_token);
-      console.log(formData);
 
       await updateUser(formData);
       showToast('Cập nhật thông tin người dùng thành công !', 'success');
       setIsEdit(false);
       setIsEditName(false);
+      dispatch(setIsEditProfile(true));
     } catch (error) {
-      showToast(`${error.response.data.message || error}`, 'danger');
+      showToast(`${error?.response?.data?.message || error}`, 'danger');
     } finally {
       setLoader(false);
     }
@@ -144,7 +147,7 @@ const EditProfile = ({navigation}) => {
                 selectedImage
                   ? {uri: selectedImage.path}
                   : userData?.user_image
-                  ? {uri: API_URL + userData?.user_image}
+                  ? {uri: userData?.user_image}
                   : require('../../../assets/images/userDefault.png')
               }
               style={styles.profile}

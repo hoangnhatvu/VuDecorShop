@@ -133,7 +133,7 @@ const EditAddress = ({navigation}) => {
         data.province,
     };
 
-    listAddress?.forEach((address, index) => {
+    listAddress?.length > 0 && listAddress?.forEach((address, index) => {
       const addressKey = `ship_infos[${index}]`;
       formData.append(`${addressKey}[customer_name]`, address.customer_name);
       formData.append(`${addressKey}[phone_number]`, address.phone_number);
