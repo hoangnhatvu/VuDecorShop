@@ -16,11 +16,12 @@ const chat = async messagesData => {
         Authorization: `Bearer ${OPENAI_API_KEY}`,
       },
     };
+    console.log("response neeeeeeeeeeeeeee", config)
 
     const response = await axios.post(`${OPENAI_URL}`, data, config);
     return response.data;
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 };
 
